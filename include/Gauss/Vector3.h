@@ -30,7 +30,7 @@ template <typename T> class Vector3T
     public:
         
         //! Specifies the number of vector components.
-        static const size_t components = 3;
+        static const std::size_t components = 3;
 
         Vector3T() :
             x{ T(0) },
@@ -109,7 +109,7 @@ template <typename T> class Vector3T
         \brief Returns the specified vector component.
         \param[in] component Specifies the vector component index. This must be 0, 1, or 2.
         */
-        T& operator [] (size_t component)
+        T& operator [] (std::size_t component)
         {
             GS_ASSERT(component < Vector3T<T>::components);
             return *((&x) + component);
@@ -119,7 +119,7 @@ template <typename T> class Vector3T
         \brief Returns the specified vector component.
         \param[in] component Specifies the vector component index. This must be 0, 1, or 2.
         */
-        const T& operator [] (size_t component) const
+        const T& operator [] (std::size_t component) const
         {
             GS_ASSERT(component < Vector3T<T>::components);
             return *((&x) + component);

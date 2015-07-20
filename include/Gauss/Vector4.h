@@ -30,7 +30,7 @@ template <typename T> class Vector4T
     public:
         
         //! Specifies the number of vector components.
-        static const size_t components = 4;
+        static const std::size_t components = 4;
 
         Vector4T() :
             x{ T(0) },
@@ -119,7 +119,7 @@ template <typename T> class Vector4T
         \brief Returns the specified vector component.
         \param[in] component Specifies the vector component index. This must be 0, 1, 2, or 3.
         */
-        T& operator [] (size_t component)
+        T& operator [] (std::size_t component)
         {
             GS_ASSERT(component < Vector4T<T>::components);
             return *((&x) + component);
@@ -129,7 +129,7 @@ template <typename T> class Vector4T
         \brief Returns the specified vector component.
         \param[in] component Specifies the vector component index. This must be 0, 1, 2, or 3.
         */
-        const T& operator [] (size_t component) const
+        const T& operator [] (std::size_t component) const
         {
             GS_ASSERT(component < Vector4T<T>::components);
             return *((&x) + component);

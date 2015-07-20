@@ -24,13 +24,13 @@ namespace Gs
     static_assert(Rows == Cols, __FUNCTION__ " can only be used with NxN matrices")
 
 #ifdef GS_MATRIX_COLUMN_MAJOR
-#   define __GS_FOREACH_ROW_COL__(r, c)     \
-        for (size_t r = 0; r < Rows; ++r)   \
-        for (size_t c = 0; c < Rows; ++c)
+#   define __GS_FOREACH_ROW_COL__(r, c)         \
+        for (std::size_t r = 0; r < Rows; ++r)  \
+        for (std::size_t c = 0; c < Rows; ++c)
 #else
-#   define __GS_FOREACH_ROW_COL__(r, c)     \
-        for (size_t c = 0; c < Rows; ++c)   \
-        for (size_t r = 0; r < Rows; ++r)
+#   define __GS_FOREACH_ROW_COL__(r, c)         \
+        for (std::size_t c = 0; c < Rows; ++c)  \
+        for (std::size_t r = 0; r < Rows; ++r)
 #endif
 
 
@@ -41,13 +41,13 @@ This should be a primitive data type such as float, double, int etc.
 \remarks The macro GS_MATRIX_COLUMN_MAJOR can be defined, to use column-major matrices.
 By default row-major matrices are used.
 */
-template <typename T, size_t Rows, size_t Cols> class Matrix
+template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 {
     
     public:
         
-        static const size_t rows        = Rows;
-        static const size_t columns     = Cols;
+        static const std::size_t rows       = Rows;
+        static const std::size_t columns    = Cols;
 
         //! Transposed matrix type, i.e. NxM becomes MxN.
         using ThisType          = Matrix<T, Rows, Cols>;
@@ -74,7 +74,7 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
             private:
 
                 ThisType&   matrix;
-                size_t      element;
+                std::size_t element;
 
         };
 
@@ -87,7 +87,7 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
             *this = rhs;
         }
 
-        T& operator () (size_t row, size_t col)
+        T& operator () (std::size_t row, std::size_t col)
         {
             GS_ASSERT(row < Rows);
             GS_ASSERT(col < Cols);
@@ -98,7 +98,7 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
             #endif
         }
 
-        const T& operator () (size_t row, size_t col) const
+        const T& operator () (std::size_t row, std::size_t col) const
         {
             GS_ASSERT(row < Rows);
             GS_ASSERT(col < Cols);
@@ -109,13 +109,13 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
             #endif
         }
 
-        T& operator [] (size_t element)
+        T& operator [] (std::size_t element)
         {
             GS_ASSERT(element < Rows*Cols);
             return m_[element];
         }
 
-        const T& operator [] (size_t element) const
+        const T& operator [] (std::size_t element) const
         {
             GS_ASSERT(element < Rows*Cols);
             return m_[element];
@@ -130,14 +130,14 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
 
         ThisType& operator = (const ThisType& rhs)
         {
-            for (size_t i = 0; i < Rows*Cols; ++i)
+            for (std::size_t i = 0; i < Rows*Cols; ++i)
                 m_[i] = rhs.m_[i];
             return *this;
         }
 
         void Reset()
         {
-            for (size_t i = 0; i < Rows*Cols; ++i)
+            for (std::size_t i = 0; i < Rows*Cols; ++i)
                 m_[i] = T(0);
         }
 
@@ -166,9 +166,9 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
         {
             __GS_ASSERT_NxN_MATRIX__;
 
-            for (size_t i = 0; i + 1 < Cols; ++i)
+            for (std::size_t i = 0; i + 1 < Cols; ++i)
             {
-                for (size_t j = 1; j + i < Cols; ++j)
+                for (std::size_t j = 1; j + i < Cols; ++j)
                 {
                     std::swap(
                         m_[i*(Cols + 1) + j],
@@ -202,17 +202,17 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
 
 /* --- Global Operators --- */
 
-template <typename T, size_t Rows, size_t Cols>
+template <typename T, std::size_t Rows, std::size_t Cols>
 Matrix<T, Cols, Cols> operator * (const Matrix<T, Rows, Cols>& lhs, const Matrix<T, Cols, Rows>& rhs)
 {
     Matrix<T, Cols, Cols> result;
 
-    for (size_t r = 0; r < Cols; ++r)
+    for (std::size_t r = 0; r < Cols; ++r)
     {
-        for (size_t c = 0; c < Cols; ++c)
+        for (std::size_t c = 0; c < Cols; ++c)
         {
             result(r, c) = T(0);
-            for (size_t i = 0; i < Cols; ++i)
+            for (std::size_t i = 0; i < Cols; ++i)
                 result(r, c) += lhs(r, i)*rhs(i, c);
         }
     }
@@ -220,7 +220,7 @@ Matrix<T, Cols, Cols> operator * (const Matrix<T, Rows, Cols>& lhs, const Matrix
     return result;
 }
 
-template <typename T, typename I, size_t Rows, size_t Cols>
+template <typename T, typename I, std::size_t Rows, std::size_t Cols>
 typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& matrix, const I& firstValue)
 {
     typename Matrix<T, Rows, Cols>::Initializer initializer(matrix);
