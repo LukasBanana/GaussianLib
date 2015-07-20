@@ -26,7 +26,7 @@ int main()
     std::cout << "GaussianLib Test 1" << std::endl;
     std::cout << "==================" << std::endl;
 
-    Vector3 a(1, 2, 3), b(-4, 0, 2);
+    Vector4 a(1, 2, 3), b(-4, 0, 2);
 
     std::cout << "a = " << a << std::endl;
     std::cout << "b = " << b << std::endl;

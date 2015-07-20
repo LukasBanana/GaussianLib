@@ -9,14 +9,20 @@
 #define __GS_OSTREAM_H__
 
 
+#include "Vector2.h"
 #include "Vector3.h"
+#include "Vector4.h"
 
 #include <iostream>
 
 
-template <typename T> std::ostream& operator << (std::ostream& stream, const Gs::Vector3T<T>& v)
+template < template <typename> class Vec, typename T> std::ostream& operator << (std::ostream& stream, const Vec<T>& v)
 {
-    stream << "( " << v.x << " | " << v.y << " | " << v.z << " )";
+    stream << "( ";
+
+    for (size_t i = 0; i < Vec<T>::components; ++i)
+        stream << v[i] << (i + 1 < Vec<T>::components ? " | " : " )");
+
     return stream;
 }
 
