@@ -1,12 +1,12 @@
 /*
- * Vector3.h
+ * Vector2.h
  * 
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_VECTOR3_H__
-#define __GS_VECTOR3_H__
+#ifndef __GS_VECTOR2_H__
+#define __GS_VECTOR2_H__
 
 
 #include "Real.h"
@@ -20,108 +20,98 @@ namespace Gs
 
 
 /**
-Base 3D vector class with components: x, y, and z.
+Base 2D vector class with components: x, and y.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector3T
+template <typename T> class Vector2T
 {
     
     public:
         
         //! Specifies the number of vector components.
-        static const size_t components = 3;
+        static const size_t components = 2;
 
-        Vector3T() :
+        Vector2T() :
             x{ T(0) },
-            y{ T(0) },
-            z{ T(0) }
+            y{ T(0) }
         {
         }
-        Vector3T(const Vector3T<T>& rhs) :
+        Vector2T(const Vector2T<T>& rhs) :
             x{ rhs.x },
-            y{ rhs.y },
-            z{ rhs.z }
+            y{ rhs.y }
         {
         }
-        explicit Vector3T(const T& scalar) :
+        explicit Vector2T(const T& scalar) :
             x{ scalar },
-            y{ scalar },
-            z{ scalar }
+            y{ scalar }
         {
         }
-        Vector3T(const T& x, const T& y, const T& z) :
+        Vector2T(const T& x, const T& y) :
             x{ x },
-            y{ y },
-            z{ z }
+            y{ y }
         {
         }
 
-        Vector3T<T>& operator += (const Vector3T<T>& rhs)
+        Vector2T<T>& operator += (const Vector2T<T>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
-            z += rhs.z;
             return *this;
         }
 
-        Vector3T<T>& operator -= (const Vector3T<T>& rhs)
+        Vector2T<T>& operator -= (const Vector2T<T>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
-            z -= rhs.z;
             return *this;
         }
 
-        Vector3T<T>& operator *= (const Vector3T<T>& rhs)
+        Vector2T<T>& operator *= (const Vector2T<T>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
-            z *= rhs.z;
             return *this;
         }
 
-        Vector3T<T>& operator /= (const Vector3T<T>& rhs)
+        Vector2T<T>& operator /= (const Vector2T<T>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
-            z /= rhs.z;
             return *this;
         }
 
-        Vector3T<T>& operator *= (const T& rhs)
+        Vector2T<T>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
-            z *= rhs;
             return *this;
         }
 
-        Vector3T<T>& operator /= (const T& rhs)
+        Vector2T<T>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
-            z /= rhs;
             return *this;
         }
 
         /**
         \brief Returns the specified vector component.
-        \param[in] component Specifies the vector component index. This must be 0, 1, or 2.
+        \param[in] component Specifies the vector component index. This must be 0, or 1.
         */
         T& operator [] (size_t component)
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < Vector2T<T>::components);
             return *((&x) + component);
         }
 
         /**
         \brief Returns the specified vector component.
-        \param[in] component Specifies the vector component index. This must be 0, 1, or 2.
+        \param[in] component Specifies the vector component index. This must be 0, or 1.
         */
         const T& operator [] (size_t component) const
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < Vector2T<T>::components);
             return *((&x) + component);
         }
 
@@ -151,7 +141,7 @@ template <typename T> class Vector3T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector3T<T> Normalized() const
+        Vector2T<T> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -162,65 +152,64 @@ template <typename T> class Vector3T
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector3T<C> Cast() const
+        template <typename C> Vector2T<C> Cast() const
         {
-            return Vector3T<C>(
+            return Vector2T<C>(
                 static_cast<C>(x),
-                static_cast<C>(y),
-                static_cast<C>(z)
+                static_cast<C>(y)
             );
         }
 
-        T x, y, z;
+        T x, y;
 
 };
 
 
 /* --- Global Operators --- */
 
-template <typename T> Vector3T<T> operator + (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector2T<T> operator + (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
 {
     auto result = lhs;
     result += rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator - (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector2T<T> operator - (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
 {
     auto result = lhs;
     result -= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector2T<T> operator * (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector2T<T> operator / (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const T& rhs)
+template <typename T> Vector2T<T> operator * (const Vector2T<T>& lhs, const T& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator * (const T& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector2T<T> operator * (const T& lhs, const Vector2T<T>& rhs)
 {
     auto result = rhs;
     result *= lhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& rhs)
+template <typename T> Vector2T<T> operator / (const Vector2T<T>& lhs, const T& rhs)
 {
     auto result = lhs;
     result /= rhs;
@@ -230,10 +219,10 @@ template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& r
 
 /* --- Type Alias --- */
 
-using Vector3 = Vector3T<Real>;
-using Vector3f = Vector3T<float>;
-using Vector3d = Vector3T<double>;
-using Vector3i = Vector3T<int>;
+using Vector2 = Vector2T<Real>;
+using Vector2f = Vector2T<float>;
+using Vector2d = Vector2T<double>;
+using Vector2i = Vector2T<int>;
 
 
 } // /namespace Gs

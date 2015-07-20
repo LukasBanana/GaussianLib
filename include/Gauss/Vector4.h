@@ -1,12 +1,12 @@
 /*
- * Vector3.h
+ * Vector4.h
  * 
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_VECTOR3_H__
-#define __GS_VECTOR3_H__
+#ifndef __GS_VECTOR4_H__
+#define __GS_VECTOR4_H__
 
 
 #include "Real.h"
@@ -20,108 +20,118 @@ namespace Gs
 
 
 /**
-Base 3D vector class with components: x, y, and z.
+Base 4D vector class with components: x, y, z, and w.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector3T
+template <typename T> class Vector4T
 {
     
     public:
         
         //! Specifies the number of vector components.
-        static const size_t components = 3;
+        static const size_t components = 4;
 
-        Vector3T() :
+        Vector4T() :
             x{ T(0) },
             y{ T(0) },
-            z{ T(0) }
+            z{ T(0) },
+            w{ T(1) }
         {
         }
-        Vector3T(const Vector3T<T>& rhs) :
+        Vector4T(const Vector4T<T>& rhs) :
             x{ rhs.x },
             y{ rhs.y },
-            z{ rhs.z }
+            z{ rhs.z },
+            w{ rhs.w }
         {
         }
-        explicit Vector3T(const T& scalar) :
+        explicit Vector4T(const T& scalar) :
             x{ scalar },
             y{ scalar },
-            z{ scalar }
+            z{ scalar },
+            w{ T(1)   }
         {
         }
-        Vector3T(const T& x, const T& y, const T& z) :
+        Vector4T(const T& x, const T& y, const T& z, const T& w = T(1)) :
             x{ x },
             y{ y },
-            z{ z }
+            z{ z },
+            w{ w }
         {
         }
 
-        Vector3T<T>& operator += (const Vector3T<T>& rhs)
+        Vector4T<T>& operator += (const Vector4T<T>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
             z += rhs.z;
+            w += rhs.w;
             return *this;
         }
 
-        Vector3T<T>& operator -= (const Vector3T<T>& rhs)
+        Vector4T<T>& operator -= (const Vector4T<T>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
             z -= rhs.z;
+            w -= rhs.w;
             return *this;
         }
 
-        Vector3T<T>& operator *= (const Vector3T<T>& rhs)
+        Vector4T<T>& operator *= (const Vector4T<T>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
             z *= rhs.z;
+            w *= rhs.w;
             return *this;
         }
 
-        Vector3T<T>& operator /= (const Vector3T<T>& rhs)
+        Vector4T<T>& operator /= (const Vector4T<T>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
             z /= rhs.z;
+            w /= rhs.w;
             return *this;
         }
 
-        Vector3T<T>& operator *= (const T& rhs)
+        Vector4T<T>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
             z *= rhs;
+            w *= rhs;
             return *this;
         }
 
-        Vector3T<T>& operator /= (const T& rhs)
+        Vector4T<T>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
             z /= rhs;
+            w /= rhs;
             return *this;
         }
 
         /**
         \brief Returns the specified vector component.
-        \param[in] component Specifies the vector component index. This must be 0, 1, or 2.
+        \param[in] component Specifies the vector component index. This must be 0, 1, 2, or 3.
         */
         T& operator [] (size_t component)
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < Vector4T<T>::components);
             return *((&x) + component);
         }
 
         /**
         \brief Returns the specified vector component.
-        \param[in] component Specifies the vector component index. This must be 0, 1, or 2.
+        \param[in] component Specifies the vector component index. This must be 0, 1, 2, or 3.
         */
         const T& operator [] (size_t component) const
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < Vector4T<T>::components);
             return *((&x) + component);
         }
 
@@ -151,7 +161,7 @@ template <typename T> class Vector3T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector3T<T> Normalized() const
+        Vector4T<T> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -162,65 +172,66 @@ template <typename T> class Vector3T
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector3T<C> Cast() const
+        template <typename C> Vector4T<C> Cast() const
         {
-            return Vector3T<C>(
+            return Vector4T<C>(
                 static_cast<C>(x),
                 static_cast<C>(y),
-                static_cast<C>(z)
+                static_cast<C>(z),
+                static_cast<C>(w)
             );
         }
 
-        T x, y, z;
+        T x, y, z, w;
 
 };
 
 
 /* --- Global Operators --- */
 
-template <typename T> Vector3T<T> operator + (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector4T<T> operator + (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
 {
     auto result = lhs;
     result += rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator - (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector4T<T> operator - (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
 {
     auto result = lhs;
     result -= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector4T<T> operator * (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const T& rhs)
+template <typename T> Vector4T<T> operator * (const Vector4T<T>& lhs, const T& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator * (const T& lhs, const Vector3T<T>& rhs)
+template <typename T> Vector4T<T> operator * (const T& lhs, const Vector4T<T>& rhs)
 {
     auto result = rhs;
     result *= lhs;
     return result;
 }
 
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& rhs)
+template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const T& rhs)
 {
     auto result = lhs;
     result /= rhs;
@@ -230,10 +241,10 @@ template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& r
 
 /* --- Type Alias --- */
 
-using Vector3 = Vector3T<Real>;
-using Vector3f = Vector3T<float>;
-using Vector3d = Vector3T<double>;
-using Vector3i = Vector3T<int>;
+using Vector4 = Vector4T<Real>;
+using Vector4f = Vector4T<float>;
+using Vector4d = Vector4T<double>;
+using Vector4i = Vector4T<int>;
 
 
 } // /namespace Gs

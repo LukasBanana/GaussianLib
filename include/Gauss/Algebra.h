@@ -69,6 +69,16 @@ template < template <typename> class Vec, typename T > T Dot(const Vec<T>& lhs, 
     return result;
 }
 
+//! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
+template < template <typename> class Vec, typename T > Vec<T> Cross(const Vec<T>& lhs, const Vec<T>& rhs)
+{
+    return Vec<T>(
+        lhs.y*rhs.z - rhs.y*lhs.z,
+        rhs.x*lhs.z - lhs.x*rhs.z,
+        lhs.x*rhs.y - rhs.x*lhs.y
+    );
+}
+
 //! Normalizes the specified vector to the unit length of 1.
 template < template <typename> class Vec, typename T > void Normalize(Vec<T>& vec)
 {

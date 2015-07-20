@@ -5,7 +5,9 @@
  * See "LICENSE.txt" for license information.
  */
 
+#include <Gauss/Vector2.h>
 #include <Gauss/Vector3.h>
+#include <Gauss/Vector4.h>
 #include <Gauss/Algebra.h>
 #include <Gauss/OStream.h>
 
