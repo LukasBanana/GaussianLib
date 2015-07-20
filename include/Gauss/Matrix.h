@@ -53,9 +53,38 @@ template <typename T, size_t Rows, size_t Cols> class Matrix
         using ThisType          = Matrix<T, Rows, Cols>;
         using TransposedType    = Matrix<T, Cols, Rows>;
 
+        class Initializer
+        {
+            
+            public:
+                
+                Initializer(ThisType& matrix) :
+                    matrix  { matrix },
+                    element { 0      }
+                {
+                }
+
+                Initializer& operator , (const T& nextValue)
+                {
+                    matrix(element / Cols, element % Rows) = nextValue;
+                    ++element;
+                    return *this;
+                }
+
+            private:
+
+                ThisType&   matrix;
+                size_t      element;
+
+        };
+
         Matrix()
         {
             Reset();
+        }
+        Matrix(const ThisType& rhs)
+        {
+            *this = rhs;
         }
 
         T& operator () (size_t row, size_t col)
@@ -189,6 +218,14 @@ Matrix<T, Cols, Cols> operator * (const Matrix<T, Rows, Cols>& lhs, const Matrix
     }
 
     return result;
+}
+
+template <typename T, typename I, size_t Rows, size_t Cols>
+typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& matrix, const I& firstValue)
+{
+    typename Matrix<T, Rows, Cols>::Initializer initializer(matrix);
+    initializer , firstValue;
+    return initializer;
 }
 
 

@@ -26,8 +26,14 @@ int main()
 
     Matrix4 A, B;
     A.LoadIdentitiy();
-    A(0, 2) = 5;
-    A.Transpose();
+    B.LoadIdentitiy();
+
+    A << 1.0f, -5.0f, 0.0f, 12.5f,
+         0.0f,  1.0f, 6.0f, -7.8f;
+    B << 1, 0, 0, 0,
+         0, 0, 1, 0,
+         0, 1, 0, 0,
+         0, 0, 0, 1;
 
     Matrix<Real, 4, 3> C;
     Matrix<Real, 3, 4> D;
@@ -41,6 +47,9 @@ int main()
     std::cout << "a.x = " << a[0] << ", a.y = " << a[1] << ", a.z = " << a[2] << std::endl;
     std::cout << "a DOT b = " << Dot(a, b) << std::endl;
     std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "A^T = " << std::endl << A.Transposed() << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
+    std::cout << "A * B = " << std::endl << (A * B) << std::endl;
 
     #ifdef _WIN32
     system("pause");
