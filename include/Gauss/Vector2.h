@@ -160,6 +160,18 @@ template <typename T> class Vector2T
             );
         }
 
+        //! Returns a pointer to the first element of this vector.
+        T* Ptr()
+        {
+            return &x;
+        }
+
+        //! Returns a constant pointer to the first element of this vector.
+        const T* Ptr() const
+        {
+            return &x;
+        }
+
         T x, y;
 
 };
