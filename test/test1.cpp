@@ -50,6 +50,7 @@ int main()
     std::cout << "A^T = " << std::endl << A.Transposed() << std::endl;
     std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "A * B = " << std::endl << (A * B) << std::endl;
+    std::cout << "A * a = " << std::endl << (A * a) << std::endl;
 
     #ifdef _WIN32
     system("pause");

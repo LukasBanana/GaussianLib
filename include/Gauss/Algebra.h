@@ -10,6 +10,7 @@
 
 
 #include <cmath>
+#include <cstddef>
 
 
 namespace Gs
@@ -63,7 +64,7 @@ template < template <typename> class Vec, typename T > T Dot(const Vec<T>& lhs, 
 {
     T result = T(0);
     
-    for (size_t i = 0; i < Vec<T>::components; ++i)
+    for (std::size_t i = 0; i < Vec<T>::components; ++i)
         result += lhs[i]*rhs[i];
 
     return result;
@@ -100,6 +101,24 @@ template <typename T, typename I> T Lerp(const T& a, const T& b, const I& t)
     result -= a;
     result *= t;
     result += a;
+    return result;
+}
+
+//! \brief Multiplies the NxN matrix with the N-dimensional vector.
+template < template <typename> class Vec, template <typename, std::size_t, std::size_t> class Mat, typename T, std::size_t N >
+Vec<T> operator * (const Mat<T, N, N>& mat, const Vec<T>& vec)
+{
+    static_assert(Vec<T>::components == N, __FUNCTION__ " only allows multiplication of an NxN matrix with an N-dimensional vector");
+
+    Vec<T> result;
+
+    for (std::size_t r = 0; r < N; ++r)
+    {
+        result[r] = 0;
+        for (std::size_t c = 0; c < N; ++c)
+            result[r] += mat(r, c)*vec[c];
+    }
+
     return result;
 }
 
