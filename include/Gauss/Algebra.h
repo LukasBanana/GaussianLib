@@ -58,6 +58,17 @@ template < template <typename> class Vec, typename T > T Distance(const Vec<T>& 
     return Length(result);
 }
 
+//! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
+template < template <typename> class Vec, typename T > T Dot(const Vec<T>& lhs, const Vec<T>& rhs)
+{
+    T result = T(0);
+    
+    for (size_t i = 0; i < Vec<T>::components; ++i)
+        result += lhs[i]*rhs[i];
+
+    return result;
+}
+
 //! Normalizes the specified vector to the unit length of 1.
 template < template <typename> class Vec, typename T > void Normalize(Vec<T>& vec)
 {

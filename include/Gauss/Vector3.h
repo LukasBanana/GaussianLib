@@ -162,12 +162,6 @@ template <typename T> class Vector3T
 
 /* --- Global Functions --- */
 
-//! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
-template <typename T> T Dot(const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    return lhs.x*rhs.x + lhs.y*rhs.y + lhs.z*rhs.z;
-}
-
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
 template <typename T> Vector3T<T> Cross(const Vector3T<T>& lhs, const Vector3T<T>& rhs)
 {
@@ -250,7 +244,7 @@ template <typename T> void Vector3T<T>::Normalize()
 
 template <typename T> Vector3T<T> Vector3T<T>::Normalized() const
 {
-    auto vec{ *this };
+    auto vec = *this;
     vec.Normalize();
     return vec;
 }
