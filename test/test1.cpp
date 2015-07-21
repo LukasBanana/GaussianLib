@@ -24,9 +24,7 @@ int main()
 
     Vector4 a(1, 2, 3), b(-4, 0, 2);
 
-    Matrix4 A, B;
-    A.LoadIdentitiy();
-    B.LoadIdentitiy();
+    Matrix4 A = Matrix4::Identity(), B = Matrix4::Identity();
 
     A << 1.0f, -5.0f, 0.0f, 12.5f,
          0.0f,  1.0f, 6.0f, -7.8f;
@@ -35,10 +33,22 @@ int main()
          0, 1, 0, 0,
          0, 0, 0, 1;
 
-    Matrix<Real, 4, 3> C;
-    Matrix<Real, 3, 4> D;
+    Matrix<Real, 3, 4> C;
+    C << 1, 0, 0, 12,
+         0, 1, 0, -4,
+         0, 0, 1, 5;
+    
+    Matrix<Real, 4, 1> D;
+    D << 4,
+         2,
+         0,
+         1;
+
     auto E = C * D;
 
+    std::cout << "C = " << std::endl << C << std::endl;
+    std::cout << "D = " << std::endl << D << std::endl;
+    std::cout << "E = " << std::endl << E << std::endl;
     std::cout << "a = " << a << std::endl;
     std::cout << "b = " << b << std::endl;
     std::cout << "|| a || = " << a.Normalized() << std::endl;

@@ -14,6 +14,7 @@
 
 #include <cmath>
 #include <cstring>
+#include <algorithm>
 
 
 namespace Gs
@@ -26,10 +27,10 @@ namespace Gs
 #ifdef GS_MATRIX_COLUMN_MAJOR
 #   define __GS_FOREACH_ROW_COL__(r, c)         \
         for (std::size_t r = 0; r < Rows; ++r)  \
-        for (std::size_t c = 0; c < Rows; ++c)
+        for (std::size_t c = 0; c < Cols; ++c)
 #else
 #   define __GS_FOREACH_ROW_COL__(r, c)         \
-        for (std::size_t c = 0; c < Rows; ++c)  \
+        for (std::size_t c = 0; c < Cols; ++c)  \
         for (std::size_t r = 0; r < Rows; ++r)
 #endif
 
@@ -46,6 +47,8 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
     
     public:
         
+        static_assert(Rows*Cols > 0, "matrices must consist of at least 1x1 elements");
+
         static const std::size_t rows       = Rows;
         static const std::size_t columns    = Cols;
 
@@ -59,14 +62,14 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
             public:
                 
                 Initializer(ThisType& matrix) :
-                    matrix  { matrix },
-                    element { 0      }
+                    matrix  ( matrix ),
+                    element ( 0      )
                 {
                 }
 
                 Initializer& operator , (const T& nextValue)
                 {
-                    matrix(element / Cols, element % Rows) = nextValue;
+                    matrix(element / Cols, element % Cols) = nextValue;
                     ++element;
                     return *this;
                 }
@@ -141,13 +144,20 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
                 m_[i] = T(0);
         }
 
-        void LoadIdentitiy()
+        void LoadIdentity()
         {
             __GS_ASSERT_NxN_MATRIX__;
             __GS_FOREACH_ROW_COL__(r, c)
             {
                 (*this)(r, c) = (r == c ? T(1) : T(0));
             }
+        }
+
+        static ThisType Identity()
+        {
+            ThisType result;
+            result.LoadIdentity();
+            return result;
         }
 
         TransposedType Transposed() const
@@ -202,17 +212,17 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
 /* --- Global Operators --- */
 
-template <typename T, std::size_t Rows, std::size_t Cols>
-Matrix<T, Cols, Cols> operator * (const Matrix<T, Rows, Cols>& lhs, const Matrix<T, Cols, Rows>& rhs)
+template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
+Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)
 {
-    Matrix<T, Cols, Cols> result;
+    Matrix<T, Rows, Cols> result;
 
-    for (std::size_t r = 0; r < Cols; ++r)
+    for (std::size_t r = 0; r < Rows; ++r)
     {
         for (std::size_t c = 0; c < Cols; ++c)
         {
             result(r, c) = T(0);
-            for (std::size_t i = 0; i < Cols; ++i)
+            for (std::size_t i = 0; i < ColsRows; ++i)
                 result(r, c) += lhs(r, i)*rhs(i, c);
         }
     }
