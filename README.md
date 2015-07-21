@@ -47,7 +47,7 @@ int main()
     */
     Gs::Matrix<double, 3, 3> C = A * B;
     
-    // Inverst matrix C
+    // Invert matrix C
     C.Invert();
     
     // Print matrices to standard output
