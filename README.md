@@ -45,7 +45,7 @@ int main()
     | a21 a22 a23 a24 | | | c21 c22 c23 |
     \ a31 a32 a33 a34 / | \ c31 c32 c33 /
     */
-    Gs::Matrix<double, 3, 3> C = A * B;
+    Gs::Matrix3<double> C = A * B;
     
     // Invert matrix C
     C.Invert();
@@ -57,7 +57,7 @@ int main()
     
     // Print vectors to standard output
     std::cout << "a = " << a << ", b = " << b << ", a*b = " << a*b << std::endl;
-    std::cout << " a . b = " << Dot(a, b) << "a x b = " << Cross(a, b) << std::endl;
+    std::cout << "a . b = " << Dot(a, b) << "a x b = " << Cross(a, b) << std::endl;
     std::cout << "|| a || = " << a.Length() << ", a / || a || = " << a.Normalized() << std::endl;
     
     return 0;
