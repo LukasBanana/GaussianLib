@@ -25,6 +25,11 @@ int main()
 {
     // Initialize 4 dimensional vectors a and b
     Gs::Vector4 a(1, 2, 3, 4), b(-12, 0.5f, 0, 1);
+    const Gs::Vector2 c(42, 19);
+    
+    // 'Swizzle operator' like functionality
+    Gs::Vector3 d = a.xyw() + b.zxy() - c.xxy();
+    d.yx() += c.zw();
     
     // Declare 3x4 matrix A and 4x3 matrix B
     Gs::Matrix<double, 3, 4> A;
