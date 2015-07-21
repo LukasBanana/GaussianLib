@@ -39,18 +39,21 @@ template <typename T> class Vector3T
             z( T(0) )
         {
         }
+
         Vector3T(const Vector3T<T>& rhs) :
             x( rhs.x ),
             y( rhs.y ),
             z( rhs.z )
         {
         }
+
         explicit Vector3T(const T& scalar) :
             x( scalar ),
             y( scalar ),
             z( scalar )
         {
         }
+
         Vector3T(const T& x, const T& y, const T& z) :
             x( x ),
             y( y ),

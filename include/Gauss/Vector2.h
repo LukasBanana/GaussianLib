@@ -38,16 +38,19 @@ template <typename T> class Vector2T
             y( T(0) )
         {
         }
+
         Vector2T(const Vector2T<T>& rhs) :
             x( rhs.x ),
             y( rhs.y )
         {
         }
+
         explicit Vector2T(const T& scalar) :
             x( scalar ),
             y( scalar )
         {
         }
+
         Vector2T(const T& x, const T& y) :
             x( x ),
             y( y )

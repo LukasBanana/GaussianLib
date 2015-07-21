@@ -13,6 +13,10 @@
 #include "Assert.h"
 #include "Algebra.h"
 
+#ifdef GS_ENABLE_SWIZZLE_OPERATOR
+#   include "SwizzleRef4.h"
+#endif
+
 #include <cmath>
 
 
@@ -40,6 +44,7 @@ template <typename T> class Vector4T
             w( T(1) )
         {
         }
+
         Vector4T(const Vector4T<T>& rhs) :
             x( rhs.x ),
             y( rhs.y ),
@@ -47,6 +52,7 @@ template <typename T> class Vector4T
             w( rhs.w )
         {
         }
+
         explicit Vector4T(const T& scalar) :
             x( scalar ),
             y( scalar ),
@@ -54,6 +60,7 @@ template <typename T> class Vector4T
             w( T(1)   )
         {
         }
+
         Vector4T(const T& x, const T& y, const T& z, const T& w = T(1)) :
             x( x ),
             y( y ),
@@ -195,6 +202,10 @@ template <typename T> class Vector4T
             return &x;
         }
 
+        #ifdef GS_ENABLE_SWIZZLE_OPERATOR
+        #   include "SwizzleOp4.h"
+        #endif
+        
         T x, y, z, w;
 
 };
@@ -250,6 +261,29 @@ template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const T& r
     result /= rhs;
     return result;
 }
+
+
+/* --- Appendix to SwizzleRef4 class --- */
+
+#ifdef GS_ENABLE_SWIZZLE_OPERATOR
+
+template <typename T> SwizzleRef4<T>::operator Vector4T<T> () const
+{
+    return Vector4T<T>(x_, y_, z_, w_);
+}
+
+template <typename T> SwizzleRef4<T>& SwizzleRef4<T>::operator = (const Vector4T<T>& rhs)
+{
+    x_ = rhs.x;
+    y_ = rhs.y;
+    z_ = rhs.z;
+    w_ = rhs.w;
+    return *this;
+}
+
+__GS_SWIZZLE_VECTOR_OP_ALL__(4)
+
+#endif
 
 
 /* --- Type Alias --- */

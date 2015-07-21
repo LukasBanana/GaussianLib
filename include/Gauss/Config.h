@@ -13,6 +13,8 @@
 #   define GS_ENABLE_ASSERT
 #endif
 
+#define GS_ENABLE_SWIZZLE_OPERATOR
+
 
 #endif
 

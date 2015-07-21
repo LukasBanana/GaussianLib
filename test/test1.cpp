@@ -22,12 +22,19 @@ int main()
     std::cout << "GaussianLib Test 1" << std::endl;
     std::cout << "==================" << std::endl;
 
+    // --- vector tests ---
+
     Vector4 a(1, 2, 3), b(-4, 0, 2);
+
+    Vector4 c = a.zzzw() + a.xyxy() - a.yxzw();
+    c.yxzw() = a;
+
+    // --- matrix tests ---
 
     Matrix4 A = Matrix4::Identity(), B = Matrix4::Identity();
 
-    A << 1.0f, -5.0f, 0.0f, 12.5f,
-         0.0f,  1.0f, 6.0f, -7.8f;
+    A << 1, -5, 0, 12.5f,
+         0,  1, 6, -7.8f;
     B << 1, 0, 0, 0,
          0, 0, 1, 0,
          0, 1, 0, 0,
@@ -45,6 +52,9 @@ int main()
          1;
 
     auto E = C * D;
+
+
+    // --- output ---
 
     std::cout << "C = " << std::endl << C << std::endl;
     std::cout << "D = " << std::endl << D << std::endl;
