@@ -15,6 +15,9 @@ Example
 -------
 
 ```cpp
+// Optional macro to switch between column- or row major matrices:
+// #define GS_MATRIX_COLUMN_MAJOR
+
 #include <Gauss/Gauss.h>
 #include <iostream>
 
