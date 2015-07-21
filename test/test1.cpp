@@ -24,9 +24,9 @@ int main()
 
     // --- vector tests ---
 
-    Vector4 a(1, 2, 3), b(-4, 0, 2);
+    const Vector4 a(1, 2, 3, 4), b(-4, 0, 2);
 
-    Vector4 c = a.zzzw() + a.xyxy() - a.yxzw();
+    Vector4 c = a.zzzw() + a.xyxy() - b.yxzw();
     c.yxzw() = a;
 
     // --- matrix tests ---

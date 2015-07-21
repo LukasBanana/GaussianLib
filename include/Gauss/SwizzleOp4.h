@@ -5,16 +5,16 @@
  * See "LICENSE.txt" for license information.
  */
 
-// THIS FILOE MUST NOT HAVE A HEADER GUARD!
+// THIS FILE MUST NOT HAVE A HEADER GUARD!
 
-#define __GS_SWIZZLE_REF4__(v0, v1, v2, v3)         \
-    SwizzleRef4<T> v0##v1##v2##v3()                 \
-    {                                               \
-        return SwizzleRef4<T>{ v0, v1, v2, v3 };    \
-    }                                               \
-    SwizzleRef4<const T> v0##v1##v2##v3() const     \
-    {                                               \
-        return SwizzleRef4<T>{ v0, v1, v2, v3 };    \
+#define __GS_SWIZZLE_REF4__(v0, v1, v2, v3)             \
+    SwizzleRef4<T> v0##v1##v2##v3()                     \
+    {                                                   \
+        return SwizzleRef4<T>(v0, v1, v2, v3);          \
+    }                                                   \
+    SwizzleRef4<const T> v0##v1##v2##v3() const         \
+    {                                                   \
+        return SwizzleRef4<const T>(v0, v1, v2, v3);    \
     }
 
 __GS_SWIZZLE_REF4__(x,x,x,x)

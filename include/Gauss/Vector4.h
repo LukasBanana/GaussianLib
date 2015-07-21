@@ -267,18 +267,18 @@ template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const T& r
 
 #ifdef GS_ENABLE_SWIZZLE_OPERATOR
 
-template <typename T> SwizzleRef4<T>::operator Vector4T<T> () const
-{
-    return Vector4T<T>(x_, y_, z_, w_);
-}
-
-template <typename T> SwizzleRef4<T>& SwizzleRef4<T>::operator = (const Vector4T<T>& rhs)
+template <typename T> SwizzleRef4<T>& SwizzleRef4<T>::operator = (const Vector4T<typename std::remove_const<T>::type>& rhs)
 {
     x_ = rhs.x;
     y_ = rhs.y;
     z_ = rhs.z;
     w_ = rhs.w;
     return *this;
+}
+
+template <typename T> SwizzleRef4<T>::operator Vector4T<typename std::remove_const<T>::type> () const
+{
+    return Vector4T<typename std::remove_const<T>::type>(x_, y_, z_, w_);
 }
 
 __GS_SWIZZLE_VECTOR_OP_ALL__(4)

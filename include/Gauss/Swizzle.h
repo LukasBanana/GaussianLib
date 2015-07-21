@@ -9,23 +9,37 @@
 #define __GS_SWIZZLE_H__
 
 
+#include <type_traits>
+
 #include "Config.h"
 
 
 #ifdef GS_ENABLE_SWIZZLE_OPERATOR
 
-#define __GS_SWIZZLE_VECTOR_OP_SUB__(S, V, OP)                                  \
-    template <typename T> V<T> operator OP (const S<T>& lhs, const S<T>& rhs)   \
-    {                                                                           \
-        return V<T>(lhs) + V<T>(rhs);                                           \
-    }                                                                           \
-    template <typename T> V<T> operator OP (const V<T>& lhs, const S<T>& rhs)   \
-    {                                                                           \
-        return lhs + V<T>(rhs);                                                 \
-    }                                                                           \
-    template <typename T> V<T> operator OP (const S<T>& lhs, const V<T>& rhs)   \
-    {                                                                           \
-        return V<T>(lhs) + rhs;                                                 \
+#define __GS_SWIZZLE_VECTOR_OP_SUB__(S, V, OP)                                              \
+    template <typename T> V<T> operator OP (const S<T>& lhs, const S<T>& rhs)               \
+    {                                                                                       \
+        return V<T>(lhs) + V<T>(rhs);                                                       \
+    }                                                                                       \
+    template <typename T> V<T> operator OP (const V<T>& lhs, const S<T>& rhs)               \
+    {                                                                                       \
+        return lhs + V<T>(rhs);                                                             \
+    }                                                                                       \
+    template <typename T> V<T> operator OP (const S<T>& lhs, const V<T>& rhs)               \
+    {                                                                                       \
+        return V<T>(lhs) + rhs;                                                             \
+    }                                                                                       \
+    template <typename T> V<T> operator OP (const S<const T>& lhs, const S<const T>& rhs)   \
+    {                                                                                       \
+        return V<T>(lhs) + V<T>(rhs);                                                       \
+    }                                                                                       \
+    template <typename T> V<T> operator OP (const V<T>& lhs, const S<const T>& rhs)         \
+    {                                                                                       \
+        return lhs + V<T>(rhs);                                                             \
+    }                                                                                       \
+    template <typename T> V<T> operator OP (const S<const T>& lhs, const V<T>& rhs)         \
+    {                                                                                       \
+        return V<T>(lhs) + rhs;                                                             \
     }
 
 #define __GS_SWIZZLE_VECTOR_OP__(N, OP) \
@@ -43,8 +57,8 @@
     OP_DECL(-=);                                                \
     OP_DECL(*=);                                                \
     OP_DECL(/=);                                                \
-    SwizzleRef##N<T>& operator = (const Vector##N##T<T>& rhs);  \
-    operator Vector##N##T<T> () const;
+    SwizzleRef##N<T>& operator = (const Vector##N##T<typename std::remove_const<T>::type>& rhs);  \
+    operator Vector##N##T<typename std::remove_const<T>::type> () const;
 
 
 #endif

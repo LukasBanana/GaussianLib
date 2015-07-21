@@ -13,6 +13,10 @@
 #include "Assert.h"
 #include "Algebra.h"
 
+#ifdef GS_ENABLE_SWIZZLE_OPERATOR
+#   include "SwizzleRef3.h"
+#endif
+
 #include <cmath>
 
 
