@@ -12,10 +12,7 @@
 #include "Real.h"
 #include "Assert.h"
 #include "Algebra.h"
-
-#ifdef GS_ENABLE_SWIZZLE_OPERATOR
-#   include "SwizzleRef2.h"
-#endif
+#include "SwizzleRef.h"
 
 #include <cmath>
 
@@ -179,6 +176,10 @@ template <typename T> class Vector2T
         {
             return &x;
         }
+
+        #ifdef GS_ENABLE_SWIZZLE_OPERATOR
+        #   include "SwizzleVec2Op4.h"
+        #endif
 
         T x, y;
 
