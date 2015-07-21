@@ -11,6 +11,7 @@
 
 #include "Real.h"
 #include "Assert.h"
+#include "Algebra.h"
 
 #include <cmath>
 

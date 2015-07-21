@@ -9,6 +9,8 @@
 #define __GS_ALGEBRA_H__
 
 
+#include "Macros.h"
+
 #include <cmath>
 #include <cstddef>
 
@@ -108,7 +110,7 @@ template <typename T, typename I> T Lerp(const T& a, const T& b, const I& t)
 template < template <typename> class Vec, template <typename, std::size_t, std::size_t> class Mat, typename T, std::size_t N >
 Vec<T> operator * (const Mat<T, N, N>& mat, const Vec<T>& vec)
 {
-    static_assert(Vec<T>::components == N, __FUNCTION__ " only allows multiplication of an NxN matrix with an N-dimensional vector");
+    static_assert(Vec<T>::components == N, __GS_FILE_LINE__ "function only allows multiplication of an NxN matrix with an N-dimensional vector");
 
     Vec<T> result;
 

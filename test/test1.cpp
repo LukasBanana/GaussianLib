@@ -51,7 +51,7 @@ int main()
     std::cout << "E = " << std::endl << E << std::endl;
     std::cout << "a = " << a << std::endl;
     std::cout << "b = " << b << std::endl;
-    std::cout << "|| a || = " << a.Normalized() << std::endl;
+    std::cout << "a / || a || = " << a.Normalized() << std::endl;
     std::cout << "|| a - b || = " << Distance(a, b) << std::endl;
     std::cout << "a ANGLE b = " << Angle(a, b) << std::endl;
     std::cout << "a.x = " << a[0] << ", a.y = " << a[1] << ", a.z = " << a[2] << std::endl;

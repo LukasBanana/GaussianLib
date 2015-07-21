@@ -11,6 +11,7 @@
 
 #include "Real.h"
 #include "Assert.h"
+#include "Macros.h"
 
 #include <cmath>
 #include <cstring>
@@ -22,7 +23,7 @@ namespace Gs
 
 
 #define __GS_ASSERT_NxN_MATRIX__ \
-    static_assert(Rows == Cols, __FUNCTION__ " can only be used with NxN matrices")
+    static_assert(Rows == Cols, __GS_FILE_LINE__ "function can only be used with NxN matrices")
 
 #ifdef GS_MATRIX_COLUMN_MAJOR
 #   define __GS_FOREACH_ROW_COL__(r, c)         \
