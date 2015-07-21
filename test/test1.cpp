@@ -29,6 +29,7 @@ int main()
     Vector4 c = a.zzzw() + a.xyxy() - b.yxzw();
     c.yxzw() = a;
     Vector2 d = c.xx(), e = c.xw() + b.yz();
+    d.yx() += c.zw();
 
     // --- matrix tests ---
 
