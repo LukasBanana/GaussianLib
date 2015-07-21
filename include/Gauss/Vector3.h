@@ -189,7 +189,11 @@ template <typename T> class Vector3T
         }
 
         #ifdef GS_ENABLE_SWIZZLE_OPERATOR
+        #   include "SwizzleVec2Op2.h"
+        #   include "SwizzleVec2Op3.h"
         #   include "SwizzleVec2Op4.h"
+        #   include "SwizzleVec3Op2.h"
+        #   include "SwizzleVec3Op3.h"
         #   include "SwizzleVec3Op4.h"
         #endif
 
