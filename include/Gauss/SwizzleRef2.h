@@ -49,6 +49,17 @@ template <typename T> class SwizzleRef2
 };
 
 
+#define __GS_SWIZZLE_REF2__(v0, v1)             \
+    SwizzleRef2<T> v0##v1()                     \
+    {                                           \
+        return SwizzleRef2<T>(v0, v1);          \
+    }                                           \
+    SwizzleRef2<const T> v0##v1() const         \
+    {                                           \
+        return SwizzleRef2<const T>(v0, v1);    \
+    }
+
+
 } // /namespace Gs
 
 

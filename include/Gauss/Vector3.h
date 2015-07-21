@@ -248,6 +248,28 @@ template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& r
 }
 
 
+/* --- Appendix to SwizzleRef3 class --- */
+
+#ifdef GS_ENABLE_SWIZZLE_OPERATOR
+
+template <typename T> SwizzleRef3<T>& SwizzleRef3<T>::operator = (const Vector3T<typename std::remove_const<T>::type>& rhs)
+{
+    x_ = rhs.x;
+    y_ = rhs.y;
+    z_ = rhs.z;
+    return *this;
+}
+
+template <typename T> SwizzleRef3<T>::operator Vector3T<typename std::remove_const<T>::type> () const
+{
+    return Vector3T<typename std::remove_const<T>::type>(x_, y_, z_);
+}
+
+__GS_SWIZZLE_VECTOR_OP_ALL__(3)
+
+#endif
+
+
 /* --- Type Alias --- */
 
 using Vector3 = Vector3T<Real>;

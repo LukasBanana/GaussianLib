@@ -237,6 +237,27 @@ template <typename T> Vector2T<T> operator / (const Vector2T<T>& lhs, const T& r
 }
 
 
+/* --- Appendix to SwizzleRef2 class --- */
+
+#ifdef GS_ENABLE_SWIZZLE_OPERATOR
+
+template <typename T> SwizzleRef2<T>& SwizzleRef2<T>::operator = (const Vector2T<typename std::remove_const<T>::type>& rhs)
+{
+    x_ = rhs.x;
+    y_ = rhs.y;
+    return *this;
+}
+
+template <typename T> SwizzleRef2<T>::operator Vector2T<typename std::remove_const<T>::type> () const
+{
+    return Vector2T<typename std::remove_const<T>::type>(x_, y_);
+}
+
+__GS_SWIZZLE_VECTOR_OP_ALL__(2)
+
+#endif
+
+
 /* --- Type Alias --- */
 
 using Vector2 = Vector2T<Real>;
