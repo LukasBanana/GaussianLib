@@ -16,6 +16,7 @@ Example
 
 ```cpp
 #include <Gauss/Gauss.h>
+#include <iostream>
 
 int main()
 {
@@ -48,6 +49,16 @@ int main()
     
     // Inverst matrix C
     C.Invert();
+    
+    // Print matrices to standard output
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
+    std::cout << "C = " << std::endl << C << std::endl;
+    
+    // Print vectors to standard output
+    std::cout << "a = " << a << ", b = " << b << ", a*b = " << a*b << std::endl;
+    std::cout << " a . b = " << Dot(a, b) << "a x b = " << Cross(a, b) << std::endl;
+    std::cout << "|| a || = " << a.Length() << ", a / || a || = " << a.Normalized() << std::endl;
     
     return 0;
 }
