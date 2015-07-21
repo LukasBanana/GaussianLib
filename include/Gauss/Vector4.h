@@ -33,31 +33,31 @@ template <typename T> class Vector4T
         static const std::size_t components = 4;
 
         Vector4T() :
-            x{ T(0) },
-            y{ T(0) },
-            z{ T(0) },
-            w{ T(1) }
+            x( T(0) ),
+            y( T(0) ),
+            z( T(0) ),
+            w( T(1) )
         {
         }
         Vector4T(const Vector4T<T>& rhs) :
-            x{ rhs.x },
-            y{ rhs.y },
-            z{ rhs.z },
-            w{ rhs.w }
+            x( rhs.x ),
+            y( rhs.y ),
+            z( rhs.z ),
+            w( rhs.w )
         {
         }
         explicit Vector4T(const T& scalar) :
-            x{ scalar },
-            y{ scalar },
-            z{ scalar },
-            w{ T(1)   }
+            x( scalar ),
+            y( scalar ),
+            z( scalar ),
+            w( T(1)   )
         {
         }
         Vector4T(const T& x, const T& y, const T& z, const T& w = T(1)) :
-            x{ x },
-            y{ y },
-            z{ z },
-            w{ w }
+            x( x ),
+            y( y ),
+            z( z ),
+            w( w )
         {
         }
 

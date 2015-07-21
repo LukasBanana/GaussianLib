@@ -33,27 +33,27 @@ template <typename T> class Vector3T
         static const std::size_t components = 3;
 
         Vector3T() :
-            x{ T(0) },
-            y{ T(0) },
-            z{ T(0) }
+            x( T(0) ),
+            y( T(0) ),
+            z( T(0) )
         {
         }
         Vector3T(const Vector3T<T>& rhs) :
-            x{ rhs.x },
-            y{ rhs.y },
-            z{ rhs.z }
+            x( rhs.x ),
+            y( rhs.y ),
+            z( rhs.z )
         {
         }
         explicit Vector3T(const T& scalar) :
-            x{ scalar },
-            y{ scalar },
-            z{ scalar }
+            x( scalar ),
+            y( scalar ),
+            z( scalar )
         {
         }
         Vector3T(const T& x, const T& y, const T& z) :
-            x{ x },
-            y{ y },
-            z{ z }
+            x( x ),
+            y( y ),
+            z( z )
         {
         }
 
