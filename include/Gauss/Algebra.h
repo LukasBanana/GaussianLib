@@ -13,6 +13,7 @@
 
 #include <cmath>
 #include <cstddef>
+#include <algorithm>
 
 
 namespace Gs
@@ -85,7 +86,7 @@ template <template <typename> class Vec, typename T> Vec<T> Cross(const Vec<T>& 
 //! Normalizes the specified vector to the unit length of 1.
 template <template <typename> class Vec, typename T> void Normalize(Vec<T>& vec)
 {
-    auto len = vec.LengthSq();
+    auto len = LengthSq(vec);
     if (len != Real(0) && len != Real(1))
     {
         len = T(1) / std::sqrt(len);
@@ -104,6 +105,19 @@ template <typename T, typename I> T Lerp(const T& a, const T& b, const I& t)
     result *= t;
     result += a;
     return result;
+}
+
+/**
+\brief Clamps the value 'x' into the range [minima, maxima].
+\return min{}
+*/
+template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
+{
+    if (x <= minima)
+        return minima;
+    if (x >= maxima)
+        return maxima;
+    return x;
 }
 
 //! \brief Multiplies the NxN matrix with the N-dimensional vector.

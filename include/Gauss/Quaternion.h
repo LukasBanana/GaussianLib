@@ -164,6 +164,45 @@ template <typename T> class QuaternionT
         }
 
         /**
+        Sets the quaternion to an euler rotation with the specified angles (in radian).
+        \tparam Vec Specifies the vector type. This should be Vector3 or Vector4.
+        */
+        template <template <typename> class Vec> void SetEulerAngles(const Vec<T>& angles)
+        {
+            const T cr = std::cos(angles.x/T(2));
+            const T cp = std::cos(angles.y/T(2));
+            const T cy = std::cos(angles.z/T(2));
+
+            const T sr = std::sin(angles.x/T(2));
+            const T sp = std::sin(angles.y/T(2));
+            const T sy = std::sin(angles.z/T(2));
+
+            const T cpcy = cp * cy;
+            const T spsy = sp * sy;
+            const T cpsy = cp * sy;
+            const T spcy = sp * cy;
+
+            x = sr * cpcy - cr * spsy;
+            y = cr * spcy + sr * cpsy;
+            z = cr * cpsy - sr * spcy;
+            w = cr * cpcy + sr * spsy;
+
+            Normalize();
+        }
+
+        template <template <typename> class Vec> void GetEulerAngles(Vec<T>& angles)
+        {
+            const T xx = x*x;
+            const T yy = y*y;
+            const T zz = z*z;
+            const T ww = w*w;
+
+            angles.x = std::atan2(T(2) * (y*z + x*w), -xx - yy + zz + ww);
+            angles.y = std::asin(Clamp(T(2) * (y*w - x*z), T(-1), T(1)));
+            angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
+        }
+
+        /**
         Returns a type casted instance of this quaternion.
         \tparam C Specifies the static cast type.
         */

@@ -36,6 +36,10 @@ int main()
     // --- quaternion tests ---
 
     Quaternion q0;
+    q0.SetEulerAngles(Vector3(3.14f*0.5f, 0.0f, 0.0f));
+
+    Vector3 eulerAngles;
+    q0.GetEulerAngles(eulerAngles);
 
     Vector3 v0 = q0 * Vector3(1, 2, 3);
     Quaternion q1 = q0 * 3.0f;
