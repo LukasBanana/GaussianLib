@@ -26,10 +26,19 @@ int main()
 
     const Vector4 a(1, 2, 3, 4), b(-4, 0, 2);
 
+    #ifdef GS_ENABLE_SWIZZLE_OPERATOR
     Vector4 c = a.zzzw() + a.xyxy() - b.yxzw();
     c.yxzw() = a;
     Vector2 d = c.xx(), e = c.xw() + b.yz();
     d.yx() += c.zw();
+    #endif
+
+    // --- quaternion tests ---
+
+    Quaternion q0;
+
+    Vector3 v0 = q0 * Vector3(1, 2, 3);
+    Quaternion q1 = q0 * 3.0f;
 
     // --- matrix tests ---
 

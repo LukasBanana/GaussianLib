@@ -34,6 +34,7 @@ template <typename T> class Vector4T
         //! Specifies the number of vector components.
         static const std::size_t components = 4;
 
+        #ifdef GS_ENABLE_AUTO_INIT
         Vector4T() :
             x( T(0) ),
             y( T(0) ),
@@ -41,6 +42,9 @@ template <typename T> class Vector4T
             w( T(1) )
         {
         }
+        #else
+        Vector4T() = default;
+        #endif
 
         Vector4T(const Vector4T<T>& rhs) :
             x( rhs.x ),

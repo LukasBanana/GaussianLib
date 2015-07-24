@@ -34,11 +34,15 @@ template <typename T> class Vector2T
         //! Specifies the number of vector components.
         static const std::size_t components = 2;
 
+        #ifdef GS_ENABLE_AUTO_INIT
         Vector2T() :
             x( T(0) ),
             y( T(0) )
         {
         }
+        #else
+        Vector2T() = default;
+        #endif
 
         Vector2T(const Vector2T<T>& rhs) :
             x( rhs.x ),
