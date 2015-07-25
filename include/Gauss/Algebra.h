@@ -14,6 +14,7 @@
 #include <cmath>
 #include <cstddef>
 #include <algorithm>
+#include <vector>
 
 
 namespace Gs
@@ -120,8 +121,124 @@ template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
     return x;
 }
 
+// Forward declaration
+template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
+T Determinant(const M<T, Rows, Cols>&);
+
+namespace Details
+{
+
+template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
+class DeterminantHelper
+{
+
+    protected:
+        
+        friend T Gs::Determinant<M, T, Cols, Rows>(const M<T, Rows, Cols>&);
+
+        static T OrderedDeterminant(const std::vector<T>& mat, std::size_t order)
+        {
+            if (order == 1)
+                return mat[0];
+
+            std::vector<T> minor((order - 1)*(order - 1));
+
+            T det = T(0);
+
+            for (std::size_t i = 0; i < order; ++i)
+            {
+                GetMinorMatrix(mat, minor, i, order);
+                if (i % 2 == 1)
+                    det -= mat[i] * OrderedDeterminant(minor, order - 1);
+                else
+                    det += mat[i] * OrderedDeterminant(minor, order - 1);
+            }
+    
+            return det;
+        }
+
+    private:
+
+        static void GetMinorMatrix(const std::vector<T>& mat, std::vector<T>& minor, std::size_t column, std::size_t order)
+        {
+            for (std::size_t r = 1; r < order; ++r)
+            {
+                for (std::size_t c = 0, i = 0; c < order; ++c)
+                {
+                    if (c != column)
+                    {
+                        minor[(r - 1)*(order - 1) + i] = mat[r*order + c];
+                        ++i;
+                    }
+                }
+            }
+        }
+
+};
+
+} // /namespace Details
+
+/**
+\brief Computes the determinant of an arbitrary NxN matrix.
+\tparam M Specifies the matrix type. This should be "Matrix".
+\tparam T Specifies the data type. This should be float or double.
+\tparam Rows Specifies the rows of the matrix.
+\tparam Cols Specifies the columns of the matrix.
+\remarks The template arguments 'Rows' and 'Cols' must be equal, otherwise a compile time error will occur,
+since a determinant is only defined for squared matrices.
+\param[in] m Specifies the squared matrix for which the determinant is to be computed.
+*/
+template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
+T Determinant(const M<T, Rows, Cols>& m)
+{
+    static_assert(Rows == Cols, "determinants can only be computed for squared matrices");
+    std::vector<T> mat(Rows*Cols);
+    for (std::size_t i = 0; i < Rows*Cols; ++i)
+        mat[i] = m[i];
+    return Details::DeterminantHelper<M, T, Rows, Cols>::OrderedDeterminant(mat, Rows);
+}
+
+//! Computes the determinant of a 1x1 matrix.
+template <template <typename, std::size_t, std::size_t> class M, typename T>
+T Determinant(const M<T, 1, 1>& m)
+{
+    return m(0, 0);
+}
+
+//! Computes the determinant of a 2x2 matrix.
+template <template <typename, std::size_t, std::size_t> class M, typename T>
+T Determinant(const M<T, 2, 2>& m)
+{
+    return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
+}
+
+//! Computes the determinant of a 3x3 matrix.
+template <template <typename, std::size_t, std::size_t> class M, typename T>
+T Determinant(const M<T, 3, 3>& m)
+{
+    return
+        ( m(0, 0) * m(1, 1) * m(2, 2) ) + ( m(1, 0) * m(2, 1) * m(0, 2) ) + ( m(2, 0) * m(0, 1) * m(1, 2) ) -
+        ( m(0, 2) * m(1, 1) * m(2, 0) ) - ( m(0, 2) * m(2, 1) * m(0, 0) ) - ( m(2, 2) * m(0, 1) * m(1, 0) );
+}
+
+//! Computes the determinant of a 4x4 matrix.
+template <template <typename, std::size_t, std::size_t> class M, typename T>
+T Determinant(const M<T, 4, 4>& m)
+{
+    return
+        ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) ) * ( m(2, 2) * m(3, 3) - m(3, 2) * m(2, 3) ) -
+        ( m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1) ) * ( m(1, 2) * m(3, 3) - m(3, 2) * m(1, 3) ) +
+        ( m(0, 0) * m(3, 1) - m(3, 0) * m(0, 1) ) * ( m(1, 2) * m(2, 3) - m(2, 2) * m(1, 3) ) +
+        ( m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1) ) * ( m(0, 2) * m(3, 3) - m(3, 2) * m(0, 3) ) -
+        ( m(1, 0) * m(3, 1) - m(3, 0) * m(1, 1) ) * ( m(0, 2) * m(2, 3) - m(2, 2) * m(0, 3) ) +
+        ( m(2, 0) * m(3, 1) - m(3, 0) * m(2, 1) ) * ( m(0, 2) * m(1, 3) - m(1, 2) * m(0, 3) );
+}
+
+
+/* --- Global Operators --- */
+
 //! \brief Multiplies the NxN matrix with the N-dimensional vector.
-template < template <typename> class Vec, template <typename, std::size_t, std::size_t> class Mat, typename T, std::size_t N >
+template <template <typename> class Vec, template <typename, std::size_t, std::size_t> class Mat, typename T, std::size_t N>
 Vec<T> operator * (const Mat<T, N, N>& mat, const Vec<T>& vec)
 {
     static_assert(Vec<T>::components == N, __GS_FILE_LINE__ "function only allows multiplication of an NxN matrix with an N-dimensional vector");

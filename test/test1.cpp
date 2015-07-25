@@ -59,7 +59,7 @@ int main()
          0, 1, 0, 0,
          0, 0, 0, 1;
 
-    Matrix<Real, 3, 4> C;
+    Matrix<Real, 3, 4> C(UninitializeTag{});
     C << 1, 0, 0, 12,
          0, 1, 0, -4,
          0, 0, 1, 5;
@@ -72,21 +72,29 @@ int main()
 
     auto E = C * D;
 
+    Matrix2 m2x2 = Matrix2::Identity();
+    Matrix3 m3x3 = Matrix3::Identity();
+
+    Matrix<float, 6, 6> hugeMatrix; hugeMatrix.LoadIdentity();
+
     // --- sparse matrix tests ---
 
-    SparseMatrix4 As(UninitializeTag{}), Bs;
-
-    As << 1, 0, 0, 4,
-          0, 1, 0, -2,
-          0, 0, 1, 5;
-
-    Bs << 1, 0, 0, 6,
-          0, 0, 1, 0,
-          0, 1, 0, 0;
+    SparseMatrix4 As(
+        1, 0, 0, 4,
+        0, 1, 0, -2,
+        0, 0, 1, 5
+    );
+    SparseMatrix4 Bs(
+        1, 0, 0, 6,
+        0, 0, 1, 0,
+        0, 1, 0, 0
+    );
 
     As = Bs * As;
 
     // --- output ---
+
+    #if 0
 
     std::cout << "As = " << std::endl << As << std::endl;
     std::cout << "C = " << std::endl << C << std::endl;
@@ -104,6 +112,13 @@ int main()
     std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "A * B = " << std::endl << (A * B) << std::endl;
     std::cout << "A * a = " << std::endl << (A * a) << std::endl;
+
+    #endif
+
+    std::cout << "m2x2 = " << std::endl << m2x2 << std::endl;
+    std::cout << "Determinant(m2x2) = " << m2x2.Determinant() << std::endl;
+    std::cout << "hugeMatrix = " << std::endl << hugeMatrix << std::endl;
+    std::cout << "Determinant(hugeMatrix) = " << hugeMatrix.Determinant() << std::endl;
 
     #ifdef _WIN32
     system("pause");

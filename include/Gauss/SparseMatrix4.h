@@ -97,6 +97,16 @@ template <typename T> class SparseMatrix4T
             *this = rhs;
         }
 
+        SparseMatrix4T(
+            const T& m11, const T& m12, const T& m13, const T& m14,
+            const T& m21, const T& m22, const T& m23, const T& m24,
+            const T& m31, const T& m32, const T& m33, const T& m34)
+        {
+            (*this)(0, 0) = m11; (*this)(0, 1) = m12; (*this)(0, 2) = m13; (*this)(0, 3) = m14;
+            (*this)(1, 0) = m21; (*this)(1, 1) = m22; (*this)(1, 2) = m23; (*this)(1, 3) = m24;
+            (*this)(2, 0) = m31; (*this)(2, 1) = m32; (*this)(2, 2) = m33; (*this)(2, 3) = m34;
+        }
+
         SparseMatrix4T(UninitializeTag)
         {
             // do nothing

@@ -199,6 +199,11 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
             }
         }
 
+        T Determinant() const
+        {
+            return Gs::Determinant(*this);
+        }
+
         //! Returns a pointer to the first element of this matrix.
         T* Ptr()
         {
