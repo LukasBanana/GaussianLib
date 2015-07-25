@@ -207,6 +207,24 @@ template <typename T> class SparseMatrix4T
             return result;
         }
 
+        T Determinant() const
+        {
+            return Gs::Determinant(*this);
+        }
+
+        ThisType Inverse() const
+        {
+            ThisType inv{ *this };
+            inv.MakeInverse();
+            return inv;
+        }
+
+        bool MakeInverse()
+        {
+            ThisType in{ *this };
+            return Gs::Inverse(*this, in);
+        }
+
         //! Returns a pointer to the first element of this matrix.
         T* Ptr()
         {

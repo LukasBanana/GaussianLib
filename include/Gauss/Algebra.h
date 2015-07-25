@@ -11,6 +11,7 @@
 
 #include "Macros.h"
 #include "Details.h"
+#include "SparseMatrix4.h"
 
 #include <cmath>
 #include <cstddef>
@@ -179,6 +180,15 @@ T Determinant(const M<T, 4, 4>& m)
         ( m(2, 0) * m(3, 1) - m(3, 0) * m(2, 1) ) * ( m(0, 2) * m(1, 3) - m(1, 2) * m(0, 3) );
 }
 
+//! Computes the determinant of the specified sparse 4x4 matrix 'm'.
+template <typename T> T Determinant(const SparseMatrix4T<T>& m)
+{
+    return
+        ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) ) * ( m(2, 2) ) -
+        ( m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1) ) * ( m(1, 2) ) +
+        ( m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1) ) * ( m(0, 2) );
+}
+
 
 /* --- "Inverse" Functions --- */
 
@@ -268,6 +278,40 @@ bool Inverse(M<T, 4, 4>& inv, const M<T, 4, 4>& m)
     inv(1, 3) = d * ( m(0, 2) * (m(2, 0) * m(1, 3) - m(1, 0) * m(2, 3)) + m(1, 2) * (m(0, 0) * m(2, 3) - m(2, 0) * m(0, 3)) + m(2, 2) * (m(1, 0) * m(0, 3) - m(0, 0) * m(1, 3)) );
     inv(2, 3) = d * ( m(0, 3) * (m(2, 0) * m(1, 1) - m(1, 0) * m(2, 1)) + m(1, 3) * (m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1)) + m(2, 3) * (m(1, 0) * m(0, 1) - m(0, 0) * m(1, 1)) );
     inv(3, 3) = d * ( m(0, 0) * (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) + m(1, 0) * (m(2, 1) * m(0, 2) - m(0, 1) * m(2, 2)) + m(2, 0) * (m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2)) );
+
+    return true;
+}
+
+//! Computes the inverse of the specified sparse 4x4 matrix 'm'.
+template <typename T> bool Inverse(SparseMatrix4T<T>& inv, const SparseMatrix4T<T>& m)
+{
+    /* Compute inverse determinant */
+    T d = Determinant(m);
+
+    if (d == T(0))
+        return false;
+
+    d = T(1) / d;
+
+    /* Compute inverse matrix */
+    inv(0, 0) = d * ( m(1, 1) * m(2, 2) + m(2, 1) * ( -m(1, 2) ) );
+    inv(1, 0) = d * ( m(1, 2) * m(2, 0) + m(2, 2) * ( -m(1, 0) ) );
+    inv(2, 0) = d * ( m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1) );
+  /*inv(3, 0) = 0;*/
+    inv(0, 1) = d * ( m(2, 1) * m(0, 2) + m(0, 1) * ( -m(2, 2) ) );
+    inv(1, 1) = d * ( m(2, 2) * m(0, 0) + m(0, 2) * ( -m(2, 0) ) );
+    inv(2, 1) = d * ( m(2, 0) * m(0, 1) - m(0, 0) * m(2, 1) );
+  /*inv(3, 1) = 0;*/
+    inv(0, 2) = d * ( m(0, 1) * m(1, 2) + m(1, 1) * ( -m(0, 2) ) );
+    inv(1, 2) = d * ( m(0, 2) * m(1, 0) + m(1, 2) * ( -m(0, 0) ) );
+    inv(2, 2) = d * ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) );
+  /*inv(3, 2) = 0;*/
+    inv(0, 3) = d * ( m(0, 1) * (m(2, 2) * m(1, 3) - m(1, 2) * m(2, 3)) + m(1, 1) * (m(0, 2) * m(2, 3) - m(2, 2) * m(0, 3)) + m(2, 1) * (m(1, 2) * m(0, 3) - m(0, 2) * m(1, 3)) );
+    inv(1, 3) = d * ( m(0, 2) * (m(2, 0) * m(1, 3) - m(1, 0) * m(2, 3)) + m(1, 2) * (m(0, 0) * m(2, 3) - m(2, 0) * m(0, 3)) + m(2, 2) * (m(1, 0) * m(0, 3) - m(0, 0) * m(1, 3)) );
+    inv(2, 3) = d * ( m(0, 3) * (m(2, 0) * m(1, 1) - m(1, 0) * m(2, 1)) + m(1, 3) * (m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1)) + m(2, 3) * (m(1, 0) * m(0, 1) - m(0, 0) * m(1, 1)) );
+  /*inv(3, 3) = 1;*/
+
+    //inv(3, 3) = d * ( m(0, 0) * (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) + m(1, 0) * (m(2, 1) * m(0, 2) - m(0, 1) * m(2, 2)) + m(2, 0) * (m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2)) );
 
     return true;
 }

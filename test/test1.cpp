@@ -21,6 +21,30 @@
 using namespace Gs;
 
 
+static void test1()
+{
+    Matrix4 A;
+    A << 1, 0, -2, 6,
+         0, 8, 0, -4,
+         0, 1, 2, 0,
+         0, 0, 0, 1;
+
+    SparseMatrix4 B;
+    B << 1, 0, -2, 6,
+         0, 8, 0, -4,
+         0, 1, 2, 0;
+
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "Inv(A) = " << std::endl << A.Inverse() << std::endl;
+    std::cout << "A*Inv(A) = " << std::endl << A*A.Inverse() << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
+    std::cout << "Inv(B) = " << std::endl << B.Inverse() << std::endl;
+    std::cout << "B*Inv(B) = " << std::endl << B*B.Inverse() << std::endl;
+    std::cout << "| A | = " << A.Determinant() << std::endl;
+    std::cout << "| B | = " << B.Determinant() << std::endl;
+
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -115,15 +139,31 @@ int main()
 
     #endif
 
+    #if 0
+
     std::cout << "m2x2 = " << std::endl << m2x2 << std::endl;
     std::cout << "Inverse(m2x2) = " << std::endl << m2x2.Inverse() << std::endl;
-    std::cout << "Determinant(m2x2) = " << m2x2.Determinant() << std::endl;
+    std::cout << "Determinant(m2x2) = " << m2x2.Determinant() << std::endl;*/
+
+    #endif
+    
+    #if 0
+
     std::cout << "A = " << std::endl << A << std::endl;
     std::cout << "Inverse(A) = " << std::endl << A.Inverse() << std::endl;
     std::cout << "A*Inverse(A) = " << std::endl << A*A.Inverse() << std::endl;
     std::cout << "Inverse(A)*A = " << std::endl << A.Inverse()*A << std::endl;
+
+    #endif
+
+    #if 0
+
     std::cout << "hugeMatrix = " << std::endl << hugeMatrix << std::endl;
     std::cout << "Determinant(hugeMatrix) = " << hugeMatrix.Determinant() << std::endl;
+
+    #endif
+
+    test1();
 
     #ifdef _WIN32
     system("pause");
