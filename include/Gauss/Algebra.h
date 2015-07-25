@@ -143,21 +143,21 @@ T Determinant(const M<T, Rows, Cols>& m)
     return Helper::OrderedDeterminant(Helper::MatrixToArray(m), Rows);
 }
 
-//! Computes the determinant of a 1x1 matrix.
+//! Computes the determinant of the specified 1x1 matrix 'm'.
 template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 1, 1>& m)
 {
     return m(0, 0);
 }
 
-//! Computes the determinant of a 2x2 matrix.
+//! Computes the determinant of the specified 2x2 matrix 'm'.
 template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 2, 2>& m)
 {
     return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
 }
 
-//! Computes the determinant of a 3x3 matrix.
+//! Computes the determinant of the specified 3x3 matrix 'm'.
 template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 3, 3>& m)
 {
@@ -166,7 +166,7 @@ T Determinant(const M<T, 3, 3>& m)
         ( m(0, 2) * m(1, 1) * m(2, 0) ) - ( m(0, 2) * m(2, 1) * m(0, 0) ) - ( m(2, 2) * m(0, 1) * m(1, 0) );
 }
 
-//! Computes the determinant of a 4x4 matrix.
+//! Computes the determinant of the specified 4x4 matrix 'm'.
 template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 4, 4>& m)
 {
@@ -184,11 +184,33 @@ T Determinant(const M<T, 4, 4>& m)
 
 //! Computes the inverse of the specified matrix 'm'.
 template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-M<T, Rows, Cols> Inverse(const M<T, Rows, Cols>& m)
+bool Inverse(M<T, Rows, Cols>& inv, const M<T, Rows, Cols>& m)
 {
     static_assert(Rows == Cols, "inverses can only be computed for squared matrices");
-    using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
-    return Helper::OrderedInverse(Helper::MatrixToArray(m), Rows);
+    //using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
+    //return Helper::OrderedInverse(inv, Helper::MatrixToArray(m), Rows);
+    return false;//!!!
+}
+
+//! Computes the inverse of the specified 2x2 matrix 'm'.
+template <template <typename, std::size_t, std::size_t> class M, typename T>
+bool Inverse(M<T, 2, 2>& inv, const M<T, 2, 2>& m)
+{
+    /* Compute inverse determinant */
+    T d = Determinant(m);
+
+    if (d == T(0))
+        return false;
+
+    d = T(1) / d;
+
+    /* Compute inverse matrix */
+    inv(0, 0) = d * (  m(1, 1) );
+    inv(0, 1) = d * ( -m(0, 1) );
+    inv(1, 0) = d * ( -m(1, 0) );
+    inv(1, 1) = d * (  m(0, 0) );
+
+    return true;
 }
 
 

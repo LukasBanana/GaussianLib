@@ -24,7 +24,7 @@ T Determinant(const M<T, Rows, Cols>&);
 
 // Inverse
 template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-M<T, Rows, Cols> Inverse(const M<T, Rows, Cols>&);
+bool Inverse(M<T, Rows, Cols>&, const M<T, Rows, Cols>&);
 
 
 namespace Details
@@ -39,11 +39,11 @@ class MatrixHelper
     protected:
         
         friend T Gs::Determinant<M, T, Cols, Rows>(const M<T, Rows, Cols>&);
-        friend M<T, Rows, Cols> Gs::Inverse<M, T, Cols, Rows>(const M<T, Rows, Cols>&);
+        friend bool Gs::Inverse<M, T, Cols, Rows>(M<T, Rows, Cols>&, const M<T, Rows, Cols>&);
 
         static std::vector<T> MatrixToArray(const M<T, Rows, Cols>& mat)
         {
-            std::vector<T> vec;
+            std::vector<T> vec(Rows*Cols);
 
             for (std::size_t r = 0, i = 0; r < Rows; ++r)
             {

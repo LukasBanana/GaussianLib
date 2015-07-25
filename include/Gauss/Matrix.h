@@ -206,12 +206,15 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
         Matrix<T, Rows, Cols> Inverse() const
         {
-            return Gs::Inverse(*this);
+            Matrix<T, Rows, Cols> inv{ *this };
+            inv.MakeInverse();
+            return inv;
         }
 
-        void MakeInverse()
+        bool MakeInverse()
         {
-            *this = Inverse();
+            Matrix<T, Rows, Cols> in{ *this };
+            return Gs::Inverse(*this, in);
         }
 
         //! Returns a pointer to the first element of this matrix.
