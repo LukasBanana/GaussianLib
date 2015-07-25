@@ -246,23 +246,25 @@ typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& 
 
 #define __GS_DEF_MATRIX_TYPES_MxN__(m, n)                           \
     template <typename T> using Matrix##m##n##T = Matrix<T, m, n>;  \
-    using Matrix##m##n = Matrix##m##n##T<Real>;                     \
-    using Matrix##m##n##f = Matrix##m##n##T<float>;                 \
-    using Matrix##m##n##d = Matrix##m##n##T<double>;                \
-    using Matrix##m##n##i = Matrix##m##n##T<int>;                   \
-    using Matrix##m##n##ui = Matrix##m##n##T<unsigned int>;         \
-    using Matrix##m##n##ub = Matrix##m##n##T<unsigned char>
+    using Matrix##m##n      = Matrix##m##n##T<Real>;                \
+    using Matrix##m##n##f   = Matrix##m##n##T<float>;               \
+    using Matrix##m##n##d   = Matrix##m##n##T<double>;              \
+    using Matrix##m##n##i   = Matrix##m##n##T<int>;                 \
+    using Matrix##m##n##ui  = Matrix##m##n##T<unsigned int>;        \
+    using Matrix##m##n##b   = Matrix##m##n##T<char>;                \
+    using Matrix##m##n##ub  = Matrix##m##n##T<unsigned char>
 
 __GS_DEF_MATRIX_TYPES_MxN__(3, 4);
 __GS_DEF_MATRIX_TYPES_MxN__(4, 3);
 
 #define __GS_DEF_MATRIX_TYPES_NxN__(n)                          \
     template <typename T> using Matrix##n##T = Matrix<T, n, n>; \
-    using Matrix##n = Matrix##n##T<Real>;                       \
-    using Matrix##n##f = Matrix##n##T<float>;                   \
-    using Matrix##n##d = Matrix##n##T<double>;                  \
-    using Matrix##n##i = Matrix##n##T<int>;                     \
+    using Matrix##n     = Matrix##n##T<Real>;                   \
+    using Matrix##n##f  = Matrix##n##T<float>;                  \
+    using Matrix##n##d  = Matrix##n##T<double>;                 \
+    using Matrix##n##i  = Matrix##n##T<int>;                    \
     using Matrix##n##ui = Matrix##n##T<unsigned int>;           \
+    using Matrix##n##b  = Matrix##n##T<char>;                   \
     using Matrix##n##ub = Matrix##n##T<unsigned char>
 
 __GS_DEF_MATRIX_TYPES_NxN__(2);

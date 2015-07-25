@@ -297,10 +297,13 @@ __GS_SWIZZLE_VECTOR_OP_ALL__(4)
 
 /* --- Type Alias --- */
 
-using Vector4 = Vector4T<Real>;
-using Vector4f = Vector4T<float>;
-using Vector4d = Vector4T<double>;
-using Vector4i = Vector4T<int>;
+using Vector4   = Vector4T<Real>;
+using Vector4f  = Vector4T<float>;
+using Vector4d  = Vector4T<double>;
+using Vector4i  = Vector4T<int>;
+using Vector4ui = Vector4T<unsigned int>;
+using Vector4b  = Vector4T<char>;
+using Vector4ub = Vector4T<unsigned char>;
 
 
 } // /namespace Gs

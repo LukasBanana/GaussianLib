@@ -282,10 +282,13 @@ __GS_SWIZZLE_VECTOR_OP_ALL__(3)
 
 /* --- Type Alias --- */
 
-using Vector3 = Vector3T<Real>;
-using Vector3f = Vector3T<float>;
-using Vector3d = Vector3T<double>;
-using Vector3i = Vector3T<int>;
+using Vector3   = Vector3T<Real>;
+using Vector3f  = Vector3T<float>;
+using Vector3d  = Vector3T<double>;
+using Vector3i  = Vector3T<int>;
+using Vector3ui = Vector3T<unsigned int>;
+using Vector3b  = Vector3T<char>;
+using Vector3ub = Vector3T<unsigned char>;
 
 
 } // /namespace Gs

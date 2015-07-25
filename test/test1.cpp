@@ -6,6 +6,8 @@
  */
 
 #include <Gauss/Gauss.h>
+#include <Gauss/HLSLTypes.h>
+#include <Gauss/GLSLTypes.h>
 
 #include <iostream>
 #include <sstream>

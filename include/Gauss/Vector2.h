@@ -267,10 +267,13 @@ __GS_SWIZZLE_VECTOR_OP_ALL__(2)
 
 /* --- Type Alias --- */
 
-using Vector2 = Vector2T<Real>;
-using Vector2f = Vector2T<float>;
-using Vector2d = Vector2T<double>;
-using Vector2i = Vector2T<int>;
+using Vector2   = Vector2T<Real>;
+using Vector2f  = Vector2T<float>;
+using Vector2d  = Vector2T<double>;
+using Vector2i  = Vector2T<int>;
+using Vector2ui = Vector2T<unsigned int>;
+using Vector2b  = Vector2T<char>;
+using Vector2ub = Vector2T<unsigned char>;
 
 
 } // /namespace Gs
