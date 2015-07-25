@@ -212,16 +212,16 @@ template <typename T> class SparseMatrix4T
             return Gs::Determinant(*this);
         }
 
-        ThisType Inverse() const
+        SparseMatrix4T<T> Inverse() const
         {
-            ThisType inv{ *this };
+            SparseMatrix4T<T> inv{ *this };
             inv.MakeInverse();
             return inv;
         }
 
         bool MakeInverse()
         {
-            ThisType in{ *this };
+            SparseMatrix4T<T> in{ *this };
             return Gs::Inverse(*this, in);
         }
 

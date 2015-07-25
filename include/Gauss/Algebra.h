@@ -11,7 +11,6 @@
 
 #include "Macros.h"
 #include "Details.h"
-#include "SparseMatrix4.h"
 
 #include <cmath>
 #include <cstddef>
@@ -22,6 +21,9 @@
 namespace Gs
 {
 
+
+// Forward declaration.
+template <typename T> class SparseMatrix4T;
 
 /* --- Global Functions --- */
 

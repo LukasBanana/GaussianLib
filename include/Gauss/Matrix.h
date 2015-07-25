@@ -204,16 +204,16 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
             return Gs::Determinant(*this);
         }
 
-        ThisType Inverse() const
+        Matrix<T, Rows, Cols> Inverse() const
         {
-            ThisType inv{ *this };
+            Matrix<T, Rows, Cols> inv{ *this };
             inv.MakeInverse();
             return inv;
         }
 
         bool MakeInverse()
         {
-            ThisType in{ *this };
+            Matrix<T, Rows, Cols> in{ *this };
             return Gs::Inverse(*this, in);
         }
 

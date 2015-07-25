@@ -34,6 +34,8 @@ static void test1()
          0, 8, 0, -4,
          0, 1, 2, 0;
 
+    B.MakeInverse();
+
     std::cout << "A = " << std::endl << A << std::endl;
     std::cout << "Inv(A) = " << std::endl << A.Inverse() << std::endl;
     std::cout << "A*Inv(A) = " << std::endl << A*A.Inverse() << std::endl;
