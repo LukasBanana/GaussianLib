@@ -11,6 +11,10 @@ Status
 
 **Alpha**
 
+Getting Started:
+----------------
+[Getting Started with GaussianLib.pdf](https://github.com/LukasBanana/GaussianLib/blob/master2/docu/GettingStarted/Getting%20Started%20with%20GaussianLib.pdf)
+
 Example
 -------
 
