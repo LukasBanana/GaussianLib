@@ -36,7 +36,7 @@ template <typename T> class QuaternionT
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static const std::size_t components = 4;
 
-        #ifdef GS_ENABLE_AUTO_INIT
+        #ifndef GS_DISABLE_AUTO_INIT
         QuaternionT() :
             x( T(0) ),
             y( T(0) ),

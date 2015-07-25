@@ -16,8 +16,8 @@
 //! Enables the swizzle operator in the vector classes.
 #define GS_ENABLE_SWIZZLE_OPERATOR
 
-//! Enables automatic data initialization.
-#define GS_ENABLE_AUTO_INIT
+//! Disables automatic data initialization.
+//#define GS_DISABLE_AUTO_INIT
 
 
 #endif

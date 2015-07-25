@@ -86,7 +86,7 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
         Matrix()
         {
-            #ifdef GS_ENABLE_AUTO_INIT
+            #ifndef GS_DISABLE_AUTO_INIT
             Reset();
             #endif
         }

@@ -87,7 +87,7 @@ template <typename T> class SparseMatrix4T
 
         SparseMatrix4T()
         {
-            #ifdef GS_ENABLE_AUTO_INIT
+            #ifndef GS_ENABLE_AUTO_INIT
             Reset();
             #endif
         }
