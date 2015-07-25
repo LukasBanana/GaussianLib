@@ -68,6 +68,9 @@ int main()
 
     auto E = C * D;
 
+    // --- sparse matrix tests ---
+
+    SparseMatrix4 As;
 
     // --- output ---
 
