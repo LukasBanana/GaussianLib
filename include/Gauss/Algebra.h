@@ -10,6 +10,7 @@
 
 
 #include "Macros.h"
+#include "Details.h"
 
 #include <cmath>
 #include <cstddef>
@@ -121,62 +122,8 @@ template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
     return x;
 }
 
-// Forward declaration
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-T Determinant(const M<T, Rows, Cols>&);
 
-namespace Details
-{
-
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-class DeterminantHelper
-{
-
-    protected:
-        
-        friend T Gs::Determinant<M, T, Cols, Rows>(const M<T, Rows, Cols>&);
-
-        static T OrderedDeterminant(const std::vector<T>& mat, std::size_t order)
-        {
-            if (order == 1)
-                return mat[0];
-
-            std::vector<T> minor((order - 1)*(order - 1));
-
-            T det = T(0);
-
-            for (std::size_t i = 0; i < order; ++i)
-            {
-                GetMinorMatrix(mat, minor, i, order);
-                if (i % 2 == 1)
-                    det -= mat[i] * OrderedDeterminant(minor, order - 1);
-                else
-                    det += mat[i] * OrderedDeterminant(minor, order - 1);
-            }
-    
-            return det;
-        }
-
-    private:
-
-        static void GetMinorMatrix(const std::vector<T>& mat, std::vector<T>& minor, std::size_t column, std::size_t order)
-        {
-            for (std::size_t r = 1; r < order; ++r)
-            {
-                for (std::size_t c = 0, i = 0; c < order; ++c)
-                {
-                    if (c != column)
-                    {
-                        minor[(r - 1)*(order - 1) + i] = mat[r*order + c];
-                        ++i;
-                    }
-                }
-            }
-        }
-
-};
-
-} // /namespace Details
+/* --- Determinant Functions --- */
 
 /**
 \brief Computes the determinant of an arbitrary NxN matrix.
@@ -192,10 +139,8 @@ template <template <typename, std::size_t, std::size_t> class M, typename T, std
 T Determinant(const M<T, Rows, Cols>& m)
 {
     static_assert(Rows == Cols, "determinants can only be computed for squared matrices");
-    std::vector<T> mat(Rows*Cols);
-    for (std::size_t i = 0; i < Rows*Cols; ++i)
-        mat[i] = m[i];
-    return Details::DeterminantHelper<M, T, Rows, Cols>::OrderedDeterminant(mat, Rows);
+    using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
+    return Helper::OrderedDeterminant(Helper::MatrixToArray(m), Rows);
 }
 
 //! Computes the determinant of a 1x1 matrix.
@@ -232,6 +177,18 @@ T Determinant(const M<T, 4, 4>& m)
         ( m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1) ) * ( m(0, 2) * m(3, 3) - m(3, 2) * m(0, 3) ) -
         ( m(1, 0) * m(3, 1) - m(3, 0) * m(1, 1) ) * ( m(0, 2) * m(2, 3) - m(2, 2) * m(0, 3) ) +
         ( m(2, 0) * m(3, 1) - m(3, 0) * m(2, 1) ) * ( m(0, 2) * m(1, 3) - m(1, 2) * m(0, 3) );
+}
+
+
+/* --- "Inverse" Functions --- */
+
+//! Computes the inverse of the specified matrix 'm'.
+template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
+M<T, Rows, Cols> Inverse(const M<T, Rows, Cols>& m)
+{
+    static_assert(Rows == Cols, "inverses can only be computed for squared matrices");
+    using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
+    return Helper::OrderedInverse(Helper::MatrixToArray(m), Rows);
 }
 
 

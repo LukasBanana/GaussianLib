@@ -142,14 +142,6 @@ template <typename T> class QuaternionT
             return quat;
         }
 
-        //! Inverts this quaternion.
-        void Invert()
-        {
-            x = -x;
-            y = -y;
-            z = -z;
-        }
-
         //! Sets this quaternion to the identity quaternion (x = y = z = 0, w = 1).
         void LoadIdentity()
         {
@@ -157,8 +149,16 @@ template <typename T> class QuaternionT
             w = T(1);
         }
 
-        //! Returns an inverted instance of this quaternion.
-        QuaternionT<T> Inverted() const
+        //! Makes this quaternion to its inverse.
+        void MakeInverse()
+        {
+            x = -x;
+            y = -y;
+            z = -z;
+        }
+
+        //! Returns the inverse of this quaternion.
+        QuaternionT<T> Inverse() const
         {
             return QuaternionT<T>{ -x, -y, -z, w };
         }

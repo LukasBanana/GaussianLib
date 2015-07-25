@@ -204,6 +204,16 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
             return Gs::Determinant(*this);
         }
 
+        Matrix<T, Rows, Cols> Inverse() const
+        {
+            return Gs::Inverse(*this);
+        }
+
+        void MakeInverse()
+        {
+            *this = Inverse();
+        }
+
         //! Returns a pointer to the first element of this matrix.
         T* Ptr()
         {
