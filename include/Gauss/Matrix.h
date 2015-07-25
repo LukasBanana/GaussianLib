@@ -12,6 +12,7 @@
 #include "Real.h"
 #include "Assert.h"
 #include "Macros.h"
+#include "Tags.h"
 
 #include <cmath>
 #include <cstring>
@@ -85,12 +86,19 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
         Matrix()
         {
+            #ifdef GS_ENABLE_AUTO_INIT
             Reset();
+            #endif
         }
 
         Matrix(const ThisType& rhs)
         {
             *this = rhs;
+        }
+
+        Matrix(UninitializeTag)
+        {
+            // do nothing
         }
 
         T& operator () (std::size_t row, std::size_t col)
@@ -218,7 +226,7 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
 Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)
 {
-    Matrix<T, Rows, Cols> result;
+    Matrix<T, Rows, Cols> result(UninitializeTag{});
 
     for (std::size_t r = 0; r < Rows; ++r)
     {

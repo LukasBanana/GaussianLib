@@ -13,6 +13,7 @@
 #include "Assert.h"
 #include "Macros.h"
 #include "Matrix.h"
+#include "Tags.h"
 
 #include <cmath>
 #include <cstring>
@@ -25,11 +26,11 @@ namespace Gs
 
 #ifdef GS_MATRIX_COLUMN_MAJOR
 #   define __GS_FOREACH_ROW_COL__(r, c)                                     \
-        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)      \
+        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)     \
         for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
 #else
 #   define __GS_FOREACH_ROW_COL__(r, c)                                     \
-        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)   \
+        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)  \
         for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
 #endif
 
@@ -57,7 +58,7 @@ template <typename T> class SparseMatrix4T
         using ThisType = SparseMatrix4T<T>;
 
         //! Transposed matrix type, i.e. SparseMatrix4T<T> becomes Matrix<T, 4, 4>.
-        using TransposedType = Matrix<T, 4, 4>;
+        using TransposedType = Matrix<T, SparseMatrix4T<T>::rows, SparseMatrix4T<T>::columns>;
 
         class Initializer
         {
@@ -72,7 +73,7 @@ template <typename T> class SparseMatrix4T
 
                 Initializer& operator , (const T& nextValue)
                 {
-                    matrix_(element_ / Cols, element_ % Cols) = nextValue;
+                    matrix_(element_ / SparseMatrix4T<T>::columnsSparse, element_ % SparseMatrix4T<T>::columnsSparse) = nextValue;
                     ++element_;
                     return *this;
                 }
@@ -86,12 +87,19 @@ template <typename T> class SparseMatrix4T
 
         SparseMatrix4T()
         {
+            #ifdef GS_ENABLE_AUTO_INIT
             Reset();
+            #endif
         }
 
         SparseMatrix4T(const ThisType& rhs)
         {
             *this = rhs;
+        }
+
+        SparseMatrix4T(UninitializeTag)
+        {
+            // do nothing
         }
 
         /**
@@ -105,9 +113,9 @@ template <typename T> class SparseMatrix4T
             GS_ASSERT(row < SparseMatrix4T<T>::rowsSparse);
             GS_ASSERT(col < SparseMatrix4T<T>::columnsSparse);
             #ifdef GS_MATRIX_COLUMN_MAJOR
-            return m_[col*Rows + row];
+            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
             #else
-            return m_[row*Cols + col];
+            return m_[row*SparseMatrix4T<T>::columnsSparse + col];
             #endif
         }
 
@@ -122,9 +130,9 @@ template <typename T> class SparseMatrix4T
             GS_ASSERT(row < SparseMatrix4T<T>::rowsSparse);
             GS_ASSERT(col < SparseMatrix4T<T>::columnsSparse);
             #ifdef GS_MATRIX_COLUMN_MAJOR
-            return m_[col*Rows + row];
+            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
             #else
-            return m_[row*Cols + col];
+            return m_[row*SparseMatrix4T<T>::columnsSparse + col];
             #endif
         }
 
@@ -212,31 +220,34 @@ template <typename T> class SparseMatrix4T
 
 /* --- Global Operators --- */
 
-/*template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
-Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)
+template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
 {
-    Matrix<T, Rows, Cols> result;
+    SparseMatrix4T<T> result(UninitializeTag{});
 
-    for (std::size_t r = 0; r < Rows; ++r)
+    for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
     {
-        for (std::size_t c = 0; c < Cols; ++c)
+        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
         {
+            /* Only accumulate with 'rowsSparse' here! */
             result(r, c) = T(0);
-            for (std::size_t i = 0; i < ColsRows; ++i)
+            for (std::size_t i = 0; i < SparseMatrix4T<T>::rowsSparse; ++i)
                 result(r, c) += lhs(r, i)*rhs(i, c);
         }
+
+        /* Accumulate the rest of the current row of 'lhs' and the implicit 1 of 'rhs' */
+        result(r, SparseMatrix4T<T>::columnsSparse - 1) += lhs(r, SparseMatrix4T<T>::columnsSparse - 1);
     }
 
     return result;
 }
 
-template <typename T, typename I, std::size_t Rows, std::size_t Cols>
-typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& matrix, const I& firstValue)
+template <typename T, typename I>
+typename SparseMatrix4T<T>::Initializer operator << (SparseMatrix4T<T>& matrix, const I& firstValue)
 {
-    typename Matrix<T, Rows, Cols>::Initializer initializer(matrix);
+    typename SparseMatrix4T<T>::Initializer initializer(matrix);
     initializer , static_cast<T>(firstValue);
     return initializer;
-}*/
+}
 
 
 /* --- Type Alias --- */

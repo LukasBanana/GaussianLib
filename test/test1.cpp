@@ -5,6 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
+//#define GS_MATRIX_COLUMN_MAJOR
+
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
@@ -72,10 +74,21 @@ int main()
 
     // --- sparse matrix tests ---
 
-    SparseMatrix4 As;
+    SparseMatrix4 As(UninitializeTag{}), Bs;
+
+    As << 1, 0, 0, 4,
+          0, 1, 0, -2,
+          0, 0, 1, 5;
+
+    Bs << 1, 0, 0, 6,
+          0, 0, 1, 0,
+          0, 1, 0, 0;
+
+    As = Bs * As;
 
     // --- output ---
 
+    std::cout << "As = " << std::endl << As << std::endl;
     std::cout << "C = " << std::endl << C << std::endl;
     std::cout << "D = " << std::endl << D << std::endl;
     std::cout << "E = " << std::endl << E << std::endl;
