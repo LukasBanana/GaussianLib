@@ -118,6 +118,8 @@ int main()
     std::cout << "m2x2 = " << std::endl << m2x2 << std::endl;
     std::cout << "Inverse(m2x2) = " << std::endl << m2x2.Inverse() << std::endl;
     std::cout << "Determinant(m2x2) = " << m2x2.Determinant() << std::endl;
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "Inverse(A) = " << std::endl << A.Inverse() << std::endl;
     std::cout << "hugeMatrix = " << std::endl << hugeMatrix << std::endl;
     std::cout << "Determinant(hugeMatrix) = " << hugeMatrix.Determinant() << std::endl;
 
