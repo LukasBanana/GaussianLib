@@ -13,6 +13,7 @@
 #include "Assert.h"
 #include "Algebra.h"
 #include "Tags.h"
+#include "Matrix.h"
 
 #include <cmath>
 #include <limits>
@@ -69,7 +70,7 @@ template <typename T> class QuaternionT
         template <template <typename, std::size_t, std::size_t> class M, std::size_t Rows, std::size_t Cols>
         explicit QuaternionT(const M<T, Rows, Cols>& matrix)
         {
-            Gs::MatrixToQuaternion(matrix, *this);
+            Gs::MatrixToQuaternion(*this, matrix);
         }
 
         QuaternionT(UninitializeTag)
@@ -269,6 +270,13 @@ template <typename T> class QuaternionT
             angles.x = std::atan2(T(2) * (y*z + x*w), -xx - yy + zz + ww);
             angles.y = std::asin(Clamp(T(2) * (y*w - x*z), T(-1), T(1)));
             angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
+        }
+
+        Matrix3T<T> ToMatrix3() const
+        {
+            Matrix3T<T> result(UninitializeTag{});
+            Gs::QuaternionToMatrix(matrix, *this);
+            return result;
         }
 
         /**
