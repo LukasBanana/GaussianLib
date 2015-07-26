@@ -24,8 +24,11 @@ namespace Gs
 
 /* --- Forward Declarations --- */
 
-template <typename T> class SparseMatrix4T;
+template <typename T> class Vector2T;
+template <typename T> class Vector3T;
+template <typename T> class Vector4T;
 
+template <typename T> class SparseMatrix4T;
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
 
 
@@ -186,6 +189,14 @@ void MakeFreeRotation(M& mat, const V<T>& axis, const T& angle)
     mat(2, 2) = z*z*cc + c;
 }
 
+/**
+\brief Converts the matrix 'in' to the quaternion 'out'.
+\tparam M Specifies the matrix type. This should be Matrix3, Matrix4 or SparseMatrix4.
+\tparam Q Specifies the quaternion type. This should be Quaternion.
+\tparam T Specifies the data type. This must be float or double.
+\param[out] out Specifies the resulting quaternion.
+\param[in] in Specifies the input matrix. This matrix must not be scaled!
+*/
 template <class M, template <typename> class Q, typename T>
 void MatrixToQuaternion(Q<T>& out, const M& in)
 {
@@ -263,6 +274,145 @@ void QuaternionToMatrix(M& out, const Q<T>& in)
     out(2, 0) =        T(2)*x*z + T(2)*y*w;
     out(2, 1) =        T(2)*z*y - T(2)*x*w;
     out(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
+}
+
+template <class M, template <typename> class Q, typename T>
+void QuaternionToMatrixTransposed(M& out, const Q<T>& in)
+{
+    static_assert(
+        M::rows >= 3 && M::columns >= 3,
+        "quaternion can only be converted to matrix, if the matrix has at least 3 rows and 3 column"
+    );
+
+    const auto& x = in.x;
+    const auto& y = in.y;
+    const auto& z = in.z;
+    const auto& w = in.w;
+
+    out(0, 0) = T(1) - T(2)*y*y - T(2)*z*z;
+    out(0, 1) =        T(2)*x*y - T(2)*z*w;
+    out(0, 2) =        T(2)*x*z + T(2)*y*w;
+
+    out(1, 0) =        T(2)*x*y + T(2)*z*w;
+    out(1, 1) = T(1) - T(2)*x*x - T(2)*z*z;
+    out(1, 2) =        T(2)*z*y - T(2)*x*w;
+
+    out(2, 0) =        T(2)*x*z - T(2)*y*w;
+    out(2, 1) =        T(2)*z*y + T(2)*x*w;
+    out(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
+}
+
+
+/* --- RotateVector Functions */
+
+template <class M, typename T>
+Vector2T<T> RotateVector(const M& mat, const Vector2T<T>& vec)
+{
+    static_assert(
+        M::rows >= 2 && M::columns >= 2,
+        "2D vector can only be rotated with matrix which has at least 2 rows and 2 columns"
+    );
+    return Vector2T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(0, 1),
+        vec.x*mat(1, 0) + vec.y*mat(1, 1)
+    );
+}
+
+template <class M, typename T>
+Vector3T<T> RotateVector(const M& mat, const Vector3T<T>& vec)
+{
+    static_assert(
+        M::rows >= 3 && M::columns >= 3,
+        "3D vector can only be rotated with matrix which has at least 3 rows and 3 columns"
+    );
+    return Vector3T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(0, 1) + vec.z*mat(0, 2),
+        vec.x*mat(1, 0) + vec.y*mat(1, 1) + vec.z*mat(1, 2),
+        vec.x*mat(2, 0) + vec.y*mat(2, 1) + vec.z*mat(2, 2)
+    );
+}
+
+template <class M, typename T>
+Vector2T<T> RotateVectorInverse(const M& mat, const Vector2T<T>& vec)
+{
+    static_assert(
+        M::rows >= 2 && M::columns >= 2,
+        "2D vector can only be rotated with matrix which has at least 2 rows and 2 columns"
+    );
+    return Vector2T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(1, 0),
+        vec.x*mat(0, 1) + vec.y*mat(1, 1)
+    );
+}
+
+template <class M, typename T>
+Vector3T<T> RotateVectorInverse(const M& mat, const Vector3T<T>& vec)
+{
+    static_assert(
+        M::rows >= 3 && M::columns >= 3,
+        "3D vector can only be rotated with matrix which has at least 3 rows and 3 columns"
+    );
+    return Vector3T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(1, 0) + vec.z*mat(2, 0),
+        vec.x*mat(0, 1) + vec.y*mat(1, 1) + vec.z*mat(2, 1),
+        vec.x*mat(0, 2) + vec.y*mat(1, 2) + vec.z*mat(2, 2)
+    );
+}
+
+
+/* --- Transform Functions --- */
+
+template <class M, typename T>
+Vector2T<T> TransformVector(const M& mat, const Vector2T<T>& vec)
+{
+    static_assert(
+        M::rows >= 2 && M::columns >= 3,
+        "2D vector can only be transformed with matrix which has at least 2 rows and 3 columns"
+    );
+    return Vector2T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(0, 1) + mat(0, 2),
+        vec.x*mat(1, 0) + vec.y*mat(1, 1) + mat(1, 2)
+    );
+}
+
+template <class M, typename T>
+Vector3T<T> TransformVector(const M& mat, const Vector3T<T>& vec)
+{
+    static_assert(
+        M::rows >= 3 && M::columns >= 4,
+        "3D vector can only be transformed with matrix which has at least 3 rows and 4 columns"
+    );
+    return Vector3T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(0, 1) + vec.z*mat(0, 2) + mat(0, 3),
+        vec.x*mat(1, 0) + vec.y*mat(1, 1) + vec.z*mat(1, 2) + mat(1, 3),
+        vec.x*mat(2, 0) + vec.y*mat(2, 1) + vec.z*mat(2, 2) + mat(2, 3)
+    );
+}
+
+template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
+Vector4T<T> TransformVector(const M<T, Rows, Cols>& mat, const Vector4T<T>& vec)
+{
+    static_assert(
+        M<T, Rows, Cols>::rows >= 4 && M<T, Rows, Cols>::columns >= 4,
+        "4D vector can only be transformed with matrix which has at least 4 rows and 4 columns"
+    );
+    return Vector4T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(0, 1) + vec.z*mat(0, 2) + vec.w*mat(0, 3),
+        vec.x*mat(1, 0) + vec.y*mat(1, 1) + vec.z*mat(1, 2) + vec.w*mat(1, 3),
+        vec.x*mat(2, 0) + vec.y*mat(2, 1) + vec.z*mat(2, 2) + vec.w*mat(2, 3),
+        vec.x*mat(3, 0) + vec.y*mat(3, 1) + vec.z*mat(3, 2) + vec.w*mat(3, 3)
+    );
+}
+
+template <typename T>
+Vector4T<T> TransformVector(const SparseMatrix4T<T>& mat, const Vector4T<T>& vec)
+{
+    return Vector4T<T>(
+        vec.x*mat(0, 0) + vec.y*mat(0, 1) + vec.z*mat(0, 2) + vec.w*mat(0, 3),
+        vec.x*mat(1, 0) + vec.y*mat(1, 1) + vec.z*mat(1, 2) + vec.w*mat(1, 3),
+        vec.x*mat(2, 0) + vec.y*mat(2, 1) + vec.z*mat(2, 2) + vec.w*mat(2, 3),
+        vec.w
+    );
 }
 
 

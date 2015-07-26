@@ -79,6 +79,27 @@ static void quaternionTest1()
     std::cout << "Quaterion(m) = " << Quaternion(m) << std::endl;
 }
 
+static void matrixVectorTest1()
+{
+    Matrix4 A;
+    SparseMatrix4 B;
+
+    A << 1, 0, 0, 4,
+         0, 1, 0, 2,
+         0, 0, 1, -5,
+         0, 0, 0, 1;
+    
+    B << 1, 0, 0, 4,
+         0, 1, 0, 2,
+         0, 0, 1, -5;
+
+    auto a = TransformVector(A, Vector4(0, 0, 0, 1));
+    auto b = TransformVector(B, Vector4(0, 0, 0, 1));
+
+    std::cout << "a = " << a << std::endl;
+    std::cout << "b = " << b << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -198,7 +219,8 @@ int main()
     #endif
 
     //sparesMatrixTest1();
-    quaternionTest1();
+    //quaternionTest1();
+    matrixVectorTest1();
 
     #ifdef _WIN32
     system("pause");

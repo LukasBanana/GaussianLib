@@ -260,7 +260,8 @@ template <typename T> class QuaternionT
             Normalize();
         }
 
-        template <template <typename> class Vec> void GetEulerAngles(Vec<T>& angles)
+        template <template <typename> class Vec>
+        void GetEulerAngles(Vec<T>& angles)
         {
             const T xx = x*x;
             const T yy = y*y;
@@ -272,10 +273,51 @@ template <typename T> class QuaternionT
             angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
         }
 
+        template <template <typename> class Vec>
+        void SetAngleAxis(const Vec<T>& axis, const T& angle)
+        {
+            const T halfAngle   = angle / T(2);
+            const T sine        = std::sin(halfAngle);
+
+            x = sine * axis.x;
+            y = sine * axis.y;
+            z = sine * axis.z;
+            w = std::cos(halfAngle);
+        }
+
+        template <template <typename> class Vec>
+        void GetAngleAxis(Vec<T>& axis, T& angle)
+        {
+            const T scale = std::sqrt(x*x + y*y + z*z);
+
+            if ( ( std::abs(scale) <= std::numeric_limits<T>::epsilon() ) || w > T(1) || w < T(-1) )
+            {
+                axis.x  = T(0);
+                axis.y  = T(1);
+                axis.z  = T(0);
+                angle   = T(0);
+            }
+            else
+            {
+                const T invScale = T(1) / scale;
+                axis.x  = x * invScale;
+                axis.y  = y * invScale;
+                axis.z  = z * invScale;
+                angle   = T(2) * std::acos(w);
+            }
+        }
+
         Matrix3T<T> ToMatrix3() const
         {
             Matrix3T<T> result(UninitializeTag{});
-            Gs::QuaternionToMatrix(matrix, *this);
+            Gs::QuaternionToMatrix(result, *this);
+            return result;
+        }
+
+        Matrix3T<T> ToMatrix3Transposed() const
+        {
+            Matrix3T<T> result(UninitializeTag{});
+            Gs::QuaternionToMatrixTransposed(result, *this);
             return result;
         }
 
