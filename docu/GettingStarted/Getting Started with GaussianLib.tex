@@ -47,7 +47,7 @@
 \section*{Introduction}
 
 The \gausslib is a simple C++ library for 2D and 3D applications.
-It provides only basic linear algebra functionality such as Vectors, Matrices, and Quaternions.
+It provides only basic linear algebra functionality for Vectors, Matrices, and Quaternions.
 
 
 %----------------------------------------------------------------------------------------
@@ -61,11 +61,16 @@ More over \texttt{\%GaussianLibPath\%} denotes your GaussianLib installation dir
 
 \subsection*{GNU/C++}
 
+The \gausslib requires \texttt{g++} version 4.8.1 or higher, with C++11 feature set enabled.
 To compile your application with GNU/C++ (or MinGW on Windows), type this into a command line:
 \begin{quote}
 \texttt{g++ -I \%GaussianLibPath\%/include -std=c++11 Example.cpp -o ExampleOutput}
 \end{quote}
 If everything worked properly, your executable is named ``ExampleOutput''.
+
+\subsection*{VisualC++}
+
+The \gausslib requires VisualC++ 2013 (12.0) or higher, to support the C++11 features, which are used in the library.
 
 
 %----------------------------------------------------------------------------------------
@@ -266,8 +271,6 @@ There are two extra header files, which can be included optionally:
 
 // Includes all type aliases with name conventions of the OpenGL Shading Language (GLSL).
 #include <Gauss/GLSLTypes.h>
-
-using namespace Gs;
 
 int main()
 {
