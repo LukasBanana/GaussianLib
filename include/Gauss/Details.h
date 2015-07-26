@@ -36,6 +36,8 @@ template <template <typename, std::size_t, std::size_t> class M, typename T, std
 class MatrixHelper
 {
 
+        MatrixHelper() = delete;
+
     protected:
         
         friend T Gs::Determinant<M, T, Cols, Rows>(const M<T, Rows, Cols>&);

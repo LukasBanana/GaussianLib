@@ -254,6 +254,18 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
             return Gs::Inverse(*this, in);
         }
 
+        /**
+        \brief Rotates this matrix around the specified axis.
+        \see MakeFreeRotation
+        */
+        template <template <typename> class Vec>
+        void RotateFree(const Vec<T>& axis, const T& angle)
+        {
+            auto rotation = ThisType::Identity();
+            Gs::MakeFreeRotation(rotation, axis, angle);
+            *this *= rotation;
+        }
+
         //! Returns a pointer to the first element of this matrix.
         T* Ptr()
         {

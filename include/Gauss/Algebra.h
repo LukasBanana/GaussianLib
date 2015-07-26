@@ -22,8 +22,12 @@ namespace Gs
 {
 
 
-// Forward declaration.
+/* --- Forward Declarations --- */
+
 template <typename T> class SparseMatrix4T;
+
+template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
+
 
 /* --- Global Functions --- */
 
@@ -151,8 +155,8 @@ static const std::size_t columns; // >= 3
 \param[in] axis Specifies the rotation axis. This must be normalized!
 \param[in] angle Specifies the rotation angle (in radians).
 */
-template <typename M, template <typename> class Vec, typename T>
-void MakeFreeRotation(M& m, const Vec<T>& axis, const T& angle)
+template <class M, template <typename> class V, typename T>
+void MakeFreeRotation(M& mat, const V<T>& axis, const T& angle)
 {
     static_assert(
         M::rows >= 3 && M::columns >= 3,
@@ -169,17 +173,70 @@ void MakeFreeRotation(M& m, const Vec<T>& axis, const T& angle)
     const T& z  = axis.z;
 
     /* Perform matrix rotation */
-    m(0, 0) = x*x*cc + c;
-    m(0, 1) = y*x*cc + z*s;
-    m(0, 2) = x*z*cc - y*s;
+    mat(0, 0) = x*x*cc + c;
+    mat(0, 1) = y*x*cc + z*s;
+    mat(0, 2) = x*z*cc - y*s;
 
-    m(1, 0) = x*y*cc - z*s;
-    m(1, 1) = y*y*cc + c;
-    m(1, 2) = y*z*cc + x*s;
+    mat(1, 0) = x*y*cc - z*s;
+    mat(1, 1) = y*y*cc + c;
+    mat(1, 2) = y*z*cc + x*s;
 
-    m(2, 0) = x*z*cc + y*s;
-    m(2, 1) = y*z*cc - x*s;
-    m(2, 2) = z*z*cc + c;
+    mat(2, 0) = x*z*cc + y*s;
+    mat(2, 1) = y*z*cc - x*s;
+    mat(2, 2) = z*z*cc + c;
+}
+
+template <class M, template <typename> class Q, typename T>
+void MatrixToQuaternion(M mat, Q<T>& quaternion)
+{
+    static_assert(
+        M::rows >= 3 && M::columns >= 3,
+        "matrices can only be converted to quaternions, when they have at least 3 rows and 3 column"
+    );
+
+    /* Make sure the matrix has an identitiy scaling */
+    //mat.SetScale({ 1, 1, 1 });
+
+    /* Only get the trace of the 3x3 upper left matrix */
+    const T trace = mat(0, 0) + mat(1, 1) + mat(2, 2) + T(1);
+    
+    if (trace > T(0))
+    {
+        const T s = T(2) * std::sqrt(trace);
+        quaternion.x = (mat(1, 2) - mat(2, 1)) / s;
+        quaternion.y = (mat(2, 0) - mat(0, 2)) / s;
+        quaternion.z = (mat(0, 1) - mat(1, 0)) / s;
+        quaternion.w = T(0.25) * s;
+    }
+    else
+    {
+        if (mat(0, 0) > mat(1, 1) && mat(0, 0) > mat(2, 2))
+        {
+            const T s = T(2) * std::sqrt(T(1) + mat(0, 0) - mat(1, 1) - mat(2, 2));
+            quaternion.x = T(0.25) * s;
+            quaternion.y = (mat(1, 0) + mat(0, 1) ) / s;
+            quaternion.z = (mat(0, 2) + mat(2, 0) ) / s;
+            quaternion.w = (mat(1, 2) - mat(2, 1) ) / s;
+        }
+        else if (mat(1, 1) > mat(2, 2))
+        {
+            const T s = T(2) * std::sqrt(T(1) + mat(1, 1) - mat(0, 0) - mat(2, 2));
+            quaternion.x = (mat(1, 0) + mat(0, 1) ) / s;
+            quaternion.y = T(0.25) * s;
+            quaternion.z = (mat(2, 1) + mat(1, 2) ) / s;
+            quaternion.w = (mat(2, 0) - mat(0, 2) ) / s;
+        }
+        else
+        {
+            const T s = T(2) * std::sqrt(T(1) + mat(2, 2) - mat(0, 0) - mat(1, 1));
+            quaternion.x = (mat(2, 0) + mat(0, 2) ) / s;
+            quaternion.y = (mat(2, 1) + mat(1, 2) ) / s;
+            quaternion.z = T(0.25) * s;
+            quaternion.w = (mat(0, 1) - mat(1, 0) ) / s;
+        }
+    }
+
+    Normalize(quaternion);
 }
 
 

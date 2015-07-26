@@ -66,11 +66,17 @@ static void quaternionTest1()
     std::cout << "q0 = " << q0 << std::endl;
     std::cout << "q1 = " << q1 << std::endl;
 
-    for (int i = 0; i <= 10; ++i)
+    /*for (int i = 0; i <= 10; ++i)
     {
         auto t = static_cast<Real>(i) / 10;
         std::cout << "Slerp(" << t << ") = " << Slerp(q0, q1, t) << std::endl;
-    }
+    }*/
+
+    Matrix3 m = Matrix3::Identity();
+    m.RotateFree(Vector3(1, 0, 1), pi*0.5f);
+
+    std::cout << "m = " << std::endl << m << std::endl;
+    std::cout << "Quaterion(m) = " << Quaternion(m) << std::endl;
 }
 
 int main()
@@ -191,8 +197,8 @@ int main()
 
     #endif
 
-    sparesMatrixTest1();
-    //quaternionTest1();
+    //sparesMatrixTest1();
+    quaternionTest1();
 
     #ifdef _WIN32
     system("pause");

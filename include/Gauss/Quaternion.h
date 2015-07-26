@@ -66,6 +66,12 @@ template <typename T> class QuaternionT
         {
         }
 
+        template <template <typename, std::size_t, std::size_t> class M, std::size_t Rows, std::size_t Cols>
+        explicit QuaternionT(const M<T, Rows, Cols>& matrix)
+        {
+            Gs::MatrixToQuaternion(matrix, *this);
+        }
+
         QuaternionT(UninitializeTag)
         {
             // do nothing
