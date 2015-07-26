@@ -21,7 +21,9 @@
 using namespace Gs;
 
 
-static void test1()
+static const Real pi = Real(3.141592654);
+
+static void sparesMatrixTest1()
 {
     Matrix4 A;
     A << 1, 0, -2, 6,
@@ -46,6 +48,25 @@ static void test1()
     std::cout << "| B | = " << B.Determinant() << std::endl;
     std::cout << "Trace A = " << A.Trace() << std::endl;
     std::cout << "Trace B = " << B.Trace() << std::endl;
+}
+
+static void quaternionTest1()
+{
+    Quaternion q0, q1;
+
+    q0.SetEulerAngles(Vector3(pi*0.5f, 0, 0));
+    q1.SetEulerAngles(Vector3(pi*1.0f, 0, 0));
+    
+    std::cout << "q0 = " << q0 << std::endl;
+    std::cout << "q1 = " << q1 << std::endl;
+
+    for (int i = 0; i <= 10; ++i)
+    {
+        auto t = static_cast<Real>(i) / 10;
+        std::cout << "Slerp(" << t << ") = " << Slerp(q0, q1, t) << std::endl;
+    }
+
+
 }
 
 int main()
@@ -166,7 +187,8 @@ int main()
 
     #endif
 
-    test1();
+    //sparesMatrixTest1();
+    quaternionTest1();
 
     #ifdef _WIN32
     system("pause");

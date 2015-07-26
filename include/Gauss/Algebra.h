@@ -114,7 +114,7 @@ template <typename T, typename I> T Lerp(const T& a, const T& b, const I& t)
 
 /**
 \brief Clamps the value 'x' into the range [minima, maxima].
-\return min{}
+\return max{ minima, min{ x, maxima } }
 */
 template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
 {
@@ -123,6 +123,17 @@ template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
     if (x >= maxima)
         return maxima;
     return x;
+}
+
+/**
+\brief Returns the spherical linear interpolation between the two quaternions 'from' and 'to'.
+\see QuaternionT::Slerp
+*/
+template <template <typename> class Quat, typename T> Quat<T> Slerp(const Quat<T>& from, Quat<T>& to, const T& t)
+{
+    Quat<T> q;
+    q.Slerp(from, to, t);
+    return q;
 }
 
 

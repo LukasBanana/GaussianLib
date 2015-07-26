@@ -12,8 +12,10 @@
 #include "Real.h"
 #include "Assert.h"
 #include "Algebra.h"
+#include "Tags.h"
 
 #include <cmath>
+#include <limits>
 #include <type_traits>
 
 
@@ -62,6 +64,11 @@ template <typename T> class QuaternionT
             z( z ),
             w( w )
         {
+        }
+
+        QuaternionT(UninitializeTag)
+        {
+            // do nothing
         }
 
         QuaternionT<T>& operator += (const QuaternionT<T>& rhs)
@@ -161,6 +168,62 @@ template <typename T> class QuaternionT
         QuaternionT<T> Inverse() const
         {
             return QuaternionT<T>{ -x, -y, -z, w };
+        }
+
+        /**
+        Computes a spherical linear interpolation between the two quaternions and stores the result into this quaternion.
+        \param[in] t Specifies the interpolation factor. This should be in the range [0.0, 1.0].
+        */
+        void Slerp(const QuaternionT<T>& from, const QuaternionT<T>& to, const T& t)
+        {
+            T to1[4];
+            T omega, cosom, sinom;
+            T scale0, scale1;
+
+            /* Calculate cosine */
+            cosom = Dot(from, to);
+
+            /* Adjust signs (if necessary) */
+            if (cosom < T(0))
+            {
+                cosom = -cosom;
+                to1[0] = -to.x;
+                to1[0] = -to.y;
+                to1[0] = -to.z;
+                to1[0] = -to.w;
+            }
+            else
+            {
+                to1[0] = to.x;
+                to1[0] = to.y;
+                to1[0] = to.z;
+                to1[0] = to.w;
+            }
+            
+            /* Calculate coefficients */
+            if ((T(1) - cosom) > std::numeric_limits<T>::epsilon()) 
+            {
+                /* Standard case (slerp) */
+                omega = std::acos(cosom);
+                sinom = std::sin(omega);
+                scale0 = std::sin((T(1) - t) * omega) / sinom;
+                scale1 = std::sin(t * omega) / sinom;
+            }
+            else
+            {        
+                /*
+                "from" and "to" quaternions are very close 
+                ... so we can do a linear interpolation
+                */
+                scale0 = T(1) - t;
+                scale1 = t;
+            }
+
+            /* Calculate final values */
+            x = scale0*from.x + scale1*to1[0];
+            y = scale0*from.y + scale1*to1[1];
+            z = scale0*from.z + scale1*to1[2];
+            w = scale0*from.w + scale1*to1[3];
         }
 
         /**

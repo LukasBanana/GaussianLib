@@ -13,6 +13,7 @@
 #include "Assert.h"
 #include "Algebra.h"
 #include "SwizzleRef.h"
+#include "Tags.h"
 
 #include <cmath>
 
@@ -64,6 +65,11 @@ template <typename T> class Vector3T
             y( y ),
             z( z )
         {
+        }
+
+        Vector3T(UninitializeTag)
+        {
+            // do nothing
         }
 
         Vector3T<T>& operator += (const Vector3T<T>& rhs)
