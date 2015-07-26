@@ -129,11 +129,57 @@ template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
 \brief Returns the spherical linear interpolation between the two quaternions 'from' and 'to'.
 \see QuaternionT::Slerp
 */
-template <template <typename> class Quat, typename T> Quat<T> Slerp(const Quat<T>& from, Quat<T>& to, const T& t)
+template <template <typename> class Quat, typename T>
+Quat<T> Slerp(const Quat<T>& from, Quat<T>& to, const T& t)
 {
     Quat<T> q;
     q.Slerp(from, to, t);
     return q;
+}
+
+/**
+\brief Computes a free rotation around an axis and stores the result into the matrix 'm'.
+\tparam M Specifies the matrix type. This should be Matrix3, Matrix4, or SparseMatrix4.
+This type must implement the following interface:
+\code
+static const std::size_t rows;    // >= 3
+static const std::size_t columns; // >= 3
+\endcode
+\tparam Vec Specifies the vector type. This should be Vector3, or Vector4.
+\tparam T Specifies the data type. This should should be float or double.
+\param[out] m Specifies the resulting matrix.
+\param[in] axis Specifies the rotation axis. This must be normalized!
+\param[in] angle Specifies the rotation angle (in radians).
+*/
+template <typename M, template <typename> class Vec, typename T>
+void MakeFreeRotation(M& m, const Vec<T>& axis, const T& angle)
+{
+    static_assert(
+        M::rows >= 3 && M::columns >= 3,
+        "free rotation can only be computed for matrices with at least 3 rows and 3 column"
+    );
+
+    /* Setup rotation values */
+    const T  c  = std::cos(angle);
+    const T  s  = std::sin(angle);
+    const T  cc = T(1) - c;
+
+    const T& x  = axis.x;
+    const T& y  = axis.y;
+    const T& z  = axis.z;
+
+    /* Perform matrix rotation */
+    m(0, 0) = x*x*cc + c;
+    m(0, 1) = y*x*cc + z*s;
+    m(0, 2) = x*z*cc - y*s;
+
+    m(1, 0) = x*y*cc - z*s;
+    m(1, 1) = y*y*cc + c;
+    m(1, 2) = y*z*cc + x*s;
+
+    m(2, 0) = x*z*cc + y*s;
+    m(2, 1) = y*z*cc - x*s;
+    m(2, 2) = z*z*cc + c;
 }
 
 

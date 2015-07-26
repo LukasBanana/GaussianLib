@@ -125,33 +125,54 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
         T& operator [] (std::size_t element)
         {
-            GS_ASSERT(element < Rows*Cols);
+            GS_ASSERT(element < ThisType::elements);
             return m_[element];
         }
 
         const T& operator [] (std::size_t element) const
         {
-            GS_ASSERT(element < Rows*Cols);
+            GS_ASSERT(element < ThisType::elements);
             return m_[element];
         }
 
-        ThisType operator *= (const ThisType& rhs)
+        ThisType& operator += (const ThisType& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elements; ++i)
+                m_[i] += rhs.m_[i];
+            return *this;
+        }
+
+        ThisType& operator -= (const ThisType& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elements; ++i)
+                m_[i] -= rhs.m_[i];
+            return *this;
+        }
+
+        ThisType& operator *= (const ThisType& rhs)
         {
             __GS_ASSERT_NxN_MATRIX__;
             *this = (*this * rhs);
             return *this;
         }
 
+        ThisType& operator *= (const T& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elements; ++i)
+                m_[i] *= rhs;
+            return *this;
+        }
+
         ThisType& operator = (const ThisType& rhs)
         {
-            for (std::size_t i = 0; i < Rows*Cols; ++i)
+            for (std::size_t i = 0; i < ThisType::elements; ++i)
                 m_[i] = rhs.m_[i];
             return *this;
         }
 
         void Reset()
         {
-            for (std::size_t i = 0; i < Rows*Cols; ++i)
+            for (std::size_t i = 0; i < ThisType::elements; ++i)
                 m_[i] = T(0);
         }
 
@@ -247,7 +268,7 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
     private:
         
-        T m_[Rows*Cols];
+        T m_[ThisType::elements];
 
 };
 
@@ -256,6 +277,38 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
 
 /* --- Global Operators --- */
+
+template <typename T, std::size_t Rows, std::size_t Cols>
+Matrix<T, Rows, Cols> operator + (const Matrix<T, Rows, Cols>& lhs, const Matrix<T, Rows, Cols>& rhs)
+{
+    auto result = lhs;
+    result += rhs;
+    return result;
+}
+
+template <typename T, std::size_t Rows, std::size_t Cols>
+Matrix<T, Rows, Cols> operator - (const Matrix<T, Rows, Cols>& lhs, const Matrix<T, Rows, Cols>& rhs)
+{
+    auto result = lhs;
+    result -= rhs;
+    return result;
+}
+
+template <typename T, std::size_t Rows, std::size_t Cols>
+Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, Cols>& lhs, const T& rhs)
+{
+    auto result = lhs;
+    result *= rhs;
+    return result;
+}
+
+template <typename T, std::size_t Rows, std::size_t Cols>
+Matrix<T, Rows, Cols> operator * (const T& lhs, const Matrix<T, Rows, Cols>& rhs)
+{
+    auto result = rhs;
+    result *= lhs;
+    return result;
+}
 
 template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
 Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)

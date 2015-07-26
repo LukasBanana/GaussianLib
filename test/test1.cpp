@@ -36,6 +36,8 @@ static void sparesMatrixTest1()
          0, 8, 0, -4,
          0, 1, 2, 0;
 
+    auto B2 = B;
+    B2.RotateFree(Vector4(1, 1, 1).Normalized(), pi*0.5f);
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
@@ -48,6 +50,10 @@ static void sparesMatrixTest1()
     std::cout << "| B | = " << B.Determinant() << std::endl;
     std::cout << "Trace A = " << A.Trace() << std::endl;
     std::cout << "Trace B = " << B.Trace() << std::endl;
+    std::cout << std::endl << "B1 = " << std::endl << B << std::endl;
+    std::cout << std::endl << "B2 = " << std::endl << B2 << std::endl;
+    std::cout << std::endl << "Lerp(B1, B2, 0.5) = " << std::endl << Lerp(B, B2, 0.5f) << std::endl;
+    std::cout << std::endl << "5 * I3 = " << std::endl << 5.0f * Matrix3::Identity() << std::endl;
 }
 
 static void quaternionTest1()
@@ -65,8 +71,6 @@ static void quaternionTest1()
         auto t = static_cast<Real>(i) / 10;
         std::cout << "Slerp(" << t << ") = " << Slerp(q0, q1, t) << std::endl;
     }
-
-
 }
 
 int main()
@@ -187,8 +191,8 @@ int main()
 
     #endif
 
-    //sparesMatrixTest1();
-    quaternionTest1();
+    sparesMatrixTest1();
+    //quaternionTest1();
 
     #ifdef _WIN32
     system("pause");

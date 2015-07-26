@@ -158,22 +158,43 @@ template <typename T> class SparseMatrix4T
             return m_[element];
         }
 
-        ThisType operator *= (const ThisType& rhs)
+        ThisType& operator += (const ThisType& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                m_[i] += rhs.m_[i];
+            return *this;
+        }
+
+        ThisType& operator -= (const ThisType& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                m_[i] -= rhs.m_[i];
+            return *this;
+        }
+
+        ThisType& operator *= (const ThisType& rhs)
         {
             *this = (*this * rhs);
             return *this;
         }
 
+        ThisType& operator *= (const T& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                m_[i] *= rhs;
+            return *this;
+        }
+
         ThisType& operator = (const ThisType& rhs)
         {
-            for (std::size_t i = 0; i < SparseMatrix4T<T>::elementsSparse; ++i)
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
                 m_[i] = rhs.m_[i];
             return *this;
         }
 
         void Reset()
         {
-            for (std::size_t i = 0; i < SparseMatrix4T<T>::elementsSparse; ++i)
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
                 m_[i] = T(0);
         }
 
@@ -201,8 +222,8 @@ template <typename T> class SparseMatrix4T
                 result(c, r) = (*this)(r, c);
             }
 
-            for (std::size_t i = 0; i < SparseMatrix4T<T>::columnsSparse; ++i)
-                result(i, SparseMatrix4T<T>::rowsSparse);
+            for (std::size_t i = 0; i < ThisType::columnsSparse; ++i)
+                result(i, ThisType::rowsSparse);
 
             return result;
         }
@@ -231,6 +252,18 @@ template <typename T> class SparseMatrix4T
             return Gs::Inverse(*this, in);
         }
 
+        /**
+        \brief Rotates this matrix around the specified axis.
+        \see MakeFreeRotation
+        */
+        template <template <typename> class Vec>
+        void RotateFree(const Vec<T>& axis, const T& angle)
+        {
+            ThisType rotation;
+            Gs::MakeFreeRotation(rotation, axis, angle);
+            *this *= rotation;
+        }
+
         //! Returns a pointer to the first element of this matrix.
         T* Ptr()
         {
@@ -245,7 +278,7 @@ template <typename T> class SparseMatrix4T
 
     private:
         
-        T m_[SparseMatrix4T<T>::elementsSparse];
+        T m_[ThisType::elementsSparse];
 
 };
 
@@ -253,6 +286,34 @@ template <typename T> class SparseMatrix4T
 
 
 /* --- Global Operators --- */
+
+template <typename T> SparseMatrix4T<T> operator + (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
+{
+    auto result = lhs;
+    result += rhs;
+    return result;
+}
+
+template <typename T> SparseMatrix4T<T> operator - (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
+{
+    auto result = lhs;
+    result -= rhs;
+    return result;
+}
+
+template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs, const T& rhs)
+{
+    auto result = lhs;
+    result *= rhs;
+    return result;
+}
+
+template <typename T> SparseMatrix4T<T> operator * (const T& lhs, const SparseMatrix4T<T>& rhs)
+{
+    auto result = rhs;
+    result *= lhs;
+    return result;
+}
 
 template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
 {
