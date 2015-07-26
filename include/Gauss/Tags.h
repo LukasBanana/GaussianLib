@@ -15,7 +15,7 @@ namespace Gs
 
 /**
 \brief Common uninitialize tag.
-\remarks This can be used to explicitly let a container uninitialized:
+\remarks This can be used to explicitly construct an uninitialized vector, matrix or quaternion:
 \code
 Gs::Matrix4 m(Gs::UninitializeTag{});
 // ...
