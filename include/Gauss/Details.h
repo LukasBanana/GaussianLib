@@ -18,6 +18,9 @@ namespace Gs
 
 /* --- Forward Declarations --- */
 
+template <typename T> class SparseMatrix4T;
+template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
+
 // Determinant
 template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
 T Determinant(const M<T, Rows, Cols>&);

@@ -15,7 +15,12 @@
 #include "Quaternion.h"
 #include "Matrix.h"
 #include "SparseMatrix4.h"
+
 #include "Algebra.h"
+#include "Determinant.h"
+#include "Inverse.h"
+#include "TransformVector.h"
+#include "RotateVector.h"
 #include "OStream.h"
 
 

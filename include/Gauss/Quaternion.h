@@ -14,6 +14,7 @@
 #include "Algebra.h"
 #include "Tags.h"
 #include "Matrix.h"
+#include "Conversions.h"
 
 #include <cmath>
 #include <limits>
