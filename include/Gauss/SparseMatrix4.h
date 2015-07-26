@@ -212,6 +212,12 @@ template <typename T> class SparseMatrix4T
             return Gs::Determinant(*this);
         }
 
+        //! Returns the trace of this matrix: M(0, 0) + M(1, 1) + M(2, 2) + 1.
+        T Trace() const
+        {
+            return (*this)(0, 0) + (*this)(1, 1) + (*this)(2, 2) + T(1);
+        }
+
         SparseMatrix4T<T> Inverse() const
         {
             SparseMatrix4T<T> inv{ *this };

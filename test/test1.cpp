@@ -34,7 +34,7 @@ static void test1()
          0, 8, 0, -4,
          0, 1, 2, 0;
 
-    B.MakeInverse();
+    //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
     std::cout << "Inv(A) = " << std::endl << A.Inverse() << std::endl;
@@ -44,7 +44,8 @@ static void test1()
     std::cout << "B*Inv(B) = " << std::endl << B*B.Inverse() << std::endl;
     std::cout << "| A | = " << A.Determinant() << std::endl;
     std::cout << "| B | = " << B.Determinant() << std::endl;
-
+    std::cout << "Trace A = " << A.Trace() << std::endl;
+    std::cout << "Trace B = " << B.Trace() << std::endl;
 }
 
 int main()

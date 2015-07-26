@@ -204,6 +204,22 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
             return Gs::Determinant(*this);
         }
 
+        /**
+        Returns the trace of this matrix: M(0, 0) + M(1, 1) + ... + M(N - 1, N - 1).
+        \note This can only be used for squared matrices!
+        */
+        T Trace() const
+        {
+            static_assert(Rows == Cols, "traces can only be computed for squared matrices");
+            
+            T trace = T(0);
+
+            for (std::size_t i = 0; i < Rows; ++i)
+                trace += (*this)(i, i);
+
+            return trace;
+        }
+
         Matrix<T, Rows, Cols> Inverse() const
         {
             Matrix<T, Rows, Cols> inv{ *this };
