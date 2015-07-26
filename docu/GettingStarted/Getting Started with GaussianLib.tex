@@ -124,7 +124,7 @@ a[0] += 2; // equivalent to a.x += 2;
 \section*{Matrices}
 
 There is only a single general-purpose class for matrices
-(except SparesMatrix4T, see section \ref{sec:sparse_matrices}{Sparse Matrices}):
+(except SparseMatrix4T, see section \ref{sec:sparse_matrices}{Sparse Matrices}):
 \texttt{Matrix<T, Rows, Cols>}, where \texttt{T} specifies the template typename T, \texttt{Rows} specifies the
 number of rows of the matrix, and \texttt{Cols} specifies the number of columns of the matrix.
 
@@ -191,7 +191,30 @@ int main()
 
 \section*{Quaternions}
 
-\dots
+Quaternions have the four components \texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w} just like Vector4.
+In contrast to vectors, quaterions can only have floating-point components.
+\begin{lstlisting}
+#include <Gauss/Gauss.h>
+
+int main()
+{
+	Gs::Quaternion q0, q1; // Equivalent to Gs::QuaternionT<Gs::Real>
+	Gs::Quaternionf qFloat;
+	Gs::QuaternionT<double> qDouble;
+	
+	// Spherical Linear intERPolation (SLERP) between q0 and q1
+	auto q2 = Slerp(q0, q1, 0.5);
+	
+	// Convert to 3x3 matrix
+	Gs::Matrix3 rotation = q2.ToMatrix3();
+	
+	// Store rotation of quaterion in the left-upper 3x3 matrix of the sparse 4x4 matrix 'transform'
+	Gs::SparseMatrix4 transform;
+	Gs::QuaternionToMatrix(transform, q2);
+	
+	return 0;
+}
+\end{lstlisting}
 
 
 %----------------------------------------------------------------------------------------
