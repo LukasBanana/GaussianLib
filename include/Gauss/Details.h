@@ -21,12 +21,12 @@ namespace Gs
 /* --- Forward Declarations --- */
 
 // Determinant
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-T Determinant(const M<T, Rows, Cols>&);
+template <typename T, std::size_t N>
+T Determinant(const Matrix<T, N, N>&);
 
 // Inverse
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-bool Inverse(M<T, Rows, Cols>&, const M<T, Rows, Cols>&);
+//template <typename T, std::size_t N>
+//bool Inverse(Matrix<T, N, N>&, const Matrix<T, N, N>&);
 
 
 namespace Details
@@ -42,8 +42,8 @@ class MatrixHelper
 
     protected:
         
-        friend T Gs::Determinant<M, T, Cols, Rows>(const M<T, Rows, Cols>&);
-        friend bool Gs::Inverse<M, T, Cols, Rows>(M<T, Rows, Cols>&, const M<T, Rows, Cols>&);
+        friend T Gs::Determinant<T, Rows>(const Matrix<T, Rows, Cols>&);
+        //friend bool Gs::Inverse<T, Rows>(Matrix<T, Rows, Cols>&, const Matrix<T, Rows, Cols>&);
 
         static std::vector<T> MatrixToArray(const M<T, Rows, Cols>& mat)
         {

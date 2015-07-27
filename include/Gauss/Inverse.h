@@ -9,6 +9,7 @@
 #define __GS_INVERSE_H__
 
 
+#include "Decl.h"
 #include "Details.h"
 #include "Determinant.h"
 
@@ -18,18 +19,18 @@ namespace Gs
 
 
 //! Computes the inverse of the specified matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-bool Inverse(M<T, Rows, Cols>& inv, const M<T, Rows, Cols>& m)
+template <typename T, std::size_t N>
+bool Inverse(Matrix<T, N, N>& inv, const Matrix<T, N, N>& m)
 {
-    static_assert(Rows == Cols, "inverses can only be computed for squared matrices");
     //using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
     //return Helper::OrderedInverse(inv, Helper::MatrixToArray(m), Rows);
     return false;//!!!
 }
 
 //! Computes the inverse of the specified 2x2 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-bool Inverse(M<T, 2, 2>& inv, const M<T, 2, 2>& m)
+//template <template <typename, std::size_t, std::size_t> class M, typename T>
+template <typename T>
+bool Inverse(Matrix<T, 2, 2>& inv, const Matrix<T, 2, 2>& m)
 {
     /* Compute inverse determinant */
     T d = Determinant(m);
@@ -49,8 +50,9 @@ bool Inverse(M<T, 2, 2>& inv, const M<T, 2, 2>& m)
 }
 
 //! Computes the inverse of the specified 3x3 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-bool Inverse(M<T, 3, 3>& inv, const M<T, 3, 3>& m)
+//template <template <typename, std::size_t, std::size_t> class M, typename T>
+template <typename T>
+bool Inverse(Matrix<T, 3, 3>& inv, const Matrix<T, 3, 3>& m)
 {
     /* Compute inverse determinant */
     T d = Determinant(m);
@@ -75,8 +77,9 @@ bool Inverse(M<T, 3, 3>& inv, const M<T, 3, 3>& m)
 }
 
 //! Computes the inverse of the specified 4x4 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-bool Inverse(M<T, 4, 4>& inv, const M<T, 4, 4>& m)
+//template <template <typename, std::size_t, std::size_t> class M, typename T>
+template <typename T>
+bool Inverse(Matrix<T, 4, 4>& inv, const Matrix<T, 4, 4>& m)
 {
     /* Compute inverse determinant */
     T d = Determinant(m);

@@ -26,31 +26,30 @@ namespace Gs
 since a determinant is only defined for squared matrices.
 \param[in] m Specifies the squared matrix for which the determinant is to be computed.
 */
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-T Determinant(const M<T, Rows, Cols>& m)
+template <typename T, std::size_t N>
+T Determinant(const Matrix<T, N, N>& m)
 {
-    static_assert(Rows == Cols, "determinants can only be computed for squared matrices");
-    using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
-    return Helper::OrderedDeterminant(Helper::MatrixToArray(m), Rows);
+    using Helper = Details::MatrixHelper<Matrix, T, N, N>;
+    return Helper::OrderedDeterminant(Helper::MatrixToArray(m), N);
 }
 
 //! Computes the determinant of the specified 1x1 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 1, 1>& m)
+template <typename T>
+T Determinant(const Matrix<T, 1, 1>& m)
 {
     return m(0, 0);
 }
 
 //! Computes the determinant of the specified 2x2 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 2, 2>& m)
+template <typename T>
+T Determinant(const Matrix<T, 2, 2>& m)
 {
     return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
 }
 
 //! Computes the determinant of the specified 3x3 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 3, 3>& m)
+template <typename T>
+T Determinant(const Matrix<T, 3, 3>& m)
 {
     return
         ( m(0, 0) * m(1, 1) * m(2, 2) ) + ( m(1, 0) * m(2, 1) * m(0, 2) ) + ( m(2, 0) * m(0, 1) * m(1, 2) ) -
@@ -58,8 +57,8 @@ T Determinant(const M<T, 3, 3>& m)
 }
 
 //! Computes the determinant of the specified 4x4 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 4, 4>& m)
+template <typename T>
+T Determinant(const Matrix<T, 4, 4>& m)
 {
     return
         ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) ) * ( m(2, 2) * m(3, 3) - m(3, 2) * m(2, 3) ) -
@@ -71,7 +70,8 @@ T Determinant(const M<T, 4, 4>& m)
 }
 
 //! Computes the determinant of the specified sparse 4x4 matrix 'm'.
-template <typename T> T Determinant(const SparseMatrix4T<T>& m)
+template <typename T>
+T Determinant(const SparseMatrix4T<T>& m)
 {
     return
         ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) ) * ( m(2, 2) ) -

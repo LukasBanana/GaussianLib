@@ -75,6 +75,7 @@ static void commonTest1()
     Matrix3 m3x3 = Matrix3::Identity();
 
     Matrix<float, 6, 6> hugeMatrix; hugeMatrix.LoadIdentity();
+    hugeMatrix.Inverse();
 
     // --- sparse matrix tests ---
 
@@ -235,11 +236,11 @@ int main()
     std::cout << "GaussianLib Test 1" << std::endl;
     std::cout << "==================" << std::endl;
 
-    //commonTest1();
-    //sparesMatrixTest1();
-    //quaternionTest1();
+    commonTest1();
+    sparesMatrixTest1();
+    quaternionTest1();
     matrixVectorTest1();
-    //complexTest1();
+    complexTest1();
 
     #ifdef _WIN32
     system("pause");
