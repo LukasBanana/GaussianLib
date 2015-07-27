@@ -238,7 +238,8 @@ template <typename T> class QuaternionT
         Sets the quaternion to an euler rotation with the specified angles (in radian).
         \tparam Vec Specifies the vector type. This should be Vector3 or Vector4.
         */
-        template <template <typename> class Vec> void SetEulerAngles(const Vec<T>& angles)
+        template <template <typename> class Vec>
+        void SetEulerAngles(const Vec<T>& angles)
         {
             const T cr = std::cos(angles.x/T(2));
             const T cp = std::cos(angles.y/T(2));
@@ -346,6 +347,24 @@ template <typename T> class QuaternionT
         const T* Ptr() const
         {
             return &x;
+        }
+
+        //! Returns a new quaternion, rotated with the specified euler angles.
+        template <template <typename> class Vec>
+        static QuaternionT<T> EulerAngles(const Vec<T>& angles)
+        {
+            QuaternionT<T> result;
+            result.SetEulerAngles(angles);
+            return result;
+        }
+
+        //! Returns a new quaternion, rotated with the specified angle axis.
+        template <template <typename> class Vec>
+        static QuaternionT<T> AngleAxis(const Vec<T>& axis, const T& angle)
+        {
+            QuaternionT<T> result;
+            result.SetAngleAxis(axis, angle);
+            return result;
         }
 
         T x, y, z, w;
