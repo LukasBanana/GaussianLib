@@ -62,37 +62,37 @@ using int2x2    = Gs::Matrix2i;
 using int2x3    = Gs::Matrix<int, 2, 3>;
 using int2x4    = Gs::Matrix<int, 2, 4>;
 
-using int3x2    = Matrix<int, 3, 2>;
-using int3x3    = Matrix3i;
-using int3x4    = Matrix<int, 3, 4>;
+using int3x2    = Gs::Matrix<int, 3, 2>;
+using int3x3    = Gs::Matrix3i;
+using int3x4    = Gs::Matrix<int, 3, 4>;
 
-using int4x2    = Matrix<int, 3, 2>;
-using int4x3    = Matrix<int, 3, 3>;
-using int4x4    = Matrix4i;
+using int4x2    = Gs::Matrix<int, 3, 2>;
+using int4x3    = Gs::Matrix<int, 3, 3>;
+using int4x4    = Gs::Matrix4i;
 
-using uint2x2   = Matrix2ui;
-using uint2x3   = Matrix<unsigned int, 2, 3>;
-using uint2x4   = Matrix<unsigned int, 2, 4>;
+using uint2x2   = Gs::Matrix2ui;
+using uint2x3   = Gs::Matrix<unsigned int, 2, 3>;
+using uint2x4   = Gs::Matrix<unsigned int, 2, 4>;
 
-using uint3x2   = Matrix<unsigned int, 3, 2>;
-using uint3x3   = Matrix3ui;
-using uint3x4   = Matrix<unsigned int, 3, 4>;
+using uint3x2   = Gs::Matrix<unsigned int, 3, 2>;
+using uint3x3   = Gs::Matrix3ui;
+using uint3x4   = Gs::Matrix<unsigned int, 3, 4>;
 
-using uint4x2   = Matrix<unsigned int, 4, 2>;
-using uint4x3   = Matrix<unsigned int, 4, 3>;
-using uint4x4   = Matrix4ui;
+using uint4x2   = Gs::Matrix<unsigned int, 4, 2>;
+using uint4x3   = Gs::Matrix<unsigned int, 4, 3>;
+using uint4x4   = Gs::Matrix4ui;
 
-using bool2x2   = Matrix<bool, 2, 2>;
-using bool2x3   = Matrix<bool, 2, 3>;
-using bool2x4   = Matrix<bool, 2, 4>;
+using bool2x2   = Gs::Matrix<bool, 2, 2>;
+using bool2x3   = Gs::Matrix<bool, 2, 3>;
+using bool2x4   = Gs::Matrix<bool, 2, 4>;
 
-using bool3x2   = Matrix<bool, 3, 2>;
-using bool3x3   = Matrix<bool, 3, 3>;
-using bool3x4   = Matrix<bool, 3, 4>;
+using bool3x2   = Gs::Matrix<bool, 3, 2>;
+using bool3x3   = Gs::Matrix<bool, 3, 3>;
+using bool3x4   = Gs::Matrix<bool, 3, 4>;
 
-using bool4x2   = Matrix<bool, 4, 2>;
-using bool4x3   = Matrix<bool, 4, 3>;
-using bool4x4   = Matrix<bool, 4, 4>;
+using bool4x2   = Gs::Matrix<bool, 4, 2>;
+using bool4x3   = Gs::Matrix<bool, 4, 3>;
+using bool4x4   = Gs::Matrix<bool, 4, 4>;
 
 
 #endif
