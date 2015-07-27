@@ -12,7 +12,7 @@
 #include "Real.h"
 #include "Assert.h"
 #include "Algebra.h"
-#include "SwizzleRef.h"
+#include "Swizzle.h"
 #include "Tags.h"
 
 #include <cmath>
@@ -276,29 +276,6 @@ template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const T& r
     result /= rhs;
     return result;
 }
-
-
-/* --- Appendix to SwizzleRef4 class --- */
-
-#ifdef GS_ENABLE_SWIZZLE_OPERATOR
-
-template <typename T> SwizzleRef4<T>& SwizzleRef4<T>::operator = (const Vector4T<typename std::remove_const<T>::type>& rhs)
-{
-    x_ = rhs.x;
-    y_ = rhs.y;
-    z_ = rhs.z;
-    w_ = rhs.w;
-    return *this;
-}
-
-template <typename T> SwizzleRef4<T>::operator Vector4T<typename std::remove_const<T>::type> () const
-{
-    return Vector4T<typename std::remove_const<T>::type>(x_, y_, z_, w_);
-}
-
-__GS_SWIZZLE_VECTOR_OP_ALL__(4)
-
-#endif
 
 
 /* --- Type Alias --- */

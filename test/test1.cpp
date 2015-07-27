@@ -32,10 +32,8 @@ static void commonTest1()
     const Vector4 a(1, 2, 3, 4), b(-4, 0, 2);
 
     #ifdef GS_ENABLE_SWIZZLE_OPERATOR
-    Vector4 c = a.zzzw() + a.xyxy() - b.yxzw();
-    c.yxzw() = a;
+    Vector4 c = a.zzzw()*2.0f + a.xyxy() - b.yxzw();
     Vector2 d = c.xx(), e = c.xw() + b.yz();
-    d.yx() += c.zw();
     #endif
 
     // --- quaternion tests ---
@@ -214,8 +212,8 @@ static void matrixVectorTest1()
     auto a = TransformVector(A, Vector4(0, 0, 0, 1));
     auto b = TransformVector(B, Vector4(0, 0, 0, 1));
 
-    //Translate(A, a.xyz()*2.0f);
-    //Translate(B, a.yxz());
+    Translate(A, a.xyz()*2.0f);
+    Translate(B, a.yxz());
 
     std::cout << "a = " << a << std::endl;
     std::cout << "b = " << b << std::endl;
