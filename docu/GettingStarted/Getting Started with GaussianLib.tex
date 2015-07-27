@@ -79,6 +79,9 @@ The \gausslib requires VisualC++ 2013 (12.0) or higher, to support the C++11 fea
 
 \section*{Vectors}
 
+In the \gausslib vectors are consideres to be \textbf{column vectors}, as it is common in mathematics.
+I.e. if you want a vector $y$ as a result of a multiplication with a matrix $M$ and a vector $x$,
+write: $y = M * x$.
 There are three base classes for vectors: \texttt{Vector2T<T>}, \texttt{Vector3T<T>}, and \texttt{Vector4T<T>},
 where \texttt{<T>} specifies the template typename T. There are also pre-defined type aliases
 (\texttt{\textit{N}} is either 2, 3 or 4):
