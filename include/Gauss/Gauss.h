@@ -17,12 +17,15 @@
 #include "SparseMatrix4.h"
 
 #include "Algebra.h"
+#include "OStream.h"
+
 #include "Determinant.h"
 #include "Inverse.h"
 #include "Translate.h"
+#include "Scale.h"
+
 #include "TransformVector.h"
 #include "RotateVector.h"
-#include "OStream.h"
 
 
 #endif

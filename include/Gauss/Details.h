@@ -18,8 +18,6 @@ namespace Gs
 {
 
 
-/* --- Forward Declarations --- */
-
 // Determinant
 template <typename T, std::size_t N>
 T Determinant(const Matrix<T, N, N>&);
