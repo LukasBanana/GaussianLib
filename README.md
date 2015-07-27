@@ -32,9 +32,8 @@ int main()
     const Gs::Vector2 c(42, 19);
     
     // 'Swizzle operator' like functionality
-    Gs::Vector3 d = a.xyw() + b.zxy() - c.xxy();
-    d.yx() += c.zw();
-    
+    Gs::Vector3 d = a.xyw()*2.0f + b.zxy() - c.xxy();
+
     // Declare 3x4 matrix A and 4x3 matrix B
     Gs::Matrix<double, 3, 4> A;
     Gs::Matrix<double, 4, 3> B;
