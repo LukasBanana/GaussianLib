@@ -6,6 +6,7 @@
  */
 
 //#define GS_COLUMN_MAJOR_STORAGE
+#define GS_ENABLE_SWIZZLE_OPERATOR
 
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
@@ -213,6 +214,9 @@ static void matrixVectorTest1()
     auto a = TransformVector(A, Vector4(0, 0, 0, 1));
     auto b = TransformVector(B, Vector4(0, 0, 0, 1));
 
+    //Translate(A, a.xyz()*2.0f);
+    //Translate(B, a.yxz());
+
     std::cout << "a = " << a << std::endl;
     std::cout << "b = " << b << std::endl;
 }
@@ -236,8 +240,8 @@ int main()
     //commonTest1();
     //sparesMatrixTest1();
     //quaternionTest1();
-    //matrixVectorTest1();
-    complexTest1();
+    matrixVectorTest1();
+    //complexTest1();
 
     #ifdef _WIN32
     system("pause");

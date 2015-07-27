@@ -9,6 +9,8 @@
 #define __GS_DETAILS_H__
 
 
+#include "Decl.h"
+
 #include <vector>
 
 
@@ -17,9 +19,6 @@ namespace Gs
 
 
 /* --- Forward Declarations --- */
-
-template <typename T> class SparseMatrix4T;
-template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
 
 // Determinant
 template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>

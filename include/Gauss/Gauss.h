@@ -19,6 +19,7 @@
 #include "Algebra.h"
 #include "Determinant.h"
 #include "Inverse.h"
+#include "Translate.h"
 #include "TransformVector.h"
 #include "RotateVector.h"
 #include "OStream.h"

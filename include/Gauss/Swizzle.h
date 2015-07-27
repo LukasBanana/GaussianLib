@@ -48,13 +48,13 @@
     __GS_SWIZZLE_VECTOR_OP__(N, *)      \
     __GS_SWIZZLE_VECTOR_OP__(N, /)
 
-#define __GS_SWIZZLE_INTERFACE__(N, OP_DECL)                    \
-    OP_DECL(=);                                                 \
-    OP_DECL(+=);                                                \
-    OP_DECL(-=);                                                \
-    OP_DECL(*=);                                                \
-    OP_DECL(/=);                                                \
-    SwizzleRef##N<T>& operator = (const Vector##N##T<typename std::remove_const<T>::type>& rhs);  \
+#define __GS_SWIZZLE_INTERFACE__(N, OP_DECL)                                                        \
+    OP_DECL(=);                                                                                     \
+    OP_DECL(+=);                                                                                    \
+    OP_DECL(-=);                                                                                    \
+    OP_DECL(*=);                                                                                    \
+    OP_DECL(/=);                                                                                    \
+    SwizzleRef##N<T>& operator = (const Vector##N##T<typename std::remove_const<T>::type>& rhs);    \
     operator Vector##N##T<typename std::remove_const<T>::type> () const;
 
 
