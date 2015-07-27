@@ -19,6 +19,12 @@
 //! Disables automatic data initialization.
 //#define GS_DISABLE_AUTO_INIT
 
+//! Enables column-major storage. If disabled, column-major storage is used.
+//#define GS_COLUMN_MAJOR_STORAGE
+
+//! Enables column vectors. If disabled, row vectors are used.
+#define GS_COLUMN_VECTORS
+
 
 #endif
 

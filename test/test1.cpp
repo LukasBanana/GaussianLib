@@ -5,7 +5,7 @@
  * See "LICENSE.txt" for license information.
  */
 
-//#define GS_MATRIX_COLUMN_MAJOR
+//#define GS_COLUMN_MAJOR_STORAGE
 
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <complex>
 
 
 using namespace Gs;
@@ -216,6 +217,17 @@ static void matrixVectorTest1()
     std::cout << "b = " << b << std::endl;
 }
 
+static void complexTest1()
+{
+    using complex = std::complex<Real>;
+
+    Vector4T<complex> a(complex(0, 0), complex(0, 1), complex(4, -2));
+    Matrix4T<complex> A = Matrix4T<complex>::Identity();
+
+    auto b = A * a;
+
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -224,7 +236,8 @@ int main()
     //commonTest1();
     //sparesMatrixTest1();
     //quaternionTest1();
-    matrixVectorTest1();
+    //matrixVectorTest1();
+    complexTest1();
 
     #ifdef _WIN32
     system("pause");

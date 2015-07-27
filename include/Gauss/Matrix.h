@@ -26,7 +26,7 @@ namespace Gs
 #define __GS_ASSERT_NxN_MATRIX__ \
     static_assert(Rows == Cols, __GS_FILE_LINE__ "function can only be used with NxN matrices")
 
-#ifdef GS_MATRIX_COLUMN_MAJOR
+#ifdef GS_COLUMN_MAJOR_STORAGE
 #   define __GS_FOREACH_ROW_COL__(r, c)         \
         for (std::size_t r = 0; r < Rows; ++r)  \
         for (std::size_t c = 0; c < Cols; ++c)
@@ -40,7 +40,7 @@ namespace Gs
 \brief Base matrix class.
 \tparam T Specifies the data type of the matrix components.
 This should be a primitive data type such as float, double, int etc.
-\remarks The macro GS_MATRIX_COLUMN_MAJOR can be defined, to use column-major matrices.
+\remarks The macro GS_COLUMN_MAJOR_STORAGE can be defined, to use column-major matrices.
 By default row-major matrices are used.
 */
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
@@ -105,7 +105,7 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
         {
             GS_ASSERT(row < Rows);
             GS_ASSERT(col < Cols);
-            #ifdef GS_MATRIX_COLUMN_MAJOR
+            #ifdef GS_COLUMN_MAJOR_STORAGE
             return m_[col*Rows + row];
             #else
             return m_[row*Cols + col];
@@ -116,7 +116,7 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
         {
             GS_ASSERT(row < Rows);
             GS_ASSERT(col < Cols);
-            #ifdef GS_MATRIX_COLUMN_MAJOR
+            #ifdef GS_COLUMN_MAJOR_STORAGE
             return m_[col*Rows + row];
             #else
             return m_[row*Cols + col];
