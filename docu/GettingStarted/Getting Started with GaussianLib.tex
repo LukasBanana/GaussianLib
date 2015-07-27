@@ -246,11 +246,12 @@ int main()
 	
 	e = a.xy();
 	f = a.zz();
-	c = a.xxz();
+	c = a.xxz() + e.yxy()*2.0f;
 	b = a.xyxy();
 	
-	a.yz() += e;
-	a.zx() *= 2;
+	// References can not be used (pointless operation).
+	//a.yz() += e;
+	//a.zx() *= 2;
 	
 	a = e.xxyy();
 }
