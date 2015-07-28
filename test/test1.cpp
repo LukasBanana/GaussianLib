@@ -203,31 +203,15 @@ static void quaternionTest1()
 
 static void matrixVectorTest1()
 {
-    Matrix4 A;
-    SparseMatrix4 B;
+    Matrix4 A = Matrix4::Identity();
+    SparseMatrix4 B = SparseMatrix4::Identity();
 
-    #ifdef GS_ROW_VECTORS
-    A << 1, 0, 0, 0,
-         0, 1, 0, 0,
-         0, 0, 1, 0,
-         4, 2, -5, 1;
-    
-    B << 1, 0, 0,
-         0, 1, 0,
-         0, 0, 1,
-         4, 2, -5;
-    #else
-    A << 1, 0, 0, 4,
-         0, 1, 0, 2,
-         0, 0, 1, -5,
-         0, 0, 0, 1;
-    
-    B << 1, 0, 0, 4,
-         0, 1, 0, 2,
-         0, 0, 1, -5;
-    #endif
+    Translate(A, Vector3(4, 2, -5.0f/3.0f));
+    Translate(B, Vector3(4, 2, -5.0f/3.0f));
 
     #if 1
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "A^-1 = " << std::endl << A.Inverse() << std::endl;
     std::cout << "A*A^-1 = " << std::endl << A*A.Inverse() << std::endl;
     #endif
@@ -235,8 +219,8 @@ static void matrixVectorTest1()
     auto a = TransformVector(A, Vector4(0, 0, 0, 1));
     auto b = TransformVector(B, Vector4(0, 0, 0, 1));
 
-    Translate(A, a.xyz()*2.0f);
-    Translate(B, a.yxz());
+    //Translate(A, a.xyz()*2.0f);
+    //Translate(B, a.yxz());
 
     std::cout << "a = " << a << std::endl;
     std::cout << "b = " << b << std::endl;
