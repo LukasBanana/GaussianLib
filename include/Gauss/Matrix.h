@@ -59,6 +59,22 @@ Here is an example, how a 4x4 matrix is laid-out with column- and row vectors:
 
 // In both cases, (w1, w2, w3, w4) stores the position in an affine transformation.
 \endcode
+Matrix elements can be accessed by the bracket operator:
+\code
+Gs::Matrix4 A;
+A(0, 0) = row0column0;
+A(2, 1) = row2column1;
+\endcode
+This is independent of the matrix storage layout and independent of the usage of row- or column vectors.
+But the following function is dependent of the usage of row- or column vectors:
+\code
+// For column vectors:
+A.At(2, 1) = row2column1;
+
+// For row vectors:
+A.At(2, 1) = row1column2;
+\endcode
+This function is used for easier support between row- and column vectors.
 */
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 {
