@@ -10,6 +10,7 @@
 
 
 #include "Decl.h"
+#include "Macros.h"
 
 
 namespace Gs
@@ -19,11 +20,6 @@ namespace Gs
 namespace Details
 {
 
-#define __GS_ASSERT_MxN_MATRIX__(info, T, m, n)             \
-    static_assert(                                          \
-        T::rows >= m && T::columns >= n,                    \
-        info " requires at least a " #m "x" #n " matrix"    \
-    )
 
 template <typename M, typename T>
 void Translate(M& m, const Vector3T<T>& v)
