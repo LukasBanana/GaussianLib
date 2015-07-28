@@ -11,6 +11,7 @@
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
+#include <Gauss/Projection.h>
 
 #include <iostream>
 #include <sstream>
@@ -242,6 +243,19 @@ static void complexTest1()
 
 }
 
+static void projectionTest1()
+{
+    Matrix4 A, B;
+
+    const Real w = 800, h = 600, near = 1.0f, far = 100.0f, fov = 74.0f*pi/2.0f;
+
+    A = BuildPerspectiveProjectionLH(w/h, near, far, fov);
+    B = BuildPerspectiveProjectionRH(w/h, near, far, fov);
+
+    std::cout << "Projection A = " << std::endl << A << std::endl;
+    std::cout << "Projection B = " << std::endl << B << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -250,8 +264,9 @@ int main()
     //commonTest1();
     //sparesMatrixTest1();
     //quaternionTest1();
-    matrixVectorTest1();
+    //matrixVectorTest1();
     //complexTest1();
+    projectionTest1();
 
     #ifdef _WIN32
     system("pause");

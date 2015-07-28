@@ -8,6 +8,8 @@
 #ifndef __GS_GLSL_TYPES_H__
 #define __GS_GLSL_TYPES_H__
 
+// <<< extension header >>>
+
 
 #include <Gauss/Gauss.h>
 
