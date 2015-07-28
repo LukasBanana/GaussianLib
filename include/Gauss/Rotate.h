@@ -17,22 +17,12 @@ namespace Gs
 {
 
 
-/**
-\brief Computes a free rotation around an axis and stores the result into the matrix 'm'.
-\tparam M Specifies the matrix type. This should be Matrix3, Matrix4, or SparseMatrix4.
-This type must implement the following interface:
-\code
-static const std::size_t rows;    // >= 3
-static const std::size_t columns; // >= 3
-\endcode
-\tparam Vec Specifies the vector type. This should be Vector3, or Vector4.
-\tparam T Specifies the data type. This should should be float or double.
-\param[out] m Specifies the resulting matrix.
-\param[in] axis Specifies the rotation axis. This must be normalized!
-\param[in] angle Specifies the rotation angle (in radians).
-*/
-template <class M, template <typename> class V, typename T>
-void FreeRotation(M& mat, const V<T>& axis, const T& angle)
+namespace Details
+{
+
+
+template <class M, typename T>
+void FreeRotation(M& mat, const Vector3T<T>& axis, const T& angle)
 {
     __GS_ASSERT_MxN_MATRIX__("free rotation", M, 3, 3);
 
@@ -57,6 +47,58 @@ void FreeRotation(M& mat, const V<T>& axis, const T& angle)
     mat.At(0, 2) = x*z*cc - y*s;
     mat.At(1, 2) = y*z*cc + x*s;
     mat.At(2, 2) = z*z*cc + c;
+}
+
+
+} // /namespace Details
+
+
+
+/**
+\brief Computes a free rotation around an axis and stores the result into the matrix 'm'.
+\tparam M Specifies the matrix type. This should be Matrix3, Matrix4, or SparseMatrix4.
+This type must implement the following interface:
+\code
+static const std::size_t rows;    // >= 3
+static const std::size_t columns; // >= 3
+\endcode
+\tparam Vec Specifies the vector type. This should be Vector3, or Vector4.
+\tparam T Specifies the data type. This should should be float or double.
+\param[out] mat Specifies the resulting matrix.
+\param[in] axis Specifies the rotation axis. This must be normalized!
+\param[in] angle Specifies the rotation angle (in radians).
+*/
+template <typename T>
+void FreeRotation(Matrix<T, 4, 4>& mat, const Vector3T<T>& axis, const T& angle)
+{
+    Details::FreeRotation(mat, axis, angle);
+}
+
+template <typename T>
+void FreeRotation(Matrix<T, 3, 3>& mat, const Vector3T<T>& axis, const T& angle)
+{
+    Details::FreeRotation(mat, axis, angle);
+}
+
+template <typename T>
+void FreeRotation(SparseMatrix4T<T>& mat, const Vector3T<T>& axis, const T& angle)
+{
+    Details::FreeRotation(mat, axis, angle);
+}
+
+/**
+\brief Rotates the matrix 'mat' around the specified axis.
+\param[out] mat Specifies the resulting matrix.
+\param[in] axis Specifies the rotation axis. This must be normalized!
+\param[in] angle Specifies the rotation angle (in radians).
+\see FreeRotation
+*/
+template <class M, typename T>
+void RotateFree(M& mat, const Vector3T<T>& axis, const T& angle)
+{
+    auto rotation = M::Identity();
+    FreeRotation(rotation, axis, angle);
+    mat *= rotation;
 }
 
 

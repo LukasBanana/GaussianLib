@@ -27,7 +27,8 @@ Base 3D vector class with components: x, y, and z.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector3T
+template <typename T>
+class Vector3T
 {
     
     public:

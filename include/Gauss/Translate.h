@@ -21,7 +21,7 @@ namespace Details
 {
 
 
-template <typename M, typename T>
+template <class M, typename T>
 void Translate(M& m, const Vector3T<T>& v)
 {
     __GS_ASSERT_MxN_MATRIX__("translation with column vectors", M, 3, 4);

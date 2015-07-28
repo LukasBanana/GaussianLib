@@ -20,13 +20,10 @@ namespace Details
 {
 
 
-template <typename M, typename T>
+template <class M, typename T>
 void Scale3x3(M& m, const Vector3T<T>& v)
 {
-    static_assert(
-        M::rows >= 3 && M::columns >= 3,
-        "scale requires a matrix with at least 3 rows and 3 columns"
-    );
+    __GS_ASSERT_MxN_MATRIX__("scale with 3D vector", M, 3, 3);
 
     m.At(0, 0) *= v.x;
     m.At(1, 0) *= v.x;

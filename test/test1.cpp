@@ -159,7 +159,7 @@ static void sparesMatrixTest1()
          0, 1, 2, 0;
 
     auto B2 = B;
-    B2.RotateFree(Vector4(1, 1, 1).Normalized(), pi*0.5f);
+    RotateFree(B2, Vector3(1, 1, 1).Normalized(), pi*0.5f);
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
@@ -195,7 +195,7 @@ static void quaternionTest1()
     }*/
 
     Matrix3 m = Matrix3::Identity();
-    m.RotateFree(Vector3(1, 0, 1), pi*0.5f);
+    RotateFree(m, Vector3(1, 0, 1), pi*0.5f);
 
     std::cout << "m = " << std::endl << m << std::endl;
     std::cout << "Quaterion(m) = " << Quaternion(m) << std::endl;

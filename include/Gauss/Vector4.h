@@ -27,7 +27,8 @@ Base 4D vector class with components: x, y, z, and w.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector4T
+template <typename T>
+class Vector4T
 {
     
     public:

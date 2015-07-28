@@ -35,8 +35,9 @@ namespace Gs
 #endif
 
 /**
-\brief This is a 'sparse' 4x4 matrix, i.e. it only stores
-a 3x4 matrix where the 4th row is always implicitly (0, 0, 0, 1).
+This is a 'sparse' 4x4 matrix for affine transformations,
+i.e. it can only contain translations, scaling, rotations and shearing.
+It only stores a 3x4 matrix where the 4th row is always implicitly (0, 0, 0, 1).
 \tparam T Specifies the data type of the matrix components.
 This should be a primitive data type such as float, double, int etc.
 \remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
@@ -59,7 +60,8 @@ Here is an example, how a sparse 4x4 matrix is laid-out with column- and row vec
 // In both cases, (w1, w2, w3, 1) stores the position in an affine transformation.
 \endcode
 */
-template <typename T> class SparseMatrix4T
+template <typename T>
+class SparseMatrix4T
 {
     
     public:
@@ -317,18 +319,6 @@ template <typename T> class SparseMatrix4T
             return Gs::Inverse(*this, in);
         }
 
-        /**
-        \brief Rotates this matrix around the specified axis.
-        \see MakeFreeRotation
-        */
-        template <template <typename> class Vec>
-        void RotateFree(const Vec<T>& axis, const T& angle)
-        {
-            ThisType rotation;
-            Gs::FreeRotation(rotation, axis, angle);
-            *this *= rotation;
-        }
-
         //! Returns a pointer to the first element of this matrix.
         T* Ptr()
         {
@@ -339,6 +329,20 @@ template <typename T> class SparseMatrix4T
         const T* Ptr() const
         {
             return &(m_[0]);
+        }
+
+        /* --- Extended functions for affine transformations --- */
+
+        void SetPosition(const Vector3T<T>& position)
+        {
+            At(0, 3) = position.x;
+            At(1, 3) = position.y;
+            At(2, 3) = position.z;
+        }
+
+        Vector3T<T> GetPosition() const
+        {
+            return Vector3T<T>(At(0, 3), At(1, 3), At(2, 3));
         }
 
     private:
