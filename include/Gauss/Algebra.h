@@ -175,17 +175,17 @@ void MakeFreeRotation(M& mat, const V<T>& axis, const T& angle)
     const T& z  = axis.z;
 
     /* Perform matrix rotation */
-    mat(0, 0) = x*x*cc + c;
-    mat(1, 0) = x*y*cc - z*s;
-    mat(2, 0) = x*z*cc + y*s;
+    mat.At(0, 0) = x*x*cc + c;
+    mat.At(1, 0) = x*y*cc - z*s;
+    mat.At(2, 0) = x*z*cc + y*s;
 
-    mat(0, 1) = y*x*cc + z*s;
-    mat(1, 1) = y*y*cc + c;
-    mat(2, 1) = y*z*cc - x*s;
+    mat.At(0, 1) = y*x*cc + z*s;
+    mat.At(1, 1) = y*y*cc + c;
+    mat.At(2, 1) = y*z*cc - x*s;
 
-    mat(0, 2) = x*z*cc - y*s;
-    mat(1, 2) = y*z*cc + x*s;
-    mat(2, 2) = z*z*cc + c;
+    mat.At(0, 2) = x*z*cc - y*s;
+    mat.At(1, 2) = y*z*cc + x*s;
+    mat.At(2, 2) = z*z*cc + c;
 }
 
 

@@ -28,17 +28,17 @@ void Scale3x3(M& m, const Vector3T<T>& v)
         "scale requires a matrix with at least 3 rows and 3 columns"
     );
 
-    m(0, 0) *= v.x;
-    m(0, 1) *= v.y;
-    m(0, 2) *= v.z;
+    m.At(0, 0) *= v.x;
+    m.At(1, 0) *= v.x;
+    m.At(2, 0) *= v.x;
 
-    m(1, 0) *= v.x;
-    m(1, 1) *= v.y;
-    m(1, 2) *= v.z;
+    m.At(0, 1) *= v.y;
+    m.At(1, 1) *= v.y;
+    m.At(2, 1) *= v.y;
 
-    m(2, 0) *= v.x;
-    m(2, 1) *= v.y;
-    m(2, 2) *= v.z;
+    m.At(0, 2) *= v.z;
+    m.At(1, 2) *= v.z;
+    m.At(2, 2) *= v.z;
 }
 
 
@@ -53,9 +53,9 @@ void Scale(Matrix<T, 4, 4>& m, const Vector3T<T>& v)
     Details::Scale3x3(m, v);
 
     /* Also scale 4th row */
-    m(3, 0) *= v.x;
-    m(3, 1) *= v.y;
-    m(3, 2) *= v.z;
+    m.At(3, 0) *= v.x;
+    m.At(3, 1) *= v.y;
+    m.At(3, 2) *= v.z;
 }
 
 //! Translates the specified 3x3 matrix 'm' by the vector 'v'.
