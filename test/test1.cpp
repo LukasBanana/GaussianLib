@@ -5,7 +5,7 @@
  * See "LICENSE.txt" for license information.
  */
 
-//#define GS_COLUMN_MAJOR_STORAGE
+//#define GS_ROW_MAJOR_STORAGE
 #define GS_ENABLE_SWIZZLE_OPERATOR
 
 #include <Gauss/Gauss.h>
@@ -210,6 +210,11 @@ static void matrixVectorTest1()
          0, 1, 0, 2,
          0, 0, 1, -5;
 
+    #if 1
+    std::cout << "A^-1 = " << std::endl << A.Inverse() << std::endl;
+    std::cout << "A*A^-1 = " << std::endl << A*A.Inverse() << std::endl;
+    #endif
+
     auto a = TransformVector(A, Vector4(0, 0, 0, 1));
     auto b = TransformVector(B, Vector4(0, 0, 0, 1));
 
@@ -236,11 +241,11 @@ int main()
     std::cout << "GaussianLib Test 1" << std::endl;
     std::cout << "==================" << std::endl;
 
-    commonTest1();
-    sparesMatrixTest1();
-    quaternionTest1();
+    //commonTest1();
+    //sparesMatrixTest1();
+    //quaternionTest1();
     matrixVectorTest1();
-    complexTest1();
+    //complexTest1();
 
     #ifdef _WIN32
     system("pause");

@@ -20,7 +20,7 @@
 //#define GS_DISABLE_AUTO_INIT
 
 //! Enables column-major storage. If undefined, column-major storage is used (default).
-//#define GS_COLUMN_MAJOR_STORAGE
+//#define GS_ROW_MAJOR_STORAGE
 
 //! Enables row vectors. If undefined, column vectors are used (default).
 //#define GS_ROW_VECTORS //!UNUSED!

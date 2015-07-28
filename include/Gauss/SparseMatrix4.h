@@ -24,7 +24,7 @@ namespace Gs
 {
 
 
-#ifdef GS_COLUMN_MAJOR_STORAGE
+#ifdef GS_ROW_MAJOR_STORAGE
 #   define __GS_FOREACH_ROW_COL__(r, c)                                     \
         for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)     \
         for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
@@ -39,8 +39,8 @@ namespace Gs
 a 3x4 matrix where the 4th row is always implicitly (0, 0, 0, 1).
 \tparam T Specifies the data type of the matrix components.
 This should be a primitive data type such as float, double, int etc.
-\remarks The macro GS_COLUMN_MAJOR_STORAGE can be defined, to use column-major matrices.
-By default row-major matrices are used.
+\remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
+By default column-major storage layout is used.
 */
 template <typename T> class SparseMatrix4T
 {
@@ -122,10 +122,10 @@ template <typename T> class SparseMatrix4T
         {
             GS_ASSERT(row < SparseMatrix4T<T>::rowsSparse);
             GS_ASSERT(col < SparseMatrix4T<T>::columnsSparse);
-            #ifdef GS_COLUMN_MAJOR_STORAGE
-            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
-            #else
+            #ifdef GS_ROW_MAJOR_STORAGE
             return m_[row*SparseMatrix4T<T>::columnsSparse + col];
+            #else
+            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
             #endif
         }
 
@@ -139,10 +139,10 @@ template <typename T> class SparseMatrix4T
         {
             GS_ASSERT(row < SparseMatrix4T<T>::rowsSparse);
             GS_ASSERT(col < SparseMatrix4T<T>::columnsSparse);
-            #ifdef GS_COLUMN_MAJOR_STORAGE
-            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
-            #else
+            #ifdef GS_ROW_MAJOR_STORAGE
             return m_[row*SparseMatrix4T<T>::columnsSparse + col];
+            #else
+            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
             #endif
         }
 
