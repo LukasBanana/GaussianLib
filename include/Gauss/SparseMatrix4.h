@@ -199,30 +199,9 @@ class SparseMatrix4T
             return m_[element];
         }
 
-        ThisType& operator += (const ThisType& rhs)
-        {
-            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
-                m_[i] += rhs.m_[i];
-            return *this;
-        }
-
-        ThisType& operator -= (const ThisType& rhs)
-        {
-            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
-                m_[i] -= rhs.m_[i];
-            return *this;
-        }
-
         ThisType& operator *= (const ThisType& rhs)
         {
             *this = (*this * rhs);
-            return *this;
-        }
-
-        ThisType& operator *= (const T& rhs)
-        {
-            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
-                m_[i] *= rhs;
             return *this;
         }
 
@@ -355,34 +334,6 @@ class SparseMatrix4T
 
 
 /* --- Global Operators --- */
-
-template <typename T> SparseMatrix4T<T> operator + (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
-{
-    auto result = lhs;
-    result += rhs;
-    return result;
-}
-
-template <typename T> SparseMatrix4T<T> operator - (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
-{
-    auto result = lhs;
-    result -= rhs;
-    return result;
-}
-
-template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> SparseMatrix4T<T> operator * (const T& lhs, const SparseMatrix4T<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
 
 template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
 {

@@ -158,8 +158,8 @@ static void sparesMatrixTest1()
          0, 8, 0, -4,
          0, 1, 2, 0;
 
-    auto B2 = B;
-    RotateFree(B2, Vector3(1, 1, 1).Normalized(), pi*0.5f);
+    auto A2 = A;
+    RotateFree(A2, Vector3(1, 1, 1).Normalized(), pi*0.5f);
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
@@ -172,9 +172,9 @@ static void sparesMatrixTest1()
     std::cout << "| B | = " << B.Determinant() << std::endl;
     std::cout << "Trace A = " << A.Trace() << std::endl;
     std::cout << "Trace B = " << B.Trace() << std::endl;
-    std::cout << std::endl << "B1 = " << std::endl << B << std::endl;
-    std::cout << std::endl << "B2 = " << std::endl << B2 << std::endl;
-    std::cout << std::endl << "Lerp(B1, B2, 0.5) = " << std::endl << Lerp(B, B2, 0.5f) << std::endl;
+    std::cout << std::endl << "A1 = " << std::endl << A << std::endl;
+    std::cout << std::endl << "A2 = " << std::endl << A2 << std::endl;
+    std::cout << std::endl << "Lerp(A1, A2, 0.5) = " << std::endl << Lerp(A, A2, 0.5f) << std::endl;
     std::cout << std::endl << "5 * I3 = " << std::endl << 5.0f * Matrix3::Identity() << std::endl;
 }
 
