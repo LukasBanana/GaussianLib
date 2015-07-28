@@ -45,9 +45,9 @@ void Translate(Matrix<T, 4, 4>& m, const Vector3T<T>& v)
     m.At(3, 3) += ( m.At(3, 0)*v.x + m.At(3, 1)*v.y + m.At(3, 2)*v.z );
 }
 
-//! Computes the inverse of the specified sparse 4x4 matrix 'm'.
+//! Computes the inverse of the specified affine 4x4 matrix 'm'.
 template <typename T>
-void Translate(SparseMatrix4T<T>& m, const Vector3T<T>& v)
+void Translate(AffineMatrix4T<T>& m, const Vector3T<T>& v)
 {
     Details::Translate(m, v);
 }

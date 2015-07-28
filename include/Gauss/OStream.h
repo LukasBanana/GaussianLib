@@ -13,7 +13,7 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Matrix.h"
-#include "SparseMatrix4.h"
+#include "AffineMatrix4.h"
 
 #include <iostream>
 #include <algorithm>
@@ -61,12 +61,12 @@ template <typename T, std::size_t Rows, std::size_t Cols>
 std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& mat)
 {
     /* Determine longest elements for each row */
-    std::array<std::size_t, SparseMatrix4T<T>::columns> lengths;
+    std::array<std::size_t, AffineMatrix4T<T>::columns> lengths;
 
-    for (std::size_t c = 0; c < SparseMatrix4T<T>::columns; ++c)
+    for (std::size_t c = 0; c < AffineMatrix4T<T>::columns; ++c)
     {
         lengths[c] = 0;
-        for (std::size_t r = 0; r < SparseMatrix4T<T>::rows; ++r)
+        for (std::size_t r = 0; r < AffineMatrix4T<T>::rows; ++r)
             lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
     }
 
@@ -88,44 +88,44 @@ std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& ma
 }
 
 template <typename T>
-std::ostream& operator << (std::ostream& stream, const SparseMatrix4T<T>& mat)
+std::ostream& operator << (std::ostream& stream, const AffineMatrix4T<T>& mat)
 {
     /* Determine longest elements for each row */
-    std::array<std::size_t, SparseMatrix4T<T>::columnsSparse> lengths;
+    std::array<std::size_t, AffineMatrix4T<T>::columnsSparse> lengths;
 
-    for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+    for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
     {
         lengths[c] = 0;
-        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+        for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
             lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
     }
 
     #ifdef GS_ROW_VECTORS
 
     /* Write each row */
-    for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+    for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
     {
-        stream << (r == 0 ? '/' : r + 1 == SparseMatrix4T<T>::rowsSparse ? '\\' : '|');
+        stream << (r == 0 ? '/' : r + 1 == AffineMatrix4T<T>::rowsSparse ? '\\' : '|');
 
-        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
         {
             stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');
             stream << mat(r, c) << ' ';
         }
 
         /* Write implicit column */
-        stream << ' ' << (r + 1 == SparseMatrix4T<T>::rowsSparse ? '1' : '0');
-        stream << ' ' << (r == 0 ? '\\' : r + 1 == SparseMatrix4T<T>::rowsSparse ? '/' : '|')  << std::endl;
+        stream << ' ' << (r + 1 == AffineMatrix4T<T>::rowsSparse ? '1' : '0');
+        stream << ' ' << (r == 0 ? '\\' : r + 1 == AffineMatrix4T<T>::rowsSparse ? '/' : '|')  << std::endl;
     }
 
     #else
 
     /* Write each row */
-    for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+    for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
     {
         stream << (r == 0 ? '/' : '|');
 
-        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
         {
             stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');
             stream << mat(r, c) << ' ';
@@ -137,10 +137,10 @@ std::ostream& operator << (std::ostream& stream, const SparseMatrix4T<T>& mat)
     /* Write implicit row */
     stream << '\\';
     
-    for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+    for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
     {
         stream << std::string(lengths[c], ' ');
-        stream << (c + 1 == SparseMatrix4T<T>::columnsSparse ? '1' : '0') << ' ';
+        stream << (c + 1 == AffineMatrix4T<T>::columnsSparse ? '1' : '0') << ' ';
     }
 
     stream << '/' << std::endl;

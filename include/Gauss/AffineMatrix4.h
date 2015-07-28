@@ -1,12 +1,12 @@
 /*
- * SparseMatrix4.h
+ * AffineMatrix4.h
  * 
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_SPARSE_MATRIX4_H__
-#define __GS_SPARSE_MATRIX4_H__
+#ifndef __GS_AFFINE_MATRIX4_H__
+#define __GS_AFFINE_MATRIX4_H__
 
 
 #include "Real.h"
@@ -26,16 +26,16 @@ namespace Gs
 
 #ifdef GS_ROW_MAJOR_STORAGE
 #   define __GS_FOREACH_ROW_COL__(r, c)                                     \
-        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)     \
-        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+        for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)     \
+        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
 #else
 #   define __GS_FOREACH_ROW_COL__(r, c)                                     \
-        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)  \
-        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)  \
+        for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
 #endif
 
 /**
-This is a 'sparse' 4x4 matrix for affine transformations,
+This is an affine 4x4 matrix for affine transformations,
 i.e. it can only contain translations, scaling, rotations and shearing.
 It only stores a 3x4 matrix where the 4th row is always implicitly (0, 0, 0, 1).
 \tparam T Specifies the data type of the matrix components.
@@ -43,15 +43,15 @@ This should be a primitive data type such as float, double, int etc.
 \remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
 By default column-major storage layout is used.
 The macro GS_ROW_VECTORS can be defined, to use row vectors. By default column vectors are used.
-Here is an example, how a sparse 4x4 matrix is laid-out with column- and row vectors:
+Here is an example, how an affine 4x4 matrix is laid-out with column- and row vectors:
 \code
-// Spares 4x4 matrix with column vectors:
+// Affine 4x4 matrix with column vectors:
 // / x1 y1 z1 w1 \
 // | x2 y2 z2 w2 |
 // | x3 y3 z3 w3 |
 // \  0  0  0  1 /
 
-// Spares 4x4 matrix with row vectors:
+// Affine 4x4 matrix with row vectors:
 // / x1 x2 x3 0 \
 // | y1 y2 y3 0 |
 // | z1 z2 z3 0 |
@@ -61,14 +61,14 @@ Here is an example, how a sparse 4x4 matrix is laid-out with column- and row vec
 \endcode
 */
 template <typename T>
-class SparseMatrix4T
+class AffineMatrix4T
 {
     
     public:
         
         static const std::size_t rows           = 4;
         static const std::size_t columns        = 4;
-        static const std::size_t elements       = SparseMatrix4T<T>::rows*SparseMatrix4T<T>::columns;
+        static const std::size_t elements       = AffineMatrix4T<T>::rows*AffineMatrix4T<T>::columns;
 
         #ifdef GS_ROW_VECTORS
         static const std::size_t rowsSparse     = 4;
@@ -78,12 +78,12 @@ class SparseMatrix4T
         static const std::size_t columnsSparse  = 4;
         #endif
 
-        static const std::size_t elementsSparse = SparseMatrix4T<T>::rowsSparse*SparseMatrix4T<T>::columnsSparse;
+        static const std::size_t elementsSparse = AffineMatrix4T<T>::rowsSparse*AffineMatrix4T<T>::columnsSparse;
 
-        using ThisType = SparseMatrix4T<T>;
+        using ThisType = AffineMatrix4T<T>;
 
-        //! Transposed matrix type, i.e. SparseMatrix4T<T> becomes Matrix<T, 4, 4>.
-        using TransposedType = Matrix<T, SparseMatrix4T<T>::rows, SparseMatrix4T<T>::columns>;
+        //! Transposed matrix type, i.e. AffineMatrix4T<T> becomes Matrix<T, 4, 4>.
+        using TransposedType = Matrix<T, AffineMatrix4T<T>::rows, AffineMatrix4T<T>::columns>;
 
         class Initializer
         {
@@ -98,7 +98,7 @@ class SparseMatrix4T
 
                 Initializer& operator , (const T& nextValue)
                 {
-                    matrix_(element_ / SparseMatrix4T<T>::columnsSparse, element_ % SparseMatrix4T<T>::columnsSparse) = nextValue;
+                    matrix_(element_ / AffineMatrix4T<T>::columnsSparse, element_ % AffineMatrix4T<T>::columnsSparse) = nextValue;
                     ++element_;
                     return *this;
                 }
@@ -110,21 +110,21 @@ class SparseMatrix4T
 
         };
 
-        SparseMatrix4T()
+        AffineMatrix4T()
         {
             #ifndef GS_ENABLE_AUTO_INIT
             Reset();
             #endif
         }
 
-        SparseMatrix4T(const ThisType& rhs)
+        AffineMatrix4T(const ThisType& rhs)
         {
             *this = rhs;
         }
 
         #ifdef GS_ROW_VECTORS
 
-        SparseMatrix4T(
+        AffineMatrix4T(
             const T& m11, const T& m12, const T& m13,
             const T& m21, const T& m22, const T& m23,
             const T& m31, const T& m32, const T& m33,
@@ -138,7 +138,7 @@ class SparseMatrix4T
 
         #else
 
-        SparseMatrix4T(
+        AffineMatrix4T(
             const T& m11, const T& m12, const T& m13, const T& m14,
             const T& m21, const T& m22, const T& m23, const T& m24,
             const T& m31, const T& m32, const T& m33, const T& m34)
@@ -150,7 +150,7 @@ class SparseMatrix4T
 
         #endif
 
-        SparseMatrix4T(UninitializeTag)
+        AffineMatrix4T(UninitializeTag)
         {
             // do nothing
         }
@@ -162,12 +162,12 @@ class SparseMatrix4T
         */
         T& operator () (std::size_t row, std::size_t col)
         {
-            GS_ASSERT(row < SparseMatrix4T<T>::rowsSparse);
-            GS_ASSERT(col < SparseMatrix4T<T>::columnsSparse);
+            GS_ASSERT(row < AffineMatrix4T<T>::rowsSparse);
+            GS_ASSERT(col < AffineMatrix4T<T>::columnsSparse);
             #ifdef GS_ROW_MAJOR_STORAGE
-            return m_[row*SparseMatrix4T<T>::columnsSparse + col];
+            return m_[row*AffineMatrix4T<T>::columnsSparse + col];
             #else
-            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
+            return m_[col*AffineMatrix4T<T>::rowsSparse + row];
             #endif
         }
 
@@ -178,24 +178,24 @@ class SparseMatrix4T
         */
         const T& operator () (std::size_t row, std::size_t col) const
         {
-            GS_ASSERT(row < SparseMatrix4T<T>::rowsSparse);
-            GS_ASSERT(col < SparseMatrix4T<T>::columnsSparse);
+            GS_ASSERT(row < AffineMatrix4T<T>::rowsSparse);
+            GS_ASSERT(col < AffineMatrix4T<T>::columnsSparse);
             #ifdef GS_ROW_MAJOR_STORAGE
-            return m_[row*SparseMatrix4T<T>::columnsSparse + col];
+            return m_[row*AffineMatrix4T<T>::columnsSparse + col];
             #else
-            return m_[col*SparseMatrix4T<T>::rowsSparse + row];
+            return m_[col*AffineMatrix4T<T>::rowsSparse + row];
             #endif
         }
 
         T& operator [] (std::size_t element)
         {
-            GS_ASSERT(element < SparseMatrix4T<T>::elementsSparse);
+            GS_ASSERT(element < AffineMatrix4T<T>::elementsSparse);
             return m_[element];
         }
 
         const T& operator [] (std::size_t element) const
         {
-            GS_ASSERT(element < SparseMatrix4T<T>::elementsSparse);
+            GS_ASSERT(element < AffineMatrix4T<T>::elementsSparse);
             return m_[element];
         }
 
@@ -285,16 +285,16 @@ class SparseMatrix4T
             return (*this)(0, 0) + (*this)(1, 1) + (*this)(2, 2) + T(1);
         }
 
-        SparseMatrix4T<T> Inverse() const
+        AffineMatrix4T<T> Inverse() const
         {
-            SparseMatrix4T<T> inv{ *this };
+            AffineMatrix4T<T> inv{ *this };
             inv.MakeInverse();
             return inv;
         }
 
         bool MakeInverse()
         {
-            SparseMatrix4T<T> in{ *this };
+            AffineMatrix4T<T> in{ *this };
             return Gs::Inverse(*this, in);
         }
 
@@ -335,40 +335,40 @@ class SparseMatrix4T
 
 /* --- Global Operators --- */
 
-template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs, const SparseMatrix4T<T>& rhs)
+template <typename T> AffineMatrix4T<T> operator * (const AffineMatrix4T<T>& lhs, const AffineMatrix4T<T>& rhs)
 {
-    SparseMatrix4T<T> result(UninitializeTag{});
+    AffineMatrix4T<T> result(UninitializeTag{});
 
     #ifdef GS_ROW_VECTORS
 
-    for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+    for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
     {
-        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+        for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
         {
             /* Only accumulate with 'rowsSparse' here! */
             result(r, c) = T(0);
-            for (std::size_t i = 0; i < SparseMatrix4T<T>::columnsSparse; ++i)
+            for (std::size_t i = 0; i < AffineMatrix4T<T>::columnsSparse; ++i)
                 result(r, c) += lhs(r, i)*rhs(i, c);
         }
 
         /* Accumulate the rest of the current column of 'lhs' and the implicit 1 of 'rhs' */
-        result(SparseMatrix4T<T>::rowsSparse - 1, c) += lhs(SparseMatrix4T<T>::rowsSparse - 1, c);
+        result(AffineMatrix4T<T>::rowsSparse - 1, c) += lhs(AffineMatrix4T<T>::rowsSparse - 1, c);
     }
 
     #else
 
-    for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+    for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
     {
-        for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
         {
             /* Only accumulate with 'rowsSparse' here! */
             result(r, c) = T(0);
-            for (std::size_t i = 0; i < SparseMatrix4T<T>::rowsSparse; ++i)
+            for (std::size_t i = 0; i < AffineMatrix4T<T>::rowsSparse; ++i)
                 result(r, c) += lhs(r, i)*rhs(i, c);
         }
 
         /* Accumulate the rest of the current row of 'lhs' and the implicit 1 of 'rhs' */
-        result(r, SparseMatrix4T<T>::columnsSparse - 1) += lhs(r, SparseMatrix4T<T>::columnsSparse - 1);
+        result(r, AffineMatrix4T<T>::columnsSparse - 1) += lhs(r, AffineMatrix4T<T>::columnsSparse - 1);
     }
 
     #endif
@@ -377,9 +377,9 @@ template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs
 }
 
 template <typename T, typename I>
-typename SparseMatrix4T<T>::Initializer operator << (SparseMatrix4T<T>& matrix, const I& firstValue)
+typename AffineMatrix4T<T>::Initializer operator << (AffineMatrix4T<T>& matrix, const I& firstValue)
 {
-    typename SparseMatrix4T<T>::Initializer initializer(matrix);
+    typename AffineMatrix4T<T>::Initializer initializer(matrix);
     initializer , static_cast<T>(firstValue);
     return initializer;
 }
@@ -387,10 +387,10 @@ typename SparseMatrix4T<T>::Initializer operator << (SparseMatrix4T<T>& matrix, 
 
 /* --- Type Alias --- */
 
-using SparseMatrix4 = SparseMatrix4T<Real>;
-using SparseMatrix4f = SparseMatrix4T<float>;
-using SparseMatrix4d = SparseMatrix4T<double>;
-using SparseMatrix4i = SparseMatrix4T<int>;
+using AffineMatrix4     = AffineMatrix4T<Real>;
+using AffineMatrix4f    = AffineMatrix4T<float>;
+using AffineMatrix4d    = AffineMatrix4T<double>;
+using AffineMatrix4i    = AffineMatrix4T<int>;
 
 
 } // /namespace Gs

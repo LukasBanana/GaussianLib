@@ -14,7 +14,7 @@
 #include "Vector4.h"
 #include "Quaternion.h"
 #include "Matrix.h"
-#include "SparseMatrix4.h"
+#include "AffineMatrix4.h"
 
 #include "Algebra.h"
 #include "OStream.h"

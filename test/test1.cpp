@@ -77,14 +77,14 @@ static void commonTest1()
     Matrix<float, 6, 6> hugeMatrix; hugeMatrix.LoadIdentity();
     hugeMatrix.Inverse();
 
-    // --- sparse matrix tests ---
+    // --- affine matrix tests ---
 
-    SparseMatrix4 As(
+    AffineMatrix4 As(
         1, 0, 0, 4,
         0, 1, 0, -2,
         0, 0, 1, 5
     );
-    SparseMatrix4 Bs(
+    AffineMatrix4 Bs(
         1, 0, 0, 6,
         0, 0, 1, 0,
         0, 1, 0, 0
@@ -153,7 +153,7 @@ static void sparesMatrixTest1()
          0, 1, 2, 0,
          0, 0, 0, 1;
 
-    SparseMatrix4 B;
+    AffineMatrix4 B;
     B << 1, 0, -2, 6,
          0, 8, 0, -4,
          0, 1, 2, 0;
@@ -204,7 +204,7 @@ static void quaternionTest1()
 static void matrixVectorTest1()
 {
     Matrix4 A = Matrix4::Identity();
-    SparseMatrix4 B = SparseMatrix4::Identity();
+    AffineMatrix4 B = AffineMatrix4::Identity();
 
     Translate(A, Vector3(4, 2, -5.0f/3.0f));
     Scale(B, Vector3(1, 2, 3));

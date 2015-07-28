@@ -18,7 +18,7 @@ namespace Gs
 
 /**
 \brief Converts the matrix 'in' to the quaternion 'out'.
-\tparam M Specifies the matrix type. This should be Matrix3, Matrix4 or SparseMatrix4.
+\tparam M Specifies the matrix type. This should be Matrix3, Matrix4 or AffineMatrix4.
 \tparam Q Specifies the quaternion type. This should be Quaternion.
 \tparam T Specifies the data type. This must be float or double.
 \param[out] out Specifies the resulting quaternion.

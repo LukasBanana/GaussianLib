@@ -57,7 +57,7 @@ Vector4T<T> TransformVector(const M& mat, const Vector4T<T>& vec)
 }
 
 template <typename T>
-Vector4T<T> TransformVector(const SparseMatrix4T<T>& mat, const Vector4T<T>& vec)
+Vector4T<T> TransformVector(const AffineMatrix4T<T>& mat, const Vector4T<T>& vec)
 {
     return Vector4T<T>(
         vec.x*mat.At(0, 0) + vec.y*mat.At(0, 1) + vec.z*mat.At(0, 2) + vec.w*mat.At(0, 3),

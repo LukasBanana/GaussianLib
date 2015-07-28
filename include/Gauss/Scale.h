@@ -62,9 +62,9 @@ void Scale(Matrix<T, 3, 3>& m, const Vector3T<T>& v)
     Details::Scale3x3(m, v);
 }
 
-//! Computes the inverse of the specified sparse 4x4 matrix 'm'.
+//! Computes the inverse of the specified affine 4x4 matrix 'm'.
 template <typename T>
-void Scale(SparseMatrix4T<T>& m, const Vector3T<T>& v)
+void Scale(AffineMatrix4T<T>& m, const Vector3T<T>& v)
 {
     Details::Scale3x3(m, v);
 }

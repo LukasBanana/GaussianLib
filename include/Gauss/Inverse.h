@@ -110,8 +110,8 @@ bool Inverse(Matrix<T, 4, 4>& inv, const Matrix<T, 4, 4>& m)
     return true;
 }
 
-//! Computes the inverse of the specified sparse 4x4 matrix 'm'.
-template <typename T> bool Inverse(SparseMatrix4T<T>& inv, const SparseMatrix4T<T>& m)
+//! Computes the inverse of the specified affine 4x4 matrix 'm'.
+template <typename T> bool Inverse(AffineMatrix4T<T>& inv, const AffineMatrix4T<T>& m)
 {
     /* Compute inverse determinant */
     T d = Determinant(m);
