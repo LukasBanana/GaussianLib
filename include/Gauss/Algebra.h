@@ -176,38 +176,68 @@ void MakeFreeRotation(M& mat, const V<T>& axis, const T& angle)
 
     /* Perform matrix rotation */
     mat(0, 0) = x*x*cc + c;
-    mat(0, 1) = y*x*cc + z*s;
-    mat(0, 2) = x*z*cc - y*s;
-
     mat(1, 0) = x*y*cc - z*s;
-    mat(1, 1) = y*y*cc + c;
-    mat(1, 2) = y*z*cc + x*s;
-
     mat(2, 0) = x*z*cc + y*s;
+
+    mat(0, 1) = y*x*cc + z*s;
+    mat(1, 1) = y*y*cc + c;
     mat(2, 1) = y*z*cc - x*s;
+
+    mat(0, 2) = x*z*cc - y*s;
+    mat(1, 2) = y*z*cc + x*s;
     mat(2, 2) = z*z*cc + c;
 }
 
 
 /* --- Global Operators --- */
 
+#ifdef GS_ROW_VECTORS
+
+//! \brief Multiplies the N-dimensional vector with the NxN matrix with.
+template <template <typename> class Vec, typename T, std::size_t N>
+Vec<T> operator * (const Vec<T>& vec, const Matrix<T, N, N>& mat)
+{
+    static_assert(
+        Vec<T>::components == N,
+        "only N-dimensional vectors can be multiplied with NxN matrices"
+    );
+
+    Vec<T> result;
+
+    for (std::size_t c = 0; c < N; ++c)
+    {
+        result[c] = T(0);
+        for (std::size_t r = 0; r < N; ++r)
+            result[c] += mat(r, c)*vec[r];
+    }
+
+    return result;
+}
+
+#else
+
 //! \brief Multiplies the NxN matrix with the N-dimensional vector.
 template <template <typename> class Vec, typename T, std::size_t N>
 Vec<T> operator * (const Matrix<T, N, N>& mat, const Vec<T>& vec)
 {
-    static_assert(Vec<T>::components == N, "only NxN matrices can be multiplied with N-dimensional vectors");
+    static_assert(
+        Vec<T>::components == N,
+        "only NxN matrices can be multiplied with N-dimensional vectors"
+    );
 
     Vec<T> result;
 
     for (std::size_t r = 0; r < N; ++r)
     {
-        result[r] = 0;
+        result[r] = T(0);
         for (std::size_t c = 0; c < N; ++c)
             result[r] += mat(r, c)*vec[c];
     }
 
     return result;
 }
+
+#endif
 
 
 } // /namespace Gs

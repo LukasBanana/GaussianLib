@@ -111,11 +111,16 @@ static void commonTest1()
     std::cout << "A^T = " << std::endl << A.Transposed() << std::endl;
     std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "A * B = " << std::endl << (A * B) << std::endl;
+
+    #ifdef GS_ROW_VECTORS
+    std::cout << "a * A = " << std::endl << (a * A) << std::endl;
+    #else
     std::cout << "A * a = " << std::endl << (A * a) << std::endl;
+    #endif
 
     #endif
 
-    #if 1
+    #if 0
 
     std::cout << "m2x2 = " << std::endl << m2x2 << std::endl;
     std::cout << "Inverse(m2x2) = " << std::endl << m2x2.Inverse() << std::endl;
@@ -123,7 +128,7 @@ static void commonTest1()
 
     #endif
     
-    #if 1
+    #if 0
 
     std::cout << "A = " << std::endl << A << std::endl;
     std::cout << "Inverse(A) = " << std::endl << A.Inverse() << std::endl;
@@ -132,7 +137,7 @@ static void commonTest1()
 
     #endif
 
-    #if 1
+    #if 0
 
     std::cout << "hugeMatrix = " << std::endl << hugeMatrix << std::endl;
     std::cout << "Determinant(hugeMatrix) = " << hugeMatrix.Determinant() << std::endl;
@@ -201,6 +206,17 @@ static void matrixVectorTest1()
     Matrix4 A;
     SparseMatrix4 B;
 
+    #ifdef GS_ROW_VECTORS
+    A << 1, 0, 0, 0,
+         0, 1, 0, 0,
+         0, 0, 1, 0,
+         4, 2, -5, 1;
+    
+    B << 1, 0, 0,
+         0, 1, 0,
+         0, 0, 1,
+         4, 2, -5;
+    #else
     A << 1, 0, 0, 4,
          0, 1, 0, 2,
          0, 0, 1, -5,
@@ -209,6 +225,7 @@ static void matrixVectorTest1()
     B << 1, 0, 0, 4,
          0, 1, 0, 2,
          0, 0, 1, -5;
+    #endif
 
     #if 1
     std::cout << "A^-1 = " << std::endl << A.Inverse() << std::endl;
@@ -232,7 +249,11 @@ static void complexTest1()
     Vector4T<complex> a(complex(0, 0), complex(0, 1), complex(4, -2));
     Matrix4T<complex> A = Matrix4T<complex>::Identity();
 
+    #ifdef GS_ROW_VECTORS
+    auto b = a * A;
+    #else
     auto b = A * a;
+    #endif
 
 }
 

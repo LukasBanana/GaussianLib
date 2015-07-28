@@ -23,7 +23,7 @@
 //#define GS_ROW_MAJOR_STORAGE
 
 //! Enables row vectors. If undefined, column vectors are used (default).
-//#define GS_ROW_VECTORS //!UNUSED!
+#define GS_ROW_VECTORS
 
 
 #endif

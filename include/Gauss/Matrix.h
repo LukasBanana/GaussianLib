@@ -42,6 +42,23 @@ namespace Gs
 This should be a primitive data type such as float, double, int etc.
 \remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
 By default column-major storage layout is used.
+The macro GS_ROW_VECTORS can be defined, to use row vectors. By default column vectors are used.
+Here is an example, how a 4x4 matrix is laid-out with column- and row vectors:
+\code
+// 4x4 matrix with column vectors:
+// / x1 y1 z1 w1 \
+// | x2 y2 z2 w2 |
+// | x3 y3 z3 w3 |
+// \ x4 y4 z4 w4 /
+
+// 4x4 matrix with row vectors:
+// / x1 x2 x3 x4 \
+// | y1 y2 y3 y4 |
+// | z1 z2 z3 z4 |
+// \ w1 w2 w3 w4 /
+
+// In both cases, (w1, w2, w3, w4) stores the position in an affine transformation.
+\endcode
 */
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 {
@@ -284,9 +301,6 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
 
 };
 
-#undef __GS_ASSERT_NxN_MATRIX__
-#undef __GS_FOREACH_ROW_COL__
-
 
 /* --- Global Operators --- */
 
@@ -327,14 +341,11 @@ Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Ma
 {
     Matrix<T, Rows, Cols> result(UninitializeTag{});
 
-    for (std::size_t r = 0; r < Rows; ++r)
+    __GS_FOREACH_ROW_COL__(r, c)
     {
-        for (std::size_t c = 0; c < Cols; ++c)
-        {
-            result(r, c) = T(0);
-            for (std::size_t i = 0; i < ColsRows; ++i)
-                result(r, c) += lhs(r, i)*rhs(i, c);
-        }
+        result(r, c) = T(0);
+        for (std::size_t i = 0; i < ColsRows; ++i)
+            result(r, c) += lhs(r, i)*rhs(i, c);
     }
 
     return result;
@@ -380,6 +391,9 @@ __GS_DEF_MATRIX_TYPES_NxN__(4);
 
 #undef __GS_DEF_MATRIX_TYPES_MxN__
 #undef __GS_DEF_MATRIX_TYPES_NxN__
+
+#undef __GS_ASSERT_NxN_MATRIX__
+#undef __GS_FOREACH_ROW_COL__
 
 
 } // /namespace Gs

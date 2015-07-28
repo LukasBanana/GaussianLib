@@ -41,6 +41,23 @@ a 3x4 matrix where the 4th row is always implicitly (0, 0, 0, 1).
 This should be a primitive data type such as float, double, int etc.
 \remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
 By default column-major storage layout is used.
+The macro GS_ROW_VECTORS can be defined, to use row vectors. By default column vectors are used.
+Here is an example, how a sparse 4x4 matrix is laid-out with column- and row vectors:
+\code
+// Spares 4x4 matrix with column vectors:
+// / x1 y1 z1 w1 \
+// | x2 y2 z2 w2 |
+// | x3 y3 z3 w3 |
+// \  0  0  0  1 /
+
+// Spares 4x4 matrix with row vectors:
+// / x1 x2 x3 0 \
+// | y1 y2 y3 0 |
+// | z1 z2 z3 0 |
+// \ w1 w2 w3 1 /
+
+// In both cases, (w1, w2, w3, 1) stores the position in an affine transformation.
+\endcode
 */
 template <typename T> class SparseMatrix4T
 {
@@ -51,8 +68,14 @@ template <typename T> class SparseMatrix4T
         static const std::size_t columns        = 4;
         static const std::size_t elements       = SparseMatrix4T<T>::rows*SparseMatrix4T<T>::columns;
 
+        #ifdef GS_ROW_VECTORS
+        static const std::size_t rowsSparse     = 4;
+        static const std::size_t columnsSparse  = 3;
+        #else
         static const std::size_t rowsSparse     = 3;
         static const std::size_t columnsSparse  = 4;
+        #endif
+
         static const std::size_t elementsSparse = SparseMatrix4T<T>::rowsSparse*SparseMatrix4T<T>::columnsSparse;
 
         using ThisType = SparseMatrix4T<T>;
@@ -97,6 +120,22 @@ template <typename T> class SparseMatrix4T
             *this = rhs;
         }
 
+        #ifdef GS_ROW_VECTORS
+
+        SparseMatrix4T(
+            const T& m11, const T& m12, const T& m13,
+            const T& m21, const T& m22, const T& m23,
+            const T& m31, const T& m32, const T& m33,
+            const T& m41, const T& m42, const T& m43)
+        {
+            (*this)(0, 0) = m11; (*this)(0, 1) = m12; (*this)(0, 2) = m13;
+            (*this)(1, 0) = m21; (*this)(1, 1) = m22; (*this)(1, 2) = m23;
+            (*this)(2, 0) = m31; (*this)(2, 1) = m32; (*this)(2, 2) = m33;
+            (*this)(3, 0) = m41; (*this)(3, 1) = m42; (*this)(3, 2) = m43;
+        }
+
+        #else
+
         SparseMatrix4T(
             const T& m11, const T& m12, const T& m13, const T& m14,
             const T& m21, const T& m22, const T& m23, const T& m24,
@@ -107,6 +146,8 @@ template <typename T> class SparseMatrix4T
             (*this)(2, 0) = m31; (*this)(2, 1) = m32; (*this)(2, 2) = m33; (*this)(2, 3) = m34;
         }
 
+        #endif
+
         SparseMatrix4T(UninitializeTag)
         {
             // do nothing
@@ -114,9 +155,8 @@ template <typename T> class SparseMatrix4T
 
         /**
         \brief Returns a reference to the element at the specified entry.
-        \param[in] row Specifies the row index. This must be in the range [0, 2].
-        The 4th row (index 3) is not allowed, since this is a sparaw matrix, where the 4th row is always implicitly (0, 0, 0, 1).
-        \param[in] col Specifies the column index. This must be in the range [0, 3].
+        \param[in] row Specifies the row index. This must be in the range [0, 2], or [0, 3] if GS_ROW_VECTORS is defined.
+        \param[in] col Specifies the column index. This must be in the range [0, 3], or [0, 2] if GS_ROW_VECTORS is defined.
         */
         T& operator () (std::size_t row, std::size_t col)
         {
@@ -131,9 +171,8 @@ template <typename T> class SparseMatrix4T
 
         /**
         \brief Returns a constant reference to the element at the specified entry.
-        \param[in] row Specifies the row index. This must be in the range [0, 2].
-        The 4th row (index 3) is not allowed, since this is a sparaw matrix, where the 4th row is always implicitly (0, 0, 0, 1).
-        \param[in] col Specifies the column index. This must be in the range [0, 3].
+        \param[in] row Specifies the row index. This must be in the range [0, 2], or [0, 3] if GS_ROW_VECTORS is defined.
+        \param[in] col Specifies the column index. This must be in the range [0, 3], or [0, 2] if GS_ROW_VECTORS is defined.
         */
         const T& operator () (std::size_t row, std::size_t col) const
         {
@@ -319,6 +358,24 @@ template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs
 {
     SparseMatrix4T<T> result(UninitializeTag{});
 
+    #ifdef GS_ROW_VECTORS
+
+    for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
+    {
+        for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
+        {
+            /* Only accumulate with 'rowsSparse' here! */
+            result(r, c) = T(0);
+            for (std::size_t i = 0; i < SparseMatrix4T<T>::columnsSparse; ++i)
+                result(r, c) += lhs(r, i)*rhs(i, c);
+        }
+
+        /* Accumulate the rest of the current column of 'lhs' and the implicit 1 of 'rhs' */
+        result(SparseMatrix4T<T>::rowsSparse - 1, c) += lhs(SparseMatrix4T<T>::rowsSparse - 1, c);
+    }
+
+    #else
+
     for (std::size_t r = 0; r < SparseMatrix4T<T>::rowsSparse; ++r)
     {
         for (std::size_t c = 0; c < SparseMatrix4T<T>::columnsSparse; ++c)
@@ -332,6 +389,8 @@ template <typename T> SparseMatrix4T<T> operator * (const SparseMatrix4T<T>& lhs
         /* Accumulate the rest of the current row of 'lhs' and the implicit 1 of 'rhs' */
         result(r, SparseMatrix4T<T>::columnsSparse - 1) += lhs(r, SparseMatrix4T<T>::columnsSparse - 1);
     }
+
+    #endif
 
     return result;
 }
