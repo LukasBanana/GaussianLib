@@ -231,6 +231,32 @@ template <typename T> class SparseMatrix4T
             return *this;
         }
 
+        #ifdef GS_ROW_VECTORS
+
+        T& At(std::size_t col, std::size_t row)
+        {
+            return (*this)(row, col);
+        }
+
+        const T& At(std::size_t col, std::size_t row) const
+        {
+            return (*this)(row, col);
+        }
+
+        #else
+
+        T& At(std::size_t row, std::size_t col)
+        {
+            return (*this)(row, col);
+        }
+
+        const T& At(std::size_t row, std::size_t col) const
+        {
+            return (*this)(row, col);
+        }
+
+        #endif
+
         void Reset()
         {
             for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)

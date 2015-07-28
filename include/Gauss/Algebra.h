@@ -157,7 +157,7 @@ static const std::size_t columns; // >= 3
 \param[in] axis Specifies the rotation axis. This must be normalized!
 \param[in] angle Specifies the rotation angle (in radians).
 */
-template <class M, template <typename> class V, typename T>
+template <typename M, template <typename> class V, typename T>
 void MakeFreeRotation(M& mat, const V<T>& axis, const T& angle)
 {
     static_assert(
