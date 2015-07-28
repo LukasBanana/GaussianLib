@@ -207,6 +207,7 @@ static void matrixVectorTest1()
     SparseMatrix4 B = SparseMatrix4::Identity();
 
     Translate(A, Vector3(4, 2, -5.0f/3.0f));
+    Scale(B, Vector3(1, 2, 3));
     Translate(B, Vector3(4, 2, -5.0f/3.0f));
 
     #if 1

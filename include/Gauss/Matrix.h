@@ -13,6 +13,7 @@
 #include "Assert.h"
 #include "Macros.h"
 #include "Tags.h"
+#include "Rotate.h"
 
 #include <cmath>
 #include <cstring>
@@ -321,7 +322,7 @@ template <typename T, std::size_t Rows, std::size_t Cols> class Matrix
         void RotateFree(const Vec<T>& axis, const T& angle)
         {
             auto rotation = ThisType::Identity();
-            Gs::MakeFreeRotation(rotation, axis, angle);
+            Gs::FreeRotation(rotation, axis, angle);
             *this *= rotation;
         }
 

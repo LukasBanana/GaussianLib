@@ -325,7 +325,7 @@ template <typename T> class SparseMatrix4T
         void RotateFree(const Vec<T>& axis, const T& angle)
         {
             ThisType rotation;
-            Gs::MakeFreeRotation(rotation, axis, angle);
+            Gs::FreeRotation(rotation, axis, angle);
             *this *= rotation;
         }
 

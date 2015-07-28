@@ -23,6 +23,7 @@
 #include "Inverse.h"
 #include "Translate.h"
 #include "Scale.h"
+#include "Rotate.h"
 
 #include "TransformVector.h"
 #include "RotateVector.h"
