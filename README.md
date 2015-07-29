@@ -36,6 +36,11 @@ int main()
     Gs::Vector4 a(1, 2, 3, 4), b(-12, 0.5f, 0, 1);
     const Gs::Vector2 c(42, 19);
     
+    // Simple vector access
+    c.x = a.x;
+    a.y = c[1]; // equivalent to a.y = c.y
+    a[2] += a.z // equivalent to a.z += a.z
+    
     // 'Swizzle operator' like functionality
     Gs::Vector3 d = a.xyw()*2.0f + b.zxy() - c.xxy();
 
@@ -64,7 +69,7 @@ int main()
     Gs::Matrix3<double> C = A * B;
     
     // Invert matrix C
-    C.Invert();
+    C.MakeInverse();
     
     // Declare affine 4x4 matrix (only stores 3x4 elements,
     // or 4x3 elements wether GS_ROW_VECTORS is defined or not).
