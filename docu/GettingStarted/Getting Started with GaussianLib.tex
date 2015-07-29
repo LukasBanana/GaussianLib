@@ -79,9 +79,10 @@ The \gausslib requires VisualC++ 2013 (12.0) or higher, to support the C++11 fea
 
 \section*{Vectors}
 
-In the \gausslib vectors are consideres to be \textbf{column vectors}, as it is common in mathematics.
+In the \gausslib vectors are considered to be \textbf{column vectors} per default, as it is common in mathematics.
 I.e. if you want a vector $y$ as a result of a multiplication with a matrix $M$ and a vector $x$,
 write: $y = M * x$.
+To use \textbf{row vectors} instead, define the macro \texttt{GS_ROW_VECTORS} before you include the library.
 There are three base classes for vectors: \texttt{Vector2T<T>}, \texttt{Vector3T<T>}, and \texttt{Vector4T<T>},
 where \texttt{<T>} specifies the template typename T. There are also pre-defined type aliases
 (\texttt{\textit{N}} is either 2, 3 or 4):
@@ -132,7 +133,7 @@ a[0] += 2; // equivalent to a.x += 2;
 \section*{Matrices}
 
 There is only a single general-purpose class for matrices
-(except SparseMatrix4T, see section \ref{sec:sparse_matrices}{Sparse Matrices}):
+(except AffineMatrix3T and AffineMatrix4T, see section \ref{sec:affine_matrices}{Affine Matrices}):
 \texttt{Matrix<T, Rows, Cols>}, where \texttt{T} specifies the template typename T, \texttt{Rows} specifies the
 number of rows of the matrix, and \texttt{Cols} specifies the number of columns of the matrix.
 
@@ -142,41 +143,64 @@ number of rows of the matrix, and \texttt{Cols} specifies the number of columns 
 
 int main()
 {
-	Gs::Matrix4 a(1, 2, 3), b(4, 5, 6);
+	Gs::Matrix4 A;
+	A << 1,  0, 2, 0,
+	     0, -2, 0, 1,
+	     4,  0, 5, 6,
+	     0,  1, 0, 1;
 	
-	std::cout << "a = " << a << std::endl;
-	std::cout << "b = " << b << std::endl;
-	std::cout << "a * b = " << a*b << std::endl;
-	std::cout << "a . b = " << Dot(a, b) << std::endl;
-	std::cout << "a X b = " << Cross(a, b) << std::endl;
-	std::cout << "|a| = " << a.Length() << std::endl;
-	std::cout << "a / |a| = " << a.Normalize() << std::endl;
+	Gs::Matrix<float, 3, 4> B;
+	B << 4, 2,  9, -1,
+	     0, 1,  6,  2,
+	     3, 7, -2,  0;
 	
+	Gs::Matrix<float, 4, 3> C;
+	C = B.Transposed();
+	
+	Gs::Matrix<float, 3, 3> D;
+	D = B*C;
+	
+	Gs::Matrix<float, 4, 4> E;
+	E = C*B;
+	
+	std::cout << "A = " << std::endl << A << std::endl;
+	std::cout << "B = " << std::endl << B << std::endl;
+	std::cout << "C = " << std::endl << C << std::endl;
+	std::cout << "B*C = " << std::endl << D << std::endl;
+	std::cout << "C*B = " << std::endl << E << std::endl;
+	
+	std::cout << "A^-1 = " << std::endl << A.Inverse() << std::endl;
+	std::cout << "A*A^-1 = " << std::endl << A*A.Inverse() << std::endl;
+	std::cout << "Trace(A) = " << std::endl << A.Trace() << std::endl;
+	std::cout << "Determinant(A) = " << std::endl << A.Determinant() << std::endl;
+
 	return 0;
 }
 \end{lstlisting}
 
 
 %----------------------------------------------------------------------------------------
-%	SPARSE MATRICES
+%	AFFINE MATRICES
 %----------------------------------------------------------------------------------------
 
-\section*{Sparse Matrices}
-\label{sec:sparse_matrices}
+\section*{Affine Matrices}
+\label{sec:affine_matrices}
 
-In 3D applications a 4x4 matrix is frequently used for transformations of 3D models.
+In 3D applications a 4x4 matrix is frequently used for affine transformations of 3D models,
+i.e. translation, rotation, scaling, and sometimes shearing.
 However, with many 3D models, such transformations require a lot of memory.
-Moreover, the 4th row of these 4x4 matrices is always $(0, 0, 0, 1)$ --- assumed that the transformation
-only consists of translations, rotations, and scaling.
+Moreover, the 4th row of these 4x4 affine matrices is always $(0, 0, 0, 1)$ --- except that row vectors are used,
+where the 4th column is always $(0, 0, 0, 1)$.
 
-To reduce the memory footprint (and some computations) the \gausslib provides the \texttt{SparseMatrix4T<T>} class,
-where the 4th row is implicit:
+To reduce the memory footprint (and some computations) the \gausslib provides the \texttt{AffineMatrix3T<T>},
+and \texttt{AffineMatrix4T<T>} classes, where the 4th row (or column for row-vectors) is implicit:
 \begin{lstlisting}
 #include <Gauss/Gauss.h>
 
 int main()
 {
-	Gs::SparseMatrix4 m = Gs::SparseMatrix4::Identity();
+	// Affine matrices are always initialized to their identity matrix
+	Gs::AffineMatrix4 m;
 	
 	m.Translate(Gs::Vector3(0, 4, -2));
 	m.RotateX(M_PI*0.5);
@@ -184,9 +208,9 @@ int main()
 	m.Scale(Gs::Vector3(1, 0.5, 2));
 	m.MakeInverse();
 	
-	Gs::Vector3 v(0, 0, 0);
-	auto a = m.Transform(v); // Rotate and Translate (with implicit v.w = 1)
-	auto b = m.Rotate(v); // Only rotate
+	Gs::Vector3 v(0, 0, 1);
+	auto a = Gs::TransformVector(m, v); // Rotate and Translate (with implicit v.w = 1)
+	auto b = Gs::RotateVector(m, v); // Only rotate
 	
 	return 0;
 }
