@@ -33,41 +33,41 @@ void MatrixToQuaternion(Q<T>& out, const M& in)
     );
 
     /* Only get the trace of the 3x3 upper left matrix */
-    const T trace = in(0, 0) + in(1, 1) + in(2, 2) + T(1);
+    const T trace = in.At(0, 0) + in.At(1, 1) + in.At(2, 2) + T(1);
     
     if (trace > T(0))
     {
         const T s = T(2) * std::sqrt(trace);
-        out.x = (in(1, 2) - in(2, 1)) / s;
-        out.y = (in(2, 0) - in(0, 2)) / s;
-        out.z = (in(0, 1) - in(1, 0)) / s;
+        out.x = (in.At(1, 2) - in.At(2, 1)) / s;
+        out.y = (in.At(2, 0) - in.At(0, 2)) / s;
+        out.z = (in.At(0, 1) - in.At(1, 0)) / s;
         out.w = T(0.25) * s;
     }
     else
     {
-        if (in(0, 0) > in(1, 1) && in(0, 0) > in(2, 2))
+        if (in.At(0, 0) > in.At(1, 1) && in.At(0, 0) > in.At(2, 2))
         {
-            const T s = T(2) * std::sqrt(T(1) + in(0, 0) - in(1, 1) - in(2, 2));
+            const T s = T(2) * std::sqrt(T(1) + in.At(0, 0) - in.At(1, 1) - in.At(2, 2));
             out.x = T(0.25) * s;
-            out.y = (in(1, 0) + in(0, 1) ) / s;
-            out.z = (in(0, 2) + in(2, 0) ) / s;
-            out.w = (in(1, 2) - in(2, 1) ) / s;
+            out.y = (in.At(1, 0) + in.At(0, 1) ) / s;
+            out.z = (in.At(0, 2) + in.At(2, 0) ) / s;
+            out.w = (in.At(1, 2) - in.At(2, 1) ) / s;
         }
-        else if (in(1, 1) > in(2, 2))
+        else if (in.At(1, 1) > in.At(2, 2))
         {
-            const T s = T(2) * std::sqrt(T(1) + in(1, 1) - in(0, 0) - in(2, 2));
-            out.x = (in(1, 0) + in(0, 1) ) / s;
+            const T s = T(2) * std::sqrt(T(1) + in.At(1, 1) - in.At(0, 0) - in.At(2, 2));
+            out.x = (in.At(1, 0) + in.At(0, 1) ) / s;
             out.y = T(0.25) * s;
-            out.z = (in(2, 1) + in(1, 2) ) / s;
-            out.w = (in(2, 0) - in(0, 2) ) / s;
+            out.z = (in.At(2, 1) + in.At(1, 2) ) / s;
+            out.w = (in.At(2, 0) - in.At(0, 2) ) / s;
         }
         else
         {
-            const T s = T(2) * std::sqrt(T(1) + in(2, 2) - in(0, 0) - in(1, 1));
-            out.x = (in(2, 0) + in(0, 2) ) / s;
-            out.y = (in(2, 1) + in(1, 2) ) / s;
+            const T s = T(2) * std::sqrt(T(1) + in.At(2, 2) - in.At(0, 0) - in.At(1, 1));
+            out.x = (in.At(2, 0) + in.At(0, 2) ) / s;
+            out.y = (in.At(2, 1) + in.At(1, 2) ) / s;
             out.z = T(0.25) * s;
-            out.w = (in(0, 1) - in(1, 0) ) / s;
+            out.w = (in.At(0, 1) - in.At(1, 0) ) / s;
         }
     }
 
@@ -87,17 +87,17 @@ void QuaternionToMatrix(M& out, const Q<T>& in)
     const auto& z = in.z;
     const auto& w = in.w;
 
-    out(0, 0) = T(1) - T(2)*y*y - T(2)*z*z;
-    out(0, 1) =        T(2)*x*y + T(2)*z*w;
-    out(0, 2) =        T(2)*x*z - T(2)*y*w;
+    out.At(0, 0) = T(1) - T(2)*y*y - T(2)*z*z;
+    out.At(0, 1) =        T(2)*x*y + T(2)*z*w;
+    out.At(0, 2) =        T(2)*x*z - T(2)*y*w;
 
-    out(1, 0) =        T(2)*x*y - T(2)*z*w;
-    out(1, 1) = T(1) - T(2)*x*x - T(2)*z*z;
-    out(1, 2) =        T(2)*z*y + T(2)*x*w;
+    out.At(1, 0) =        T(2)*x*y - T(2)*z*w;
+    out.At(1, 1) = T(1) - T(2)*x*x - T(2)*z*z;
+    out.At(1, 2) =        T(2)*z*y + T(2)*x*w;
 
-    out(2, 0) =        T(2)*x*z + T(2)*y*w;
-    out(2, 1) =        T(2)*z*y - T(2)*x*w;
-    out(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
+    out.At(2, 0) =        T(2)*x*z + T(2)*y*w;
+    out.At(2, 1) =        T(2)*z*y - T(2)*x*w;
+    out.At(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
 }
 
 template <class M, template <typename> class Q, typename T>
@@ -113,17 +113,17 @@ void QuaternionToMatrixTransposed(M& out, const Q<T>& in)
     const auto& z = in.z;
     const auto& w = in.w;
 
-    out(0, 0) = T(1) - T(2)*y*y - T(2)*z*z;
-    out(0, 1) =        T(2)*x*y - T(2)*z*w;
-    out(0, 2) =        T(2)*x*z + T(2)*y*w;
+    out.At(0, 0) = T(1) - T(2)*y*y - T(2)*z*z;
+    out.At(0, 1) =        T(2)*x*y - T(2)*z*w;
+    out.At(0, 2) =        T(2)*x*z + T(2)*y*w;
 
-    out(1, 0) =        T(2)*x*y + T(2)*z*w;
-    out(1, 1) = T(1) - T(2)*x*x - T(2)*z*z;
-    out(1, 2) =        T(2)*z*y - T(2)*x*w;
+    out.At(1, 0) =        T(2)*x*y + T(2)*z*w;
+    out.At(1, 1) = T(1) - T(2)*x*x - T(2)*z*z;
+    out.At(1, 2) =        T(2)*z*y - T(2)*x*w;
 
-    out(2, 0) =        T(2)*x*z - T(2)*y*w;
-    out(2, 1) =        T(2)*z*y + T(2)*x*w;
-    out(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
+    out.At(2, 0) =        T(2)*x*z - T(2)*y*w;
+    out.At(2, 1) =        T(2)*z*y + T(2)*x*w;
+    out.At(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
 }
 
 
