@@ -19,11 +19,16 @@ Example
 -------
 
 ```cpp
-// Optional macro to switch between column- or row major matrices:
-// #define GS_MATRIX_COLUMN_MAJOR
+// Optional macro to switch between column- or row major matrix storage layout:
+// #define GS_ROW_MAJOR_STORAGE
+
+// Optional macro to switch between column- or row vectors:
+// #define GS_ROW_VECTORS
 
 #include <Gauss/Gauss.h>
 #include <iostream>
+
+static const Gs::Real pi = Gs::Real(3.141592654);
 
 int main()
 {
@@ -37,6 +42,14 @@ int main()
     // Declare 3x4 matrix A and 4x3 matrix B
     Gs::Matrix<double, 3, 4> A;
     Gs::Matrix<double, 4, 3> B;
+    
+    // Declare quaternions
+    Gs::Quaternion q0, q1;
+    q0 = Gs::Quaternion::EulerAngles(Gs::Vector3(pi*-0.25, pi*0.8, 0));
+    q1.SetEulerAngles(Gs::Vector3(pi*0.5, 0, 0));
+    
+    // Spherical-linear-interpolation (Slerp) with two quaternions
+    Gs::Quaternion p = Slerp(q0, q1, 0.5);
     
     // Initialize 3x4 matrix A
     A << 1, 2, 0, -12,
@@ -67,9 +80,13 @@ int main()
     std::cout << "C = " << std::endl << C << std::endl;
     
     // Print vectors to standard output
-    std::cout << "a = " << a << ", b = " << b << ", a*b = " << a*b << std::endl;
-    std::cout << "a . b = " << Dot(a, b) << "a x b = " << Cross(a, b) << std::endl;
-    std::cout << "|| a || = " << a.Length() << ", a / || a || = " << a.Normalized() << std::endl;
+    std::cout << "a = " << a << std::endl;
+    std::cout << "b = " << b << std::endl;
+    std::cout << "a*b = " << a*b << std::endl;
+    std::cout << "a . b = " << Dot(a, b) << std::endl;
+    std::cout << "a x b = " << Cross(a, b) << std::endl;
+    std::cout << "|| a || = " << a.Length() << std::endl;
+    std::cout << "a / || a || = " << a.Normalized() << std::endl;
     
     return 0;
 }
