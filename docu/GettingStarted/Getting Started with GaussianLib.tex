@@ -241,7 +241,7 @@ int main()
 	Gs::Matrix3 rotation = q2.ToMatrix3();
 	
 	// Store rotation of quaterion in the left-upper 3x3 matrix of the sparse 4x4 matrix 'transform'
-	Gs::SparseMatrix4 transform;
+	Gs::AffineMatrix4 transform;
 	Gs::QuaternionToMatrix(transform, q2);
 	
 	return 0;
@@ -329,7 +329,7 @@ initialize this data, add the following to your compiler pre-defined macros:
 \texttt{GS\_DISABLE\_AUTO\_INIT}
 \end{quote}
 If you don't want to disable the automatic initialization overall, you can explicitly construct a data type
-who is uninitialized. This can be done with the \texttt{UninitializeTag} tag:
+who is uninitialized. This can be done with \texttt{UninitializeTag}:
 \begin{lstlisting}
 Gs::Matrix4 m(Gs::UninitializeTag{});
 \end{lstlisting}
