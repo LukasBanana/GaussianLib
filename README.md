@@ -43,14 +43,6 @@ int main()
     Gs::Matrix<double, 3, 4> A;
     Gs::Matrix<double, 4, 3> B;
     
-    // Declare quaternions
-    Gs::Quaternion q0, q1;
-    q0 = Gs::Quaternion::EulerAngles(Gs::Vector3(pi*-0.25, pi*0.8, 0));
-    q1.SetEulerAngles(Gs::Vector3(pi*0.5, 0, 0));
-    
-    // Spherical-linear-interpolation (Slerp) with two quaternions
-    Gs::Quaternion p = Slerp(q0, q1, 0.5);
-    
     // Initialize 3x4 matrix A
     A << 1, 2, 0, -12,
          0, 0, 1, 4,
@@ -74,6 +66,24 @@ int main()
     // Invert matrix C
     C.Invert();
     
+    // Declare affine 4x4 matrix (only stores 3x4 elements, or 4x3 elements wether GS_ROW_VECTORS is defined or not).
+    // This requires less storage and most functions (such as "Inverse") are much faster than with a common 4x4 matrix.
+    Gs::AffineMatrix4 D = Gs::AffineMatrix4::Identity();
+    
+    // Set some transformations for the affine matrix
+    D.SetPosition(Gs::Vector3(1, -2, 5));
+    D.RotateX(pi*0.5);
+    D.RotateZ(-pi*0.25);
+    D.Scale(Gs::Vector3(1, 2, 3));
+    
+    // Declare quaternions
+    Gs::Quaternion q0, q1;
+    q0 = Gs::Quaternion::EulerAngles(Gs::Vector3(pi*-0.25, pi*0.8, 0));
+    q1.SetEulerAngles(Gs::Vector3(pi*0.5, 0, 0));
+    
+    // Spherical-linear-interpolation (Slerp) with two quaternions
+    Gs::Quaternion p = Slerp(q0, q1, 0.5);
+    
     // Print matrices to standard output
     std::cout << "A = " << std::endl << A << std::endl;
     std::cout << "B = " << std::endl << B << std::endl;
@@ -85,8 +95,8 @@ int main()
     std::cout << "a*b = " << a*b << std::endl;
     std::cout << "a . b = " << Dot(a, b) << std::endl;
     std::cout << "a x b = " << Cross(a, b) << std::endl;
-    std::cout << "|| a || = " << a.Length() << std::endl;
-    std::cout << "a / || a || = " << a.Normalized() << std::endl;
+    std::cout << "|a| = " << a.Length() << std::endl;
+    std::cout << "a / |a| = " << a.Normalized() << std::endl;
     
     return 0;
 }
