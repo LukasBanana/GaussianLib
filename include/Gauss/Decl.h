@@ -18,6 +18,7 @@ namespace Gs
 
 /* --- Forward Declarations --- */
 
+template <typename T> class AffineMatrix3T;
 template <typename T> class AffineMatrix4T;
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
 

@@ -146,7 +146,7 @@ static void commonTest1()
     #endif
 }
 
-static void sparesMatrixTest1()
+static void affineMatrixTest1()
 {
     Matrix4 A;
     A << 1, 0, -2, 6,
@@ -177,6 +177,15 @@ static void sparesMatrixTest1()
     std::cout << std::endl << "A2 = " << std::endl << A2 << std::endl;
     std::cout << std::endl << "Lerp(A1, A2, 0.5) = " << std::endl << Lerp(A, A2, 0.5f) << std::endl;
     std::cout << std::endl << "5 * I3 = " << std::endl << 5.0f * Matrix3::Identity() << std::endl;
+}
+
+static void affineMatrixTest2()
+{
+    AffineMatrix3 A, B;
+
+    auto C = A * B;
+
+
 }
 
 static void quaternionTest1()
@@ -262,11 +271,12 @@ int main()
     std::cout << "==================" << std::endl;
 
     //commonTest1();
-    //sparesMatrixTest1();
+    //affineMatrixTest1();
+    affineMatrixTest2();
     //quaternionTest1();
     //matrixVectorTest1();
     //complexTest1();
-    projectionTest1();
+    //projectionTest1();
 
     #ifdef _WIN32
     system("pause");
