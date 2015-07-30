@@ -181,11 +181,11 @@ static void affineMatrixTest1()
 
 static void affineMatrixTest2()
 {
-    Matrix3 A;
+    AffineMatrix3 A;
 
     A << 1, 0, -2,
-         0, 8, 3,
-         0, 0, 1;
+         0, 8, 3/*,
+         0, 0, 1*/;
 
     std::cout << "AffineMatrix3:" << std::endl;
     std::cout << "A = " << std::endl << A << std::endl;

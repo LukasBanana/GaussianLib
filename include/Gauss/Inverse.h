@@ -28,7 +28,6 @@ bool Inverse(Matrix<T, N, N>& inv, const Matrix<T, N, N>& m)
 }
 
 //! Computes the inverse of the specified 2x2 matrix 'm'.
-//template <template <typename, std::size_t, std::size_t> class M, typename T>
 template <typename T>
 bool Inverse(Matrix<T, 2, 2>& inv, const Matrix<T, 2, 2>& m)
 {
@@ -43,6 +42,7 @@ bool Inverse(Matrix<T, 2, 2>& inv, const Matrix<T, 2, 2>& m)
     /* Compute inverse matrix */
     inv.At(0, 0) = d * (  m.At(1, 1) );
     inv.At(0, 1) = d * ( -m.At(0, 1) );
+
     inv.At(1, 0) = d * ( -m.At(1, 0) );
     inv.At(1, 1) = d * (  m.At(0, 0) );
 
@@ -50,7 +50,6 @@ bool Inverse(Matrix<T, 2, 2>& inv, const Matrix<T, 2, 2>& m)
 }
 
 //! Computes the inverse of the specified 3x3 matrix 'm'.
-//template <template <typename, std::size_t, std::size_t> class M, typename T>
 template <typename T>
 bool Inverse(Matrix<T, 3, 3>& inv, const Matrix<T, 3, 3>& m)
 {
@@ -62,34 +61,23 @@ bool Inverse(Matrix<T, 3, 3>& inv, const Matrix<T, 3, 3>& m)
 
     d = T(1) / d;
 
-    /*
-result(0,0) = (A(1,1)*A(2,2) - A(2,1)*A(1,2))*invdet;
-result(1,0) = (A(0,2)*A(2,1) - A(0,1)*A(2,2))*invdet;
-result(2,0) = (A(0,1)*A(1,2) - A(0,2)*A(1,1))*invdet;
-result(0,1) = (A(1,2)*A(2,0) - A(1,0)*A(2,2))*invdet;
-result(1,1) = (A(0,0)*A(2,2) - A(0,2)*A(2,0))*invdet;
-result(2,1) = (A(1,0)*A(0,2) - A(0,0)*A(1,2))*invdet;
-result(0,2) = (A(1,0)*A(2,1) - A(2,0)*A(1,1))*invdet;
-result(1,2) = (A(2,0)*A(0,1) - A(0,0)*A(2,1))*invdet;
-result(2,2) = (A(0,0)*A(1,1) - A(1,0)*A(0,1))*invdet;
-    */
-
     /* Compute inverse matrix */
-    inv.At(0, 0) = d * ( m.At(1, 1) * m.At(2, 2) - m.At(1, 2) * m.At(2, 1) );//ok
-    inv.At(1, 0) = d * ( m.At(1, 1) * m.At(2, 0) - m.At(1, 0) * m.At(2, 2) );
-    inv.At(2, 0) = d * ( m.At(1, 0) * m.At(2, 1) - m.At(1, 1) * m.At(2, 0) );
+    inv.At(0, 0) = d * ( m.At(1, 1) * m.At(2, 2) - m.At(2, 1) * m.At(1, 2) );
+    inv.At(1, 0) = d * ( m.At(1, 2) * m.At(2, 0) - m.At(1, 0) * m.At(2, 2) );
+    inv.At(2, 0) = d * ( m.At(1, 0) * m.At(2, 1) - m.At(2, 0) * m.At(1, 1) );
+
     inv.At(0, 1) = d * ( m.At(0, 2) * m.At(2, 1) - m.At(0, 1) * m.At(2, 2) );
     inv.At(1, 1) = d * ( m.At(0, 0) * m.At(2, 2) - m.At(0, 2) * m.At(2, 0) );
-    inv.At(2, 1) = d * ( m.At(0, 1) * m.At(2, 0) - m.At(0, 0) * m.At(2, 1) );
+    inv.At(2, 1) = d * ( m.At(2, 0) * m.At(0, 1) - m.At(0, 0) * m.At(2, 1) );
+
     inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) - m.At(0, 2) * m.At(1, 1) );
-    inv.At(1, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(0, 1) * m.At(1, 0) );
-    inv.At(2, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(0, 1) * m.At(1, 0) );
+    inv.At(1, 2) = d * ( m.At(1, 0) * m.At(0, 2) - m.At(0, 0) * m.At(1, 2) );
+    inv.At(2, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1) );
 
     return true;
 }
 
 //! Computes the inverse of the specified 4x4 matrix 'm'.
-//template <template <typename, std::size_t, std::size_t> class M, typename T>
 template <typename T>
 bool Inverse(Matrix<T, 4, 4>& inv, const Matrix<T, 4, 4>& m)
 {
@@ -101,19 +89,23 @@ bool Inverse(Matrix<T, 4, 4>& inv, const Matrix<T, 4, 4>& m)
 
     d = T(1) / d;
 
+    //INCOMPLETE
     /* Compute inverse matrix */
     inv.At(0, 0) = d * ( m.At(1, 1) * (m.At(2, 2) * m.At(3, 3) - m.At(3, 2) * m.At(2, 3)) + m.At(2, 1) * (m.At(3, 2) * m.At(1, 3) - m.At(1, 2) * m.At(3, 3)) + m.At(3, 1) * (m.At(1, 2) * m.At(2, 3) - m.At(2, 2) * m.At(1, 3)) );
     inv.At(1, 0) = d * ( m.At(1, 2) * (m.At(2, 0) * m.At(3, 3) - m.At(3, 0) * m.At(2, 3)) + m.At(2, 2) * (m.At(3, 0) * m.At(1, 3) - m.At(1, 0) * m.At(3, 3)) + m.At(3, 2) * (m.At(1, 0) * m.At(2, 3) - m.At(2, 0) * m.At(1, 3)) );
     inv.At(2, 0) = d * ( m.At(1, 3) * (m.At(2, 0) * m.At(3, 1) - m.At(3, 0) * m.At(2, 1)) + m.At(2, 3) * (m.At(3, 0) * m.At(1, 1) - m.At(1, 0) * m.At(3, 1)) + m.At(3, 3) * (m.At(1, 0) * m.At(2, 1) - m.At(2, 0) * m.At(1, 1)) );
     inv.At(3, 0) = d * ( m.At(1, 0) * (m.At(3, 1) * m.At(2, 2) - m.At(2, 1) * m.At(3, 2)) + m.At(2, 0) * (m.At(1, 1) * m.At(3, 2) - m.At(3, 1) * m.At(1, 2)) + m.At(3, 0) * (m.At(2, 1) * m.At(1, 2) - m.At(1, 1) * m.At(2, 2)) );
+    
     inv.At(0, 1) = d * ( m.At(2, 1) * (m.At(0, 2) * m.At(3, 3) - m.At(3, 2) * m.At(0, 3)) + m.At(3, 1) * (m.At(2, 2) * m.At(0, 3) - m.At(0, 2) * m.At(2, 3)) + m.At(0, 1) * (m.At(3, 2) * m.At(2, 3) - m.At(2, 2) * m.At(3, 3)) );
     inv.At(1, 1) = d * ( m.At(2, 2) * (m.At(0, 0) * m.At(3, 3) - m.At(3, 0) * m.At(0, 3)) + m.At(3, 2) * (m.At(2, 0) * m.At(0, 3) - m.At(0, 0) * m.At(2, 3)) + m.At(0, 2) * (m.At(3, 0) * m.At(2, 3) - m.At(2, 0) * m.At(3, 3)) );
     inv.At(2, 1) = d * ( m.At(2, 3) * (m.At(0, 0) * m.At(3, 1) - m.At(3, 0) * m.At(0, 1)) + m.At(3, 3) * (m.At(2, 0) * m.At(0, 1) - m.At(0, 0) * m.At(2, 1)) + m.At(0, 3) * (m.At(3, 0) * m.At(2, 1) - m.At(2, 0) * m.At(3, 1)) );
     inv.At(3, 1) = d * ( m.At(2, 0) * (m.At(3, 1) * m.At(0, 2) - m.At(0, 1) * m.At(3, 2)) + m.At(3, 0) * (m.At(0, 1) * m.At(2, 2) - m.At(2, 1) * m.At(0, 2)) + m.At(0, 0) * (m.At(2, 1) * m.At(3, 2) - m.At(3, 1) * m.At(2, 2)) );
+    
     inv.At(0, 2) = d * ( m.At(3, 1) * (m.At(0, 2) * m.At(1, 3) - m.At(1, 2) * m.At(0, 3)) + m.At(0, 1) * (m.At(1, 2) * m.At(3, 3) - m.At(3, 2) * m.At(1, 3)) + m.At(1, 1) * (m.At(3, 2) * m.At(0, 3) - m.At(0, 2) * m.At(3, 3)) );
     inv.At(1, 2) = d * ( m.At(3, 2) * (m.At(0, 0) * m.At(1, 3) - m.At(1, 0) * m.At(0, 3)) + m.At(0, 2) * (m.At(1, 0) * m.At(3, 3) - m.At(3, 0) * m.At(1, 3)) + m.At(1, 2) * (m.At(3, 0) * m.At(0, 3) - m.At(0, 0) * m.At(3, 3)) );
     inv.At(2, 2) = d * ( m.At(3, 3) * (m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1)) + m.At(0, 3) * (m.At(1, 0) * m.At(3, 1) - m.At(3, 0) * m.At(1, 1)) + m.At(1, 3) * (m.At(3, 0) * m.At(0, 1) - m.At(0, 0) * m.At(3, 1)) );
     inv.At(3, 2) = d * ( m.At(3, 0) * (m.At(1, 1) * m.At(0, 2) - m.At(0, 1) * m.At(1, 2)) + m.At(0, 0) * (m.At(3, 1) * m.At(1, 2) - m.At(1, 1) * m.At(3, 2)) + m.At(1, 0) * (m.At(0, 1) * m.At(3, 2) - m.At(3, 1) * m.At(0, 2)) );
+
     inv.At(0, 3) = d * ( m.At(0, 1) * (m.At(2, 2) * m.At(1, 3) - m.At(1, 2) * m.At(2, 3)) + m.At(1, 1) * (m.At(0, 2) * m.At(2, 3) - m.At(2, 2) * m.At(0, 3)) + m.At(2, 1) * (m.At(1, 2) * m.At(0, 3) - m.At(0, 2) * m.At(1, 3)) );
     inv.At(1, 3) = d * ( m.At(0, 2) * (m.At(2, 0) * m.At(1, 3) - m.At(1, 0) * m.At(2, 3)) + m.At(1, 2) * (m.At(0, 0) * m.At(2, 3) - m.At(2, 0) * m.At(0, 3)) + m.At(2, 2) * (m.At(1, 0) * m.At(0, 3) - m.At(0, 0) * m.At(1, 3)) );
     inv.At(2, 3) = d * ( m.At(0, 3) * (m.At(2, 0) * m.At(1, 1) - m.At(1, 0) * m.At(2, 1)) + m.At(1, 3) * (m.At(0, 0) * m.At(2, 1) - m.At(2, 0) * m.At(0, 1)) + m.At(2, 3) * (m.At(1, 0) * m.At(0, 1) - m.At(0, 0) * m.At(1, 1)) );
@@ -136,13 +128,15 @@ template <typename T> bool Inverse(AffineMatrix3T<T>& inv, const AffineMatrix3T<
     /* Compute inverse matrix */
     inv.At(0, 0) = d * (  m.At(1, 1) );
     inv.At(1, 0) = d * ( -m.At(1, 0) );
-  /*inv.At(2, 0) = 0;*/
-    inv.At(0, 1) = d * ( m.At(1, 1) * m.At(0, 2) - m.At(0, 1) );
-    inv.At(1, 1) = d * ( m.At(0, 0) );
-  /*inv.At(2, 1) = 0;*/
-    inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) - m.At(1, 1) * m.At(0, 2) );
+  /*inv.At(2, 0) = 0*/;
+
+    inv.At(0, 1) = d * ( -m.At(0, 1) );
+    inv.At(1, 1) = d * (  m.At(0, 0) );
+  /*inv.At(2, 1) = 0*/;
+
+    inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) - m.At(0, 2) * m.At(1, 1) );
     inv.At(1, 2) = d * ( m.At(1, 0) * m.At(0, 2) - m.At(0, 0) * m.At(1, 2) );
-  /*inv.At(2, 2) = 1;*/
+  /*inv.At(2, 2) = 1*/;
 
     return true;
 }

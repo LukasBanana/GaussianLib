@@ -51,7 +51,6 @@ T Determinant(const Matrix<T, 2, 2>& m)
 template <typename T>
 T Determinant(const Matrix<T, 3, 3>& m)
 {
-    //COMPLETED
     return
         ( m.At(0, 0) * m.At(1, 1) * m.At(2, 2) ) + ( m.At(0, 1) * m.At(1, 2) * m.At(2, 0) ) + ( m.At(0, 2) * m.At(1, 0) * m.At(2, 1) ) -
         ( m.At(2, 0) * m.At(1, 1) * m.At(0, 2) ) - ( m.At(2, 1) * m.At(1, 2) * m.At(0, 0) ) - ( m.At(2, 2) * m.At(1, 0) * m.At(0, 1) );
@@ -75,7 +74,6 @@ T Determinant(const Matrix<T, 4, 4>& m)
 template <typename T>
 T Determinant(const AffineMatrix3T<T>& m)
 {
-    //COMPLETED
     return m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1);
 }
 
