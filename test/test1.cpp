@@ -181,11 +181,13 @@ static void affineMatrixTest1()
 
 static void affineMatrixTest2()
 {
-    AffineMatrix3 A, B;
+    AffineMatrix3 A = AffineMatrix3::Identity(), B = AffineMatrix3::Identity();
 
     auto C = A * B;
 
-
+    std::cout << "AffineMatrix3:" << std::endl;
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
 }
 
 static void quaternionTest1()

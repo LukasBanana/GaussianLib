@@ -9,11 +9,7 @@
 #define __GS_OSTREAM_H__
 
 
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix.h"
-#include "AffineMatrix4.h"
+#include "Decl.h"
 
 #include <iostream>
 #include <algorithm>
@@ -42,12 +38,8 @@ std::size_t Length(const T& value)
     return stream.str().size();
 }
 
-
-} // /namespace Details
-
-
-template < template <typename> class Vec, typename T>
-std::ostream& operator << (std::ostream& stream, const Vec<T>& vec)
+template <template <typename> class Vec, typename T>
+std::ostream& ShiftVectorOStream(std::ostream& stream, const Vec<T>& vec)
 {
     stream << "( ";
 
@@ -57,16 +49,107 @@ std::ostream& operator << (std::ostream& stream, const Vec<T>& vec)
     return stream;
 }
 
+template <class M, typename T>
+std::ostream& ShiftAffineMatrixOStream(std::ostream& stream, const M& mat)
+{
+    /* Determine longest elements for each row */
+    std::array<std::size_t, M::columnsSparse> lengths;
+
+    for (std::size_t c = 0; c < M::columnsSparse; ++c)
+    {
+        lengths[c] = 0;
+        for (std::size_t r = 0; r < M::rowsSparse; ++r)
+            lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
+    }
+
+    #ifdef GS_ROW_VECTORS
+
+    /* Write each row */
+    for (std::size_t r = 0; r < M::rowsSparse; ++r)
+    {
+        stream << (r == 0 ? '/' : r + 1 == M::rowsSparse ? '\\' : '|');
+
+        for (std::size_t c = 0; c < M::columnsSparse; ++c)
+        {
+            stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');
+            stream << mat(r, c) << ' ';
+        }
+
+        /* Write implicit column */
+        stream << ' ' << (r + 1 == M::rowsSparse ? '1' : '0');
+        stream << ' ' << (r == 0 ? '\\' : r + 1 == M::rowsSparse ? '/' : '|')  << std::endl;
+    }
+
+    #else
+
+    /* Write each row */
+    for (std::size_t r = 0; r < M::rowsSparse; ++r)
+    {
+        stream << (r == 0 ? '/' : '|');
+
+        for (std::size_t c = 0; c < M::columnsSparse; ++c)
+        {
+            stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');
+            stream << mat(r, c) << ' ';
+        }
+
+        stream << (r == 0 ? '\\' : '|')  << std::endl;
+    }
+
+    /* Write implicit row */
+    stream << '\\';
+    
+    for (std::size_t c = 0; c < M::columnsSparse; ++c)
+    {
+        stream << std::string(lengths[c], ' ');
+        stream << (c + 1 == M::columnsSparse ? '1' : '0') << ' ';
+    }
+
+    stream << '/' << std::endl;
+
+    #endif
+
+    return stream;
+}
+
+
+} // /namespace Details
+
+
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const Vector2T<T>& vec)
+{
+    return Details::ShiftVectorOStream(stream, vec);
+}
+
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const Vector3T<T>& vec)
+{
+    return Details::ShiftVectorOStream(stream, vec);
+}
+
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const Vector4T<T>& vec)
+{
+    return Details::ShiftVectorOStream(stream, vec);
+}
+
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const QuaternionT<T>& vec)
+{
+    return Details::ShiftVectorOStream(stream, vec);
+}
+
 template <typename T, std::size_t Rows, std::size_t Cols>
 std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& mat)
 {
     /* Determine longest elements for each row */
-    std::array<std::size_t, AffineMatrix4T<T>::columns> lengths;
+    std::array<std::size_t, Matrix<T, Rows, Cols>::columns> lengths;
 
-    for (std::size_t c = 0; c < AffineMatrix4T<T>::columns; ++c)
+    for (std::size_t c = 0; c < Matrix<T, Rows, Cols>::columns; ++c)
     {
         lengths[c] = 0;
-        for (std::size_t r = 0; r < AffineMatrix4T<T>::rows; ++r)
+        for (std::size_t r = 0; r < Matrix<T, Rows, Cols>::rows; ++r)
             lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
     }
 
@@ -90,64 +173,13 @@ std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& ma
 template <typename T>
 std::ostream& operator << (std::ostream& stream, const AffineMatrix4T<T>& mat)
 {
-    /* Determine longest elements for each row */
-    std::array<std::size_t, AffineMatrix4T<T>::columnsSparse> lengths;
+    return Details::ShiftAffineMatrixOStream<AffineMatrix4T<T>, T>(stream, mat);
+}
 
-    for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
-    {
-        lengths[c] = 0;
-        for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
-            lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
-    }
-
-    #ifdef GS_ROW_VECTORS
-
-    /* Write each row */
-    for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
-    {
-        stream << (r == 0 ? '/' : r + 1 == AffineMatrix4T<T>::rowsSparse ? '\\' : '|');
-
-        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
-        {
-            stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');
-            stream << mat(r, c) << ' ';
-        }
-
-        /* Write implicit column */
-        stream << ' ' << (r + 1 == AffineMatrix4T<T>::rowsSparse ? '1' : '0');
-        stream << ' ' << (r == 0 ? '\\' : r + 1 == AffineMatrix4T<T>::rowsSparse ? '/' : '|')  << std::endl;
-    }
-
-    #else
-
-    /* Write each row */
-    for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
-    {
-        stream << (r == 0 ? '/' : '|');
-
-        for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
-        {
-            stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');
-            stream << mat(r, c) << ' ';
-        }
-
-        stream << (r == 0 ? '\\' : '|')  << std::endl;
-    }
-
-    /* Write implicit row */
-    stream << '\\';
-    
-    for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
-    {
-        stream << std::string(lengths[c], ' ');
-        stream << (c + 1 == AffineMatrix4T<T>::columnsSparse ? '1' : '0') << ' ';
-    }
-
-    stream << '/' << std::endl;
-
-    #endif
-
-    return stream;
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const AffineMatrix3T<T>& mat)
+{
+    return Details::ShiftAffineMatrixOStream<AffineMatrix3T<T>, T>(stream, mat);
 }
 
 
