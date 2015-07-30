@@ -44,39 +44,50 @@ T Determinant(const Matrix<T, 1, 1>& m)
 template <typename T>
 T Determinant(const Matrix<T, 2, 2>& m)
 {
-    return m.At(0, 0)*m.At(1, 1) - m.At(1, 0)*m.At(0, 1);
+    return m.At(0, 0)*m.At(1, 1) - m.At(0, 1)*m.At(1, 0);
 }
 
 //! Computes the determinant of the specified 3x3 matrix 'm'.
 template <typename T>
 T Determinant(const Matrix<T, 3, 3>& m)
 {
+    //COMPLETED
     return
-        ( m.At(0, 0) * m.At(1, 1) * m.At(2, 2) ) + ( m.At(1, 0) * m.At(2, 1) * m.At(0, 2) ) + ( m.At(2, 0) * m.At(0, 1) * m.At(1, 2) ) -
-        ( m.At(0, 2) * m.At(1, 1) * m.At(2, 0) ) - ( m.At(0, 2) * m.At(2, 1) * m.At(0, 0) ) - ( m.At(2, 2) * m.At(0, 1) * m.At(1, 0) );
+        ( m.At(0, 0) * m.At(1, 1) * m.At(2, 2) ) + ( m.At(0, 1) * m.At(1, 2) * m.At(2, 0) ) + ( m.At(0, 2) * m.At(1, 0) * m.At(2, 1) ) -
+        ( m.At(2, 0) * m.At(1, 1) * m.At(0, 2) ) - ( m.At(2, 1) * m.At(1, 2) * m.At(0, 0) ) - ( m.At(2, 2) * m.At(1, 0) * m.At(0, 1) );
 }
 
 //! Computes the determinant of the specified 4x4 matrix 'm'.
 template <typename T>
 T Determinant(const Matrix<T, 4, 4>& m)
 {
+    //UPDATED, NOT TESTED
     return
-        ( m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1) ) * ( m.At(2, 2) * m.At(3, 3) - m.At(3, 2) * m.At(2, 3) ) -
-        ( m.At(0, 0) * m.At(2, 1) - m.At(2, 0) * m.At(0, 1) ) * ( m.At(1, 2) * m.At(3, 3) - m.At(3, 2) * m.At(1, 3) ) +
-        ( m.At(0, 0) * m.At(3, 1) - m.At(3, 0) * m.At(0, 1) ) * ( m.At(1, 2) * m.At(2, 3) - m.At(2, 2) * m.At(1, 3) ) +
-        ( m.At(1, 0) * m.At(2, 1) - m.At(2, 0) * m.At(1, 1) ) * ( m.At(0, 2) * m.At(3, 3) - m.At(3, 2) * m.At(0, 3) ) -
-        ( m.At(1, 0) * m.At(3, 1) - m.At(3, 0) * m.At(1, 1) ) * ( m.At(0, 2) * m.At(2, 3) - m.At(2, 2) * m.At(0, 3) ) +
-        ( m.At(2, 0) * m.At(3, 1) - m.At(3, 0) * m.At(2, 1) ) * ( m.At(0, 2) * m.At(1, 3) - m.At(1, 2) * m.At(0, 3) );
+        ( m.At(0, 0) * m.At(1, 1) - m.At(0, 1) * m.At(1, 0) ) * ( m.At(2, 2) * m.At(3, 3) - m.At(2, 3) * m.At(3, 2) ) -
+        ( m.At(0, 0) * m.At(1, 2) - m.At(0, 2) * m.At(1, 0) ) * ( m.At(2, 1) * m.At(3, 3) - m.At(2, 3) * m.At(3, 1) ) +
+        ( m.At(0, 0) * m.At(1, 3) - m.At(0, 3) * m.At(1, 0) ) * ( m.At(2, 1) * m.At(3, 2) - m.At(2, 2) * m.At(3, 1) ) +
+        ( m.At(0, 1) * m.At(1, 2) - m.At(0, 2) * m.At(1, 1) ) * ( m.At(2, 0) * m.At(3, 3) - m.At(2, 3) * m.At(3, 0) ) -
+        ( m.At(0, 1) * m.At(1, 3) - m.At(0, 3) * m.At(1, 1) ) * ( m.At(2, 0) * m.At(3, 2) - m.At(2, 2) * m.At(3, 0) ) +
+        ( m.At(0, 2) * m.At(1, 3) - m.At(0, 3) * m.At(1, 2) ) * ( m.At(2, 0) * m.At(3, 1) - m.At(2, 1) * m.At(3, 0) );
+}
+
+//! Computes the determinant of the specified affine 3x3 matrix 'm'.
+template <typename T>
+T Determinant(const AffineMatrix3T<T>& m)
+{
+    //COMPLETED
+    return m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1);
 }
 
 //! Computes the determinant of the specified affine 4x4 matrix 'm'.
 template <typename T>
 T Determinant(const AffineMatrix4T<T>& m)
 {
+    //UPDATED, NOT TESTED
     return
-        ( m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1) ) * ( m.At(2, 2) ) -
-        ( m.At(0, 0) * m.At(2, 1) - m.At(2, 0) * m.At(0, 1) ) * ( m.At(1, 2) ) +
-        ( m.At(1, 0) * m.At(2, 1) - m.At(2, 0) * m.At(1, 1) ) * ( m.At(0, 2) );
+        ( m.At(0, 0) * m.At(1, 1) - m.At(0, 1) * m.At(1, 0) ) * m.At(2, 2) -
+        ( m.At(0, 0) * m.At(1, 2) - m.At(0, 2) * m.At(1, 0) ) * m.At(2, 1) +
+        ( m.At(0, 1) * m.At(1, 2) - m.At(0, 2) * m.At(1, 1) ) * m.At(2, 0);
 }
 
 

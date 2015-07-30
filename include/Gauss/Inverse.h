@@ -62,16 +62,28 @@ bool Inverse(Matrix<T, 3, 3>& inv, const Matrix<T, 3, 3>& m)
 
     d = T(1) / d;
 
+    /*
+result(0,0) = (A(1,1)*A(2,2) - A(2,1)*A(1,2))*invdet;
+result(1,0) = (A(0,2)*A(2,1) - A(0,1)*A(2,2))*invdet;
+result(2,0) = (A(0,1)*A(1,2) - A(0,2)*A(1,1))*invdet;
+result(0,1) = (A(1,2)*A(2,0) - A(1,0)*A(2,2))*invdet;
+result(1,1) = (A(0,0)*A(2,2) - A(0,2)*A(2,0))*invdet;
+result(2,1) = (A(1,0)*A(0,2) - A(0,0)*A(1,2))*invdet;
+result(0,2) = (A(1,0)*A(2,1) - A(2,0)*A(1,1))*invdet;
+result(1,2) = (A(2,0)*A(0,1) - A(0,0)*A(2,1))*invdet;
+result(2,2) = (A(0,0)*A(1,1) - A(1,0)*A(0,1))*invdet;
+    */
+
     /* Compute inverse matrix */
-    inv.At(0, 0) = d * ( m.At(1, 1) * m.At(2, 2) - m.At(2, 1) * m.At(1, 2) );
-    inv.At(1, 0) = d * ( m.At(2, 0) * m.At(1, 2) - m.At(1, 0) * m.At(2, 2) );
-    inv.At(2, 0) = d * ( m.At(1, 0) * m.At(2, 1) - m.At(2, 0) * m.At(1, 1) );
-    inv.At(0, 1) = d * ( m.At(1, 1) * m.At(0, 2) - m.At(0, 1) * m.At(2, 2) );
-    inv.At(1, 1) = d * ( m.At(0, 0) * m.At(2, 2) - m.At(2, 0) * m.At(0, 2) );
-    inv.At(2, 1) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1) );
-    inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) - m.At(1, 1) * m.At(0, 2) );
-    inv.At(1, 2) = d * ( m.At(1, 0) * m.At(0, 2) - m.At(0, 0) * m.At(1, 2) );
-    inv.At(2, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1) );
+    inv.At(0, 0) = d * ( m.At(1, 1) * m.At(2, 2) - m.At(1, 2) * m.At(2, 1) );//ok
+    inv.At(1, 0) = d * ( m.At(1, 1) * m.At(2, 0) - m.At(1, 0) * m.At(2, 2) );
+    inv.At(2, 0) = d * ( m.At(1, 0) * m.At(2, 1) - m.At(1, 1) * m.At(2, 0) );
+    inv.At(0, 1) = d * ( m.At(0, 2) * m.At(2, 1) - m.At(0, 1) * m.At(2, 2) );
+    inv.At(1, 1) = d * ( m.At(0, 0) * m.At(2, 2) - m.At(0, 2) * m.At(2, 0) );
+    inv.At(2, 1) = d * ( m.At(0, 1) * m.At(2, 0) - m.At(0, 0) * m.At(2, 1) );
+    inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) - m.At(0, 2) * m.At(1, 1) );
+    inv.At(1, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(0, 1) * m.At(1, 0) );
+    inv.At(2, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(0, 1) * m.At(1, 0) );
 
     return true;
 }
@@ -106,6 +118,31 @@ bool Inverse(Matrix<T, 4, 4>& inv, const Matrix<T, 4, 4>& m)
     inv.At(1, 3) = d * ( m.At(0, 2) * (m.At(2, 0) * m.At(1, 3) - m.At(1, 0) * m.At(2, 3)) + m.At(1, 2) * (m.At(0, 0) * m.At(2, 3) - m.At(2, 0) * m.At(0, 3)) + m.At(2, 2) * (m.At(1, 0) * m.At(0, 3) - m.At(0, 0) * m.At(1, 3)) );
     inv.At(2, 3) = d * ( m.At(0, 3) * (m.At(2, 0) * m.At(1, 1) - m.At(1, 0) * m.At(2, 1)) + m.At(1, 3) * (m.At(0, 0) * m.At(2, 1) - m.At(2, 0) * m.At(0, 1)) + m.At(2, 3) * (m.At(1, 0) * m.At(0, 1) - m.At(0, 0) * m.At(1, 1)) );
     inv.At(3, 3) = d * ( m.At(0, 0) * (m.At(1, 1) * m.At(2, 2) - m.At(2, 1) * m.At(1, 2)) + m.At(1, 0) * (m.At(2, 1) * m.At(0, 2) - m.At(0, 1) * m.At(2, 2)) + m.At(2, 0) * (m.At(0, 1) * m.At(1, 2) - m.At(1, 1) * m.At(0, 2)) );
+
+    return true;
+}
+
+//! Computes the inverse of the specified affine 3x3 matrix 'm'.
+template <typename T> bool Inverse(AffineMatrix3T<T>& inv, const AffineMatrix3T<T>& m)
+{
+    /* Compute inverse determinant */
+    T d = Determinant(m);
+
+    if (d == T(0))
+        return false;
+
+    d = T(1) / d;
+
+    /* Compute inverse matrix */
+    inv.At(0, 0) = d * (  m.At(1, 1) );
+    inv.At(1, 0) = d * ( -m.At(1, 0) );
+  /*inv.At(2, 0) = 0;*/
+    inv.At(0, 1) = d * ( m.At(1, 1) * m.At(0, 2) - m.At(0, 1) );
+    inv.At(1, 1) = d * ( m.At(0, 0) );
+  /*inv.At(2, 1) = 0;*/
+    inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) - m.At(1, 1) * m.At(0, 2) );
+    inv.At(1, 2) = d * ( m.At(1, 0) * m.At(0, 2) - m.At(0, 0) * m.At(1, 2) );
+  /*inv.At(2, 2) = 1;*/
 
     return true;
 }
