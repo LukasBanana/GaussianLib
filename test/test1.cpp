@@ -184,13 +184,22 @@ static void affineMatrixTest2()
     AffineMatrix3 A;
 
     A << 1, 0, -2,
-         0, 8, 3/*,
-         0, 0, 1*/;
+         0, 8, 3;
+    
+    AffineMatrix4 B;
+    B << 1, 7, 9, -6,
+         2, -4, 0, 1,
+         3, 1, 6, -2;
 
     std::cout << "AffineMatrix3:" << std::endl;
     std::cout << "A = " << std::endl << A << std::endl;
     std::cout << "A^-1 = " << std::endl << A.Inverse() << std::endl;
     std::cout << "A*A^-1 = " << std::endl << A*A.Inverse() << std::endl;
+
+    std::cout << "AffineMatrix4:" << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
+    std::cout << "B^-1 = " << std::endl << B.Inverse() << std::endl;
+    std::cout << "B*B^-1 = " << std::endl << B*B.Inverse() << std::endl;
 }
 
 static void quaternionTest1()

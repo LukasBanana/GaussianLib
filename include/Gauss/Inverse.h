@@ -41,9 +41,9 @@ bool Inverse(Matrix<T, 2, 2>& inv, const Matrix<T, 2, 2>& m)
 
     /* Compute inverse matrix */
     inv.At(0, 0) = d * (  m.At(1, 1) );
-    inv.At(0, 1) = d * ( -m.At(0, 1) );
-
     inv.At(1, 0) = d * ( -m.At(1, 0) );
+
+    inv.At(0, 1) = d * ( -m.At(0, 1) );
     inv.At(1, 1) = d * (  m.At(0, 0) );
 
     return true;
@@ -89,7 +89,6 @@ bool Inverse(Matrix<T, 4, 4>& inv, const Matrix<T, 4, 4>& m)
 
     d = T(1) / d;
 
-    //INCOMPLETE
     /* Compute inverse matrix */
     inv.At(0, 0) = d * ( m.At(1, 1) * (m.At(2, 2) * m.At(3, 3) - m.At(3, 2) * m.At(2, 3)) + m.At(2, 1) * (m.At(3, 2) * m.At(1, 3) - m.At(1, 2) * m.At(3, 3)) + m.At(3, 1) * (m.At(1, 2) * m.At(2, 3) - m.At(2, 2) * m.At(1, 3)) );
     inv.At(1, 0) = d * ( m.At(1, 2) * (m.At(2, 0) * m.At(3, 3) - m.At(3, 0) * m.At(2, 3)) + m.At(2, 2) * (m.At(3, 0) * m.At(1, 3) - m.At(1, 0) * m.At(3, 3)) + m.At(3, 2) * (m.At(1, 0) * m.At(2, 3) - m.At(2, 0) * m.At(1, 3)) );
