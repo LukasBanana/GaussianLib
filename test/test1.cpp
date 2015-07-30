@@ -271,7 +271,7 @@ int main()
     std::cout << "==================" << std::endl;
 
     //commonTest1();
-    //affineMatrixTest1();
+    affineMatrixTest1();
     affineMatrixTest2();
     //quaternionTest1();
     //matrixVectorTest1();

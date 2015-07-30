@@ -14,6 +14,7 @@
 #include "Macros.h"
 #include "Tags.h"
 #include "Rotate.h"
+#include "MatrixInitializer.h"
 
 #include <cmath>
 #include <cstring>
@@ -89,35 +90,9 @@ class Matrix
         static const std::size_t columns    = Cols;
         static const std::size_t elements   = Rows*Cols;
 
-        using ThisType = Matrix<T, Rows, Cols>;
-
-        //! Transposed matrix type, i.e. NxM becomes MxN.
-        using TransposedType = Matrix<T, Cols, Rows>;
-
-        class Initializer
-        {
-            
-            public:
-                
-                Initializer(ThisType& matrix) :
-                    matrix_ ( matrix ),
-                    element_( 0      )
-                {
-                }
-
-                Initializer& operator , (const T& nextValue)
-                {
-                    matrix_(element_ / Cols, element_ % Cols) = nextValue;
-                    ++element_;
-                    return *this;
-                }
-
-            private:
-
-                ThisType&   matrix_;
-                std::size_t element_;
-
-        };
+        using ThisType          = Matrix<T, Rows, Cols>;
+        using TransposedType    = Matrix<T, Cols, Rows>;
+        using Initializer       = MatrixInitializer<Matrix<T, Rows, Cols>, T, Cols>;
 
         Matrix()
         {

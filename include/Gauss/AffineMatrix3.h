@@ -15,6 +15,7 @@
 #include "Matrix.h"
 #include "Tags.h"
 #include "AffineMatrix.h"
+#include "MatrixInitializer.h"
 
 #include <cmath>
 #include <cstring>
@@ -79,33 +80,9 @@ class AffineMatrix3T
 
         static const std::size_t elementsSparse = AffineMatrix3T<T>::rowsSparse*AffineMatrix3T<T>::columnsSparse;
 
-        using ThisType = AffineMatrix3T<T>;
-        using TransposedType = Matrix<T, AffineMatrix3T<T>::rows, AffineMatrix3T<T>::columns>;
-
-        class Initializer
-        {
-            
-            public:
-                
-                Initializer(ThisType& matrix) :
-                    matrix_ ( matrix ),
-                    element_( 0      )
-                {
-                }
-
-                Initializer& operator , (const T& nextValue)
-                {
-                    matrix_(element_ / AffineMatrix3T<T>::columnsSparse, element_ % AffineMatrix3T<T>::columnsSparse) = nextValue;
-                    ++element_;
-                    return *this;
-                }
-
-            private:
-
-                ThisType&   matrix_;
-                std::size_t element_;
-
-        };
+        using ThisType          = AffineMatrix3T<T>;
+        using TransposedType    = Matrix<T, AffineMatrix3T<T>::rows, AffineMatrix3T<T>::columns>;
+        using Initializer       = MatrixInitializer<AffineMatrix3T<T>, T, AffineMatrix3T<T>::columnsSparse>;
 
         AffineMatrix3T()
         {

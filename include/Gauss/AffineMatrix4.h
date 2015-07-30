@@ -14,6 +14,8 @@
 #include "Macros.h"
 #include "Matrix.h"
 #include "Tags.h"
+#include "AffineMatrix.h"
+#include "MatrixInitializer.h"
 
 #include <cmath>
 #include <cstring>
@@ -80,33 +82,9 @@ class AffineMatrix4T
 
         static const std::size_t elementsSparse = AffineMatrix4T<T>::rowsSparse*AffineMatrix4T<T>::columnsSparse;
 
-        using ThisType = AffineMatrix4T<T>;
-        using TransposedType = Matrix<T, AffineMatrix4T<T>::rows, AffineMatrix4T<T>::columns>;
-
-        class Initializer
-        {
-            
-            public:
-                
-                Initializer(ThisType& matrix) :
-                    matrix_ ( matrix ),
-                    element_( 0      )
-                {
-                }
-
-                Initializer& operator , (const T& nextValue)
-                {
-                    matrix_(element_ / AffineMatrix4T<T>::columnsSparse, element_ % AffineMatrix4T<T>::columnsSparse) = nextValue;
-                    ++element_;
-                    return *this;
-                }
-
-            private:
-
-                ThisType&   matrix_;
-                std::size_t element_;
-
-        };
+        using ThisType          = AffineMatrix4T<T>;
+        using TransposedType    = Matrix<T, AffineMatrix4T<T>::rows, AffineMatrix4T<T>::columns>;
+        using Initializer       = MatrixInitializer<AffineMatrix4T<T>, T, AffineMatrix4T<T>::columnsSparse>;
 
         AffineMatrix4T()
         {
