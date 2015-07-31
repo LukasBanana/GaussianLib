@@ -237,6 +237,24 @@ class ProjectionMatrix4T
         }
 
         /**
+        Returns a type casted instance of this projection matrix.
+        \tparam C Specifies the static cast type.
+        */
+        template <typename C> ProjectionMatrix4T<C> Cast() const
+        {
+            ProjectionMatrix4T<C> result(UninitializeTag{});
+
+            result.m00 = static_cast<C>(m00);
+            result.m11 = static_cast<C>(m11);
+            result.m22 = static_cast<C>(m22);
+            result.m32 = static_cast<C>(m32);
+            result.m23 = static_cast<C>(m23);
+            result.m33 = static_cast<C>(m33);
+
+            return result;
+        }
+
+        /**
         Generates a perspective projection.
         \param[out] m Specifies the resulting projection matrix.
         \param[in] aspect Specifies the aspect ratio. This is commonly width/height (e.g. 1920/1080).

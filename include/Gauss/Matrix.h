@@ -302,6 +302,20 @@ class Matrix
             return &(m_[0]);
         }
 
+        /**
+        Returns a type casted instance of this matrix.
+        \tparam C Specifies the static cast type.
+        */
+        template <typename C> Matrix<C, Rows, Cols> Cast() const
+        {
+            Matrix<C, Rows, Cols> result(UninitializeTag{});
+
+            for (std::size_t i = 0; i < ThisType::elements; ++i)
+                result[i] = static_cast<C>(m_[i]);
+
+            return result;
+        }
+
     private:
         
         T m_[ThisType::elements];

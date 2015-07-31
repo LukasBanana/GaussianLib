@@ -303,15 +303,66 @@ class AffineMatrix3T
 
         /* --- Extended functions for affine transformations --- */
 
+        //! Sets the position of this affine transformation.
         void SetPosition(const Vector2T<T>& position)
         {
             At(0, 2) = position.x;
             At(1, 2) = position.y;
         }
 
+        //! Returns the position of this affine transformation.
         Vector2T<T> GetPosition() const
         {
             return Vector2T<T>(At(0, 2), At(1, 2));
+        }
+
+        //! Translates this affine transformation in X and Y direction with the specified vector.
+        void Translate(const Vector2T<T>& vec)
+        {
+            At(0, 2) += ( At(0, 0)*vec.x + At(0, 1)*vec.y );
+            At(1, 2) += ( At(1, 0)*vec.x + At(1, 1)*vec.y );
+        }
+
+        //! Scales this affine transformation in X and Y direction with the specified vector.
+        void Scale(const Vector2T<T>& vec)
+        {
+            At(0, 0) *= vec.x;
+            At(1, 0) *= vec.x;
+            At(0, 1) *= vec.y;
+            At(1, 1) *= vec.y;
+        }
+
+        /**
+        Rotates this matrix around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
+        \param[in] angle Specifies the rotation angle (in radians).
+        */
+        void RotateZ(const T& angle)
+        {
+            const T c = std::cos(angle);
+            const T s = std::sin(angle);
+
+            const T m00 = At(0, 0);
+            const T m10 = At(1, 0);
+
+            At(0, 0) = m00*c + At(0, 1)*s;
+            At(1, 0) = m10*c + At(1, 1)*s;
+
+            At(0, 1) = At(0, 1)*c - m00*s;
+            At(1, 1) = At(1, 1)*c - m10*s;
+        }
+
+        /**
+        Returns a type casted instance of this affine matrix.
+        \tparam C Specifies the static cast type.
+        */
+        template <typename C> AffineMatrix3T<C> Cast() const
+        {
+            AffineMatrix3T<C> result(UninitializeTag{});
+
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                result[i] = static_cast<C>(m_[i]);
+
+            return result;
         }
 
     private:

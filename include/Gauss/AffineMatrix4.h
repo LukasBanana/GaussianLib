@@ -321,6 +321,20 @@ class AffineMatrix4T
             return Vector3T<T>(At(0, 3), At(1, 3), At(2, 3));
         }
 
+        /**
+        Returns a type casted instance of this affine matrix.
+        \tparam C Specifies the static cast type.
+        */
+        template <typename C> AffineMatrix4T<C> Cast() const
+        {
+            AffineMatrix4T<C> result(UninitializeTag{});
+
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                result[i] = static_cast<C>(m_[i]);
+
+            return result;
+        }
+
     private:
         
         T m_[ThisType::elementsSparse];
