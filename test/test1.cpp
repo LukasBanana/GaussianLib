@@ -287,7 +287,7 @@ int main()
 
     //commonTest1();
     //affineMatrixTest1();
-    //affineMatrixTest2();
+    affineMatrixTest2();
     //quaternionTest1();
     //matrixVectorTest1();
     //complexTest1();

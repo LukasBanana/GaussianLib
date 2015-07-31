@@ -169,9 +169,30 @@ class AffineMatrix3T
             return m_[element];
         }
 
+        ThisType& operator += (const ThisType& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                m_[i] += rhs.m_[i];
+            return *this;
+        }
+
+        ThisType& operator -= (const ThisType& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                m_[i] -= rhs.m_[i];
+            return *this;
+        }
+
         ThisType& operator *= (const ThisType& rhs)
         {
             *this = (*this * rhs);
+            return *this;
+        }
+
+        ThisType& operator *= (const T& rhs)
+        {
+            for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
+                m_[i] *= rhs;
             return *this;
         }
 
@@ -303,6 +324,38 @@ class AffineMatrix3T
 
 
 /* --- Global Operators --- */
+
+template <typename T>
+AffineMatrix3T<T> operator + (const AffineMatrix3T<T>& lhs, const AffineMatrix3T<T>& rhs)
+{
+    auto result = lhs;
+    result += rhs;
+    return result;
+}
+
+template <typename T>
+AffineMatrix3T<T> operator - (const AffineMatrix3T<T>& lhs, const AffineMatrix3T<T>& rhs)
+{
+    auto result = lhs;
+    result -= rhs;
+    return result;
+}
+
+template <typename T>
+AffineMatrix3T<T> operator * (const AffineMatrix3T<T>& lhs, const T& rhs)
+{
+    auto result = lhs;
+    result *= rhs;
+    return result;
+}
+
+template <typename T>
+AffineMatrix3T<T> operator * (const T& lhs, const AffineMatrix3T<T>& rhs)
+{
+    auto result = rhs;
+    result *= lhs;
+    return result;
+}
 
 template <typename T>
 AffineMatrix3T<T> operator * (const AffineMatrix3T<T>& lhs, const AffineMatrix3T<T>& rhs)

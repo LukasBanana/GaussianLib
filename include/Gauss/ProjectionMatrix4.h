@@ -121,6 +121,56 @@ class ProjectionMatrix4T
             // do nothing
         }
 
+        ThisType& operator += (const ThisType& rhs)
+        {
+            m00 += rhs.m00;
+            m11 += rhs.m11;
+            m22 += rhs.m22;
+            m32 += rhs.m32;
+            m23 += rhs.m23;
+            m33 += rhs.m33;
+            return *this;
+        }
+
+        ThisType& operator -= (const ThisType& rhs)
+        {
+            m00 -= rhs.m00;
+            m11 -= rhs.m11;
+            m22 -= rhs.m22;
+            m32 -= rhs.m32;
+            m23 -= rhs.m23;
+            m33 -= rhs.m33;
+            return *this;
+        }
+
+        ThisType& operator *= (const ThisType& rhs)
+        {
+            *this = (*this * rhs);
+            return *this;
+        }
+
+        ThisType& operator *= (const T& rhs)
+        {
+            m00 *= rhs;
+            m11 *= rhs;
+            m22 *= rhs;
+            m32 *= rhs;
+            m23 *= rhs;
+            m33 *= rhs;
+            return *this;
+        }
+
+        ThisType& operator = (const ThisType& rhs)
+        {
+            m00 = rhs.m00;
+            m11 = rhs.m11;
+            m22 = rhs.m22;
+            m32 = rhs.m32;
+            m23 = rhs.m23;
+            m33 = rhs.m33;
+            return *this;
+        }
+
         Vector4T<T> Project(const Vector4T<T>& v)
         {
             #ifdef GS_ROW_VECTORS
@@ -383,6 +433,21 @@ Vector4T<T> operator * (const ProjectionMatrix4T<T>& m, const Vector4T<T>& v)
 }
 
 #endif
+
+template <typename T>
+ProjectionMatrix4T<T> operator * (const ProjectionMatrix4T<T>& lhs, const ProjectionMatrix4T<T>& rhs)
+{
+    ProjectionMatrix4T<T> result(UninitializeTag{});
+
+    result.m00 = lhs.m00*rhs.m00;
+    result.m11 = lhs.m11*rhs.m11;
+    result.m22 = lhs.m22*rhs.m22 + lhs.m23*rhs.m32;
+    result.m32 = lhs.m32*rhs.m22 + lhs.m33*rhs.m32;
+    result.m23 = lhs.m22*rhs.m23 + lhs.m23*rhs.m33;
+    result.m33 = lhs.m32*rhs.m23 + lhs.m33*rhs.m33;
+
+    return result;
+}
 
 
 /* --- Global Functions --- */
