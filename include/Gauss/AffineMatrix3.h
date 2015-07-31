@@ -333,10 +333,26 @@ class AffineMatrix3T
         }
 
         /**
+        Sets the rotation around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
+        \param[in] angle Specifies the rotation angle (in radians).
+        */
+        void SetRotation(const T& angle)
+        {
+            const T c = std::cos(angle);
+            const T s = std::sin(angle);
+
+            At(0, 0) = c;
+            At(1, 0) = s;
+
+            At(0, 1) = -s;
+            At(1, 1) = c;
+        }
+
+        /**
         Rotates this matrix around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
         \param[in] angle Specifies the rotation angle (in radians).
         */
-        void RotateZ(const T& angle)
+        void Rotate(const T& angle)
         {
             const T c = std::cos(angle);
             const T s = std::sin(angle);
