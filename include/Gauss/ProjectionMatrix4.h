@@ -233,7 +233,7 @@ class ProjectionMatrix4T
         bool MakeInverse()
         {
             ProjectionMatrix4T<T> in{ *this };
-            return Gs::Inverse(*this);
+            return Gs::Inverse(*this, in);
         }
 
         /**
@@ -439,12 +439,25 @@ ProjectionMatrix4T<T> operator * (const ProjectionMatrix4T<T>& lhs, const Projec
 {
     ProjectionMatrix4T<T> result(UninitializeTag{});
 
+    #ifdef GS_ROW_VECTORS
+
+    result.m00 = lhs.m00*rhs.m00;
+    result.m11 = lhs.m11*rhs.m11;
+    result.m22 = lhs.m22*rhs.m22 + lhs.m32*rhs.m23;
+    result.m32 = lhs.m22*rhs.m32 + lhs.m32*rhs.m33;
+    result.m23 = lhs.m23*rhs.m22 + lhs.m33*rhs.m23;
+    result.m33 = lhs.m23*rhs.m32 + lhs.m33*rhs.m33;
+
+    #else
+
     result.m00 = lhs.m00*rhs.m00;
     result.m11 = lhs.m11*rhs.m11;
     result.m22 = lhs.m22*rhs.m22 + lhs.m23*rhs.m32;
     result.m32 = lhs.m32*rhs.m22 + lhs.m33*rhs.m32;
     result.m23 = lhs.m22*rhs.m23 + lhs.m23*rhs.m33;
     result.m33 = lhs.m32*rhs.m23 + lhs.m33*rhs.m33;
+
+    #endif
 
     return result;
 }

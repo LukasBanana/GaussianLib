@@ -156,14 +156,17 @@ template <typename T> bool Inverse(AffineMatrix4T<T>& inv, const AffineMatrix4T<
     inv.At(1, 0) = d * ( m.At(1, 2) * m.At(2, 0) + m.At(2, 2) * ( -m.At(1, 0) ) );
     inv.At(2, 0) = d * ( m.At(1, 0) * m.At(2, 1) - m.At(2, 0) * m.At(1, 1) );
   /*inv.At(3, 0) = 0;*/
+
     inv.At(0, 1) = d * ( m.At(2, 1) * m.At(0, 2) + m.At(0, 1) * ( -m.At(2, 2) ) );
     inv.At(1, 1) = d * ( m.At(2, 2) * m.At(0, 0) + m.At(0, 2) * ( -m.At(2, 0) ) );
     inv.At(2, 1) = d * ( m.At(2, 0) * m.At(0, 1) - m.At(0, 0) * m.At(2, 1) );
   /*inv.At(3, 1) = 0;*/
+
     inv.At(0, 2) = d * ( m.At(0, 1) * m.At(1, 2) + m.At(1, 1) * ( -m.At(0, 2) ) );
     inv.At(1, 2) = d * ( m.At(0, 2) * m.At(1, 0) + m.At(1, 2) * ( -m.At(0, 0) ) );
     inv.At(2, 2) = d * ( m.At(0, 0) * m.At(1, 1) - m.At(1, 0) * m.At(0, 1) );
   /*inv.At(3, 2) = 0;*/
+
     inv.At(0, 3) = d * ( m.At(0, 1) * (m.At(2, 2) * m.At(1, 3) - m.At(1, 2) * m.At(2, 3)) + m.At(1, 1) * (m.At(0, 2) * m.At(2, 3) - m.At(2, 2) * m.At(0, 3)) + m.At(2, 1) * (m.At(1, 2) * m.At(0, 3) - m.At(0, 2) * m.At(1, 3)) );
     inv.At(1, 3) = d * ( m.At(0, 2) * (m.At(2, 0) * m.At(1, 3) - m.At(1, 0) * m.At(2, 3)) + m.At(1, 2) * (m.At(0, 0) * m.At(2, 3) - m.At(2, 0) * m.At(0, 3)) + m.At(2, 2) * (m.At(1, 0) * m.At(0, 3) - m.At(0, 0) * m.At(1, 3)) );
     inv.At(2, 3) = d * ( m.At(0, 3) * (m.At(2, 0) * m.At(1, 1) - m.At(1, 0) * m.At(2, 1)) + m.At(1, 3) * (m.At(0, 0) * m.At(2, 1) - m.At(2, 0) * m.At(0, 1)) + m.At(2, 3) * (m.At(1, 0) * m.At(0, 1) - m.At(0, 0) * m.At(1, 1)) );
@@ -189,8 +192,8 @@ bool Inverse(ProjectionMatrix4T<T>& inv, const ProjectionMatrix4T<T>& m)
     /* Compute inverse matrix */
     inv.m00 = d * ( m.m11 * ( m.m22 * m.m33 - m.m23 * m.m32 ) );
   /*inv.m01 = 0;*/
-  /*inv.m01 = 0;*/
-  /*inv.m01 = 0;*/
+  /*inv.m02 = 0;*/
+  /*inv.m03 = 0;*/
     
   /*inv.m10 = 0;*/
     inv.m11 = d * ( m.m22 * m.m00 * m.m33 + m.m23 * ( -m.m00 * m.m32 ) );
@@ -200,7 +203,7 @@ bool Inverse(ProjectionMatrix4T<T>& inv, const ProjectionMatrix4T<T>& m)
   /*inv.m20 = 0;*/
   /*inv.m21 = 0;*/
     inv.m22 = d * ( m.m33 * (  m.m00 * m.m11 ) );
-    inv.m23 = d * ( m.m00 * ( -m.m11 * m.m32 ) );
+    inv.m23 = d * ( m.m00 * ( -m.m11 * m.m23 ) );
 
   /*inv.m30 = 0;*/
   /*inv.m31 = 0;*/

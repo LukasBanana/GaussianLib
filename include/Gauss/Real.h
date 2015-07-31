@@ -22,7 +22,7 @@ static const float epsilon32 = 0.00001f;
 static const double epsilon64 = 0.00000001;
 
 
-#ifdef GD_HIGH_PRECISION_FLOAT
+#ifdef GS_HIGH_PRECISION_FLOAT
 
 using Real = double;
 static const Real epsilon = epsilon64;

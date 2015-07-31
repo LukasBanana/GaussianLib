@@ -7,11 +7,12 @@
 
 //#define GS_ROW_MAJOR_STORAGE
 #define GS_ENABLE_SWIZZLE_OPERATOR
+#define GS_HIGH_PRECISION_FLOAT
+//#define GS_ROW_VECTORS
 
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
-#include <Gauss/Projection.h>
 
 #include <iostream>
 #include <sstream>
@@ -33,7 +34,7 @@ static void commonTest1()
     const Vector4 a(1, 2, 3, 4), b(-4, 0, 2);
 
     #ifdef GS_ENABLE_SWIZZLE_OPERATOR
-    Vector4 c = a.zzzw()*2.0f + a.xyxy() - b.yxzw();
+    Vector4 c = a.zzzw()*Real(2) + a.xyxy() - b.yxzw();
     Vector2 d = c.xx(), e = c.xw() + b.yz();
     #endif
 
@@ -46,7 +47,7 @@ static void commonTest1()
     q0.GetEulerAngles(eulerAngles);
 
     Vector3 v0 = q0 * Vector3(1, 2, 3);
-    Quaternion q1 = q0 * 3.0f;
+    Quaternion q1 = q0 * Real(3);
 
     // --- matrix tests ---
 
@@ -176,7 +177,7 @@ static void affineMatrixTest1()
     std::cout << std::endl << "A1 = " << std::endl << A << std::endl;
     std::cout << std::endl << "A2 = " << std::endl << A2 << std::endl;
     std::cout << std::endl << "Lerp(A1, A2, 0.5) = " << std::endl << Lerp(A, A2, 0.5f) << std::endl;
-    std::cout << std::endl << "5 * I3 = " << std::endl << 5.0f * Matrix3::Identity() << std::endl;
+    std::cout << std::endl << "5 * I3 = " << std::endl << Real(5) * Matrix3::Identity() << std::endl;
 }
 
 static void affineMatrixTest2()
@@ -263,7 +264,6 @@ static void complexTest1()
     #else
     auto b = A * a;
     #endif
-
 }
 
 static void projectionTest1()
@@ -274,10 +274,14 @@ static void projectionTest1()
     auto Q = ProjectionMatrix4::Orthogonal(w, h, near, far);
     auto R = ProjectionMatrix4::Planar(w, h);
 
+    Vector4 a(50, 0, 0, 1);
+
     std::cout << "Perspective Projection P = " << std::endl << P << std::endl;
     std::cout << "Orthogonal  Projection Q = " << std::endl << Q << std::endl;
     std::cout << "Planar      Projection R = " << std::endl << R << std::endl;
-    //std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
+    std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
+    std::cout << "a = " << a << std::endl;
+    std::cout << "Project(R, a) = " << (R * a).xy() << std::endl;
 }
 
 int main()
@@ -287,7 +291,7 @@ int main()
 
     //commonTest1();
     //affineMatrixTest1();
-    affineMatrixTest2();
+    //affineMatrixTest2();
     //quaternionTest1();
     //matrixVectorTest1();
     //complexTest1();
