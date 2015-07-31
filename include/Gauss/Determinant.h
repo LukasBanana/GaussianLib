@@ -86,6 +86,14 @@ T Determinant(const AffineMatrix4T<T>& m)
         ( m.At(0, 1) * m.At(1, 2) - m.At(0, 2) * m.At(1, 1) ) * m.At(2, 0);
 }
 
+//! Computes the determinant of the specified projection 4x4 matrix 'm'.
+template <typename T>
+T Determinant(const ProjectionMatrix4T<T>& m)
+{
+    // can be used for row- and column vectors
+    return m.m00 * m.m11 * ( m.m22 * m.m33 - m.m23 * m.m32 );
+}
+
 
 } // /namespace Gs
 

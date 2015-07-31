@@ -16,6 +16,7 @@
 #include "Matrix.h"
 #include "AffineMatrix3.h"
 #include "AffineMatrix4.h"
+#include "ProjectionMatrix4.h"
 
 #include "Algebra.h"
 #include "OStream.h"

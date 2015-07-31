@@ -182,6 +182,12 @@ std::ostream& operator << (std::ostream& stream, const AffineMatrix3T<T>& mat)
     return Details::ShiftAffineMatrixOStream<AffineMatrix3T<T>, T>(stream, mat);
 }
 
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const ProjectionMatrix4T<T>& mat)
+{
+    return stream << mat.ToMatrix4();
+}
+
 
 } // /namespace Gs
 

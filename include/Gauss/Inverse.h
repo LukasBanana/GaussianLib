@@ -172,6 +172,69 @@ template <typename T> bool Inverse(AffineMatrix4T<T>& inv, const AffineMatrix4T<
     return true;
 }
 
+//! Computes the inverse of the specified projection 4x4 matrix 'm'.
+template <typename T>
+bool Inverse(ProjectionMatrix4T<T>& inv, const ProjectionMatrix4T<T>& m)
+{
+    /* Compute inverse determinant */
+    T d = Determinant(m);
+
+    if (d == T(0))
+        return false;
+
+    d = T(1) / d;
+
+    #ifdef GS_ROW_VECTORS
+
+    /* Compute inverse matrix */
+    inv.m00 = d * ( m.m11 * ( m.m22 * m.m33 - m.m23 * m.m32 ) );
+  /*inv.m01 = 0;*/
+  /*inv.m01 = 0;*/
+  /*inv.m01 = 0;*/
+    
+  /*inv.m10 = 0;*/
+    inv.m11 = d * ( m.m22 * m.m00 * m.m33 + m.m23 * ( -m.m00 * m.m32 ) );
+  /*inv.m12 = 0;*/
+  /*inv.m13 = 0;*/
+    
+  /*inv.m20 = 0;*/
+  /*inv.m21 = 0;*/
+    inv.m22 = d * ( m.m33 * (  m.m00 * m.m11 ) );
+    inv.m23 = d * ( m.m00 * ( -m.m11 * m.m32 ) );
+
+  /*inv.m30 = 0;*/
+  /*inv.m31 = 0;*/
+    inv.m32 = d * ( m.m32 * ( -m.m00 * m.m11 ) );
+    inv.m33 = d * ( m.m00 * (  m.m11 * m.m22 ) );
+
+    #else
+
+    /* Compute inverse matrix */
+    inv.m00 = d * ( m.m11 * ( m.m22 * m.m33 - m.m32 * m.m23 ) );
+  /*inv.m10 = 0;*/
+  /*inv.m20 = 0;*/
+  /*inv.m30 = 0;*/
+    
+  /*inv.m01 = 0;*/
+    inv.m11 = d * ( m.m22 * m.m00 * m.m33 + m.m32 * ( -m.m00 * m.m23 ) );
+  /*inv.m21 = 0;*/
+  /*inv.m31 = 0;*/
+    
+  /*inv.m02 = 0;*/
+  /*inv.m12 = 0;*/
+    inv.m22 = d * ( m.m33 * (  m.m00 * m.m11 ) );
+    inv.m32 = d * ( m.m00 * ( -m.m11 * m.m32 ) );
+
+  /*inv.m03 = 0;*/
+  /*inv.m13 = 0;*/
+    inv.m23 = d * ( m.m23 * ( -m.m00 * m.m11 ) );
+    inv.m33 = d * ( m.m00 * (  m.m11 * m.m22 ) );
+
+    #endif
+
+    return true;
+}
+
 
 } // /namespace Gs
 

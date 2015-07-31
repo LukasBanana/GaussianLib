@@ -268,15 +268,16 @@ static void complexTest1()
 
 static void projectionTest1()
 {
-    Matrix4 A, B;
+    const Real w = 800, h = 600, near = 1.0f, far = 100.0f, fov = 74.0f*pi/180.0f;
 
-    const Real w = 800, h = 600, near = 1.0f, far = 100.0f, fov = 74.0f*pi/2.0f;
+    auto P = ProjectionMatrix4::Perspective(w/h, near, far, fov);
+    auto Q = ProjectionMatrix4::Orthogonal(w, h, near, far);
+    auto R = ProjectionMatrix4::Planar(w, h);
 
-    A = BuildPerspectiveProjectionLH(w/h, near, far, fov);
-    B = BuildPerspectiveProjectionRH(w/h, near, far, fov);
-
-    std::cout << "Projection A = " << std::endl << A << std::endl;
-    std::cout << "Projection B = " << std::endl << B << std::endl;
+    std::cout << "Perspective Projection P = " << std::endl << P << std::endl;
+    std::cout << "Orthogonal  Projection Q = " << std::endl << Q << std::endl;
+    std::cout << "Planar      Projection R = " << std::endl << R << std::endl;
+    //std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
 }
 
 int main()
@@ -286,11 +287,11 @@ int main()
 
     //commonTest1();
     //affineMatrixTest1();
-    affineMatrixTest2();
+    //affineMatrixTest2();
     //quaternionTest1();
     //matrixVectorTest1();
     //complexTest1();
-    //projectionTest1();
+    projectionTest1();
 
     #ifdef _WIN32
     system("pause");
