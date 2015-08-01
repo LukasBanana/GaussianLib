@@ -9,6 +9,8 @@
 #define __GS_EQUAL_H__
 
 
+#include "Real.h"
+
 #include <cmath>
 
 

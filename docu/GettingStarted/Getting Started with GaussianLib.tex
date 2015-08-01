@@ -85,7 +85,7 @@ write: $y = M * x$.
 To use \textbf{row vectors} instead, define the macro \texttt{GS\_ROW\_VECTORS} before you include the library.
 There are three base classes for vectors: \texttt{Vector2T<T>}, \texttt{Vector3T<T>}, and \texttt{Vector4T<T>},
 where \texttt{<T>} specifies the template typename T. There are also pre-defined type aliases
-(\texttt{\textit{N}} is either 2, 3 or 4):
+(\texttt{\textit{N}} is either 2, 3, or 4):
 \begin{itemize}
 	\item \texttt{Vector\textit{N}} Is a type alias to \texttt{Vector\textit{N}T<Real>}, where \texttt{Real} is either
 		from type \texttt{float} or \texttt{double}.
@@ -107,11 +107,13 @@ int main()
 	
 	std::cout << "a = " << a << std::endl;
 	std::cout << "b = " << b << std::endl;
-	std::cout << "a * b = " << a*b << std::endl;
-	std::cout << "a . b = " << Dot(a, b) << std::endl;
-	std::cout << "a X b = " << Cross(a, b) << std::endl;
-	std::cout << "|a| = " << a.Length() << std::endl;
-	std::cout << "a / |a| = " << a.Normalize() << std::endl;
+	std::cout << "a * b = " << a*b << std::endl;             // Per-component multiplication
+	std::cout << "a . b = " << Dot(a, b) << std::endl;       // Dot product (or scalar product)
+	std::cout << "a X b = " << Cross(a, b) << std::endl;     // Cross product (or vector product)
+	std::cout << "a V b = " << Angle(a, b) << std::endl;     // Vector angle (in radians)
+	std::cout << "|a| = " << a.Length() << std::endl;        // Vector length (or norm of the vector)
+	std::cout << "|a|^2 = " << a.LengthSq() << std::endl;    // Squared vector length
+	std::cout << "a / |a| = " << a.Normalize() << std::endl; // Normalized vector (unit length of 1)
 	
 	return 0;
 }
