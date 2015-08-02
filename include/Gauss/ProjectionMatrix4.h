@@ -73,7 +73,7 @@ enum PlanarProjectionOrigins
 
 
 /**
-Projection 4x4 matrix.
+Sparse 4x4 projection matrix.
 \remarks
 \code
 // / w 0 0 0 \

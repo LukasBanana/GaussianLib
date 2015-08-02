@@ -323,6 +323,29 @@ class AffineMatrix3T
             At(1, 2) += ( At(1, 0)*vec.x + At(1, 1)*vec.y );
         }
 
+        /**
+        Sets the scaling of this matrix.
+        \param[in] vec Specifies the scaling vector.
+        \note This will destroy the rotation. You can set the rotation and scaling at once with 'SetRotationAndScale'.
+        \see SetRotationAndScale
+        */
+        void SetScale(const Vector2T<T>& vec)
+        {
+            At(0, 0) = vec.x;
+            At(1, 0) = vec.x;
+            At(0, 1) = vec.y;
+            At(1, 1) = vec.y;
+        }
+
+        //! Returns the unsigned scaling of this matrix (independent of rotation and shearing).
+        Vector2T<T> GetScale() const
+        {
+            return Vector2T<T>(
+                Vector2T<T>(At(0, 0), At(1, 0)).Length(),
+                Vector2T<T>(At(0, 1), At(1, 1)).Length()
+            );
+        }
+
         //! Scales this affine transformation in X and Y direction with the specified vector.
         void Scale(const Vector2T<T>& vec)
         {
@@ -333,8 +356,10 @@ class AffineMatrix3T
         }
 
         /**
-        Sets the rotation around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
+        \brief Sets the rotation around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
         \param[in] angle Specifies the rotation angle (in radians).
+        \note This will destroy the scaling. You can set the rotation and scaling at once with 'SetRotationAndScale'.
+        \see SetRotationAndScale
         */
         void SetRotation(const T& angle)
         {
@@ -343,14 +368,26 @@ class AffineMatrix3T
 
             At(0, 0) = c;
             At(1, 0) = s;
-
             At(0, 1) = -s;
             At(1, 1) = c;
         }
 
         /**
-        Rotates this matrix around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
+        \brief Returns the rotation (in radians) of this matrix.
+        \remarks This requires that the rotation was set with 'SetRotation' or 'SetRotationAndScale' and no shearing was used.
+        \see SetRotation
+        \see SetRotationAndScale
+        */
+        T GetRotation() const
+        {
+            auto len = Vector2T<T>(At(0, 0), At(1, 0)).Length();
+            return std::acos(At(0, 0) / len);
+        }
+
+        /**
+        \brief Rotates this matrix around the Z axis. This is the only allowed rotation for this 3x3 affine matrix.
         \param[in] angle Specifies the rotation angle (in radians).
+        \remarks This will keep the current scaling.
         */
         void Rotate(const T& angle)
         {
@@ -365,6 +402,24 @@ class AffineMatrix3T
 
             At(0, 1) = At(0, 1)*c - m00*s;
             At(1, 1) = At(1, 1)*c - m10*s;
+        }
+
+        /**
+        \brief Sets the rotation around the Z axis and the scaling.
+        \param[in] angle Specifies the rotation angle (in radians).
+        \param[in] scale Specifies the scaling vector.
+        \see SetRotation
+        \see SetScale
+        */
+        void SetRotationAndScale(const T& angle, const Vector2T<T>& scale)
+        {
+            const T c = std::cos(angle);
+            const T s = std::sin(angle);
+
+            At(0, 0) = c*scale.x;
+            At(1, 0) = s*scale.x;
+            At(0, 1) = -s*scale.y;
+            At(1, 1) = c*scale.y;
         }
 
         /**

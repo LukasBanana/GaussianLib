@@ -144,9 +144,10 @@ class Vector2T
         }
 
         /**
-        Normalizes the vector to the unit length of 1.
+        Normalizes this vector to the unit length of 1.
         \see Normalized
         \see Length
+        \see Resize
         */
         void Normalize()
         {
@@ -162,6 +163,16 @@ class Vector2T
             auto vec = *this;
             vec.Normalize();
             return vec;
+        }
+
+        /**
+        Resizes this vector to the specified length.
+        \see Normalize
+        \see Length
+        */
+        void Resize(const T& length)
+        {
+            Gs::Resize(*this, length);
         }
 
         /**

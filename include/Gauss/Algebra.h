@@ -107,9 +107,21 @@ template <template <typename> class Vec, typename T>
 void Normalize(Vec<T>& vec)
 {
     auto len = LengthSq(vec);
-    if (len != Real(0) && len != Real(1))
+    if (len != T(0) && len != T(1))
     {
         len = T(1) / std::sqrt(len);
+        vec *= len;
+    }
+}
+
+//! Resizes the specified vector to the specified length.
+template <template <typename> class Vec, typename T>
+void Resize(Vec<T>& vec, const T& length)
+{
+    auto len = LengthSq(vec);
+    if (len != T(0) && len != length)
+    {
+        len = length / std::sqrt(len);
         vec *= len;
     }
 }
