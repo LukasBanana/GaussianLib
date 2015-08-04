@@ -422,6 +422,28 @@ class AffineMatrix3T
             At(1, 1) = c*scale.y;
         }
 
+        void ToMatrix3(Matrix<T, 3, 3>& m) const
+        {
+            m.At(0, 0) = At(0, 0);
+            m.At(1, 0) = At(1, 0);
+            m.At(2, 0) = T(0);
+
+            m.At(0, 1) = At(0, 1);
+            m.At(1, 1) = At(1, 1);
+            m.At(2, 1) = T(0);
+
+            m.At(0, 2) = At(0, 2);
+            m.At(1, 2) = At(1, 2);
+            m.At(2, 2) = T(1);
+        }
+
+        Matrix<T, 3, 3> ToMatrix3() const
+        {
+            Matrix<T, 3, 3> result;
+            ToMatrix3(result);
+            return result;
+        }
+
         /**
         Returns a type casted instance of this affine matrix.
         \tparam C Specifies the static cast type.

@@ -321,6 +321,36 @@ class AffineMatrix4T
             return Vector3T<T>(At(0, 3), At(1, 3), At(2, 3));
         }
 
+        void ToMatrix4(Matrix<T, 4, 4>& m) const
+        {
+            m.At(0, 0) = At(0, 0);
+            m.At(1, 0) = At(1, 0);
+            m.At(2, 0) = At(2, 0);
+            m.At(3, 0) = T(0);
+
+            m.At(0, 1) = At(0, 1);
+            m.At(1, 1) = At(1, 1);
+            m.At(2, 1) = At(2, 1);
+            m.At(3, 1) = T(0);
+
+            m.At(0, 2) = At(0, 2);
+            m.At(1, 2) = At(1, 2);
+            m.At(2, 2) = At(2, 2);
+            m.At(3, 2) = T(0);
+
+            m.At(0, 3) = At(0, 3);
+            m.At(1, 3) = At(1, 3);
+            m.At(2, 3) = At(2, 3);
+            m.At(3, 3) = T(1);
+        }
+
+        Matrix<T, 4, 4> ToMatrix4() const
+        {
+            Matrix<T, 4, 4> result;
+            ToMatrix4(result);
+            return result;
+        }
+
         /**
         Returns a type casted instance of this affine matrix.
         \tparam C Specifies the static cast type.
