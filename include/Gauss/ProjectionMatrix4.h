@@ -56,7 +56,7 @@ struct ProjectionFlags
 };
 
 //! Specifies where the coordinate system's origin of a planar projection is located.
-enum PlanarProjectionOrigins
+enum class PlanarProjectionOrigins
 {
     //! Left-top corner of the screen.
     LeftTop,
