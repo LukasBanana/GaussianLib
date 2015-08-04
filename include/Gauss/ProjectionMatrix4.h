@@ -291,13 +291,18 @@ class ProjectionMatrix4T
             
             #ifdef GS_ROW_VECTORS
             m.m23 = T(1);
-            m.m32 = T(0);
             #else
             m.m32 = T(1);
-            m.m23 = T(0);
             #endif
 
-            m.m33 = (unitCube ? -(T(2)*far*near)/(far - near) : -(far*near)/(far - near));
+            #ifdef GS_ROW_VECTORS
+            m.m32 =
+            #else
+            m.m23 =
+            #endif
+            (unitCube ? -(T(2)*far*near)/(far - near) : -(far*near)/(far - near));
+
+            m.m33 = T(0);
 
             if (rightHanded)
             {
@@ -338,9 +343,20 @@ class ProjectionMatrix4T
             m.m11 = T(2)/height;
 
             m.m22 = (unitCube ? T(2)/(far - near) : T(1)/(far - near));
-            m.m32 = T(0);
 
-            m.m23 = (unitCube ? -(far + near)/(far - near) : -near/(far - near));
+            #ifdef GS_ROW_VECTORS
+            m.m23 = T(0);
+            #else
+            m.m32 = T(0);
+            #endif
+
+            #ifdef GS_ROW_VECTORS
+            m.m32 =
+            #else
+            m.m23 =
+            #endif
+            (unitCube ? -(far + near)/(far - near) : -near/(far - near));
+
             m.m33 = T(1);
 
             if (rightHanded)
