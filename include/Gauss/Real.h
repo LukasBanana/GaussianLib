@@ -21,7 +21,6 @@ namespace Gs
 static const float epsilon32 = 0.00001f;
 static const double epsilon64 = 0.00000001;
 
-
 #ifdef GS_HIGH_PRECISION_FLOAT
 
 using Real = double;
@@ -33,6 +32,8 @@ using Real = float;
 static const Real epsilon = epsilon32;
 
 #endif
+
+static const Real pi = Real(3.14159265358979323846);
 
 
 } // /namespace Gs

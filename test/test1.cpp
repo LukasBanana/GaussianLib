@@ -25,8 +25,6 @@
 using namespace Gs;
 
 
-static const Real pi = Real(3.141592654);
-
 static void commonTest1()
 {
     // --- vector tests ---
