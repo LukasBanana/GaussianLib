@@ -284,6 +284,28 @@ static void projectionTest1()
     std::cout << "Project(R, a) = " << (R * a).xy() << std::endl;
 }
 
+static void equalsTest1()
+{
+    Vector3 a(1, 2, 3), b(4, 5, 6), c(1, 2, 3);
+    Real x = 1, y = 2, z = 1;
+
+    auto YesNo = [](bool b)
+    {
+        return b ? "Yes" : "No";
+    };
+
+    std::cout << "a = " << a << std::endl;
+    std::cout << "b = " << b << std::endl;
+    std::cout << "c = " << c << std::endl;
+    std::cout << "a equals b ? " << YesNo(Equals(a, b)) << std::endl;
+    std::cout << "a equals c ? " << YesNo(Equals(a, c)) << std::endl;
+    std::cout << "x = " << x << std::endl;
+    std::cout << "y = " << y << std::endl;
+    std::cout << "z = " << z << std::endl;
+    std::cout << "x equals y ? " << YesNo(Equals(x, y)) << std::endl;
+    std::cout << "x equals z ? " << YesNo(Equals(x, z)) << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -295,7 +317,8 @@ int main()
     //quaternionTest1();
     //matrixVectorTest1();
     //complexTest1();
-    projectionTest1();
+    //projectionTest1();
+    equalsTest1();
 
     #ifdef _WIN32
     system("pause");
