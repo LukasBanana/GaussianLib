@@ -194,8 +194,9 @@ However, with many 3D models, such transformations require a lot of memory.
 Moreover, the 4th row of these 4x4 affine matrices is always $(0, 0, 0, 1)$ --- except that row vectors are used,
 where the 4th column is always $(0, 0, 0, 1)$.
 
-To reduce the memory footprint (and some computations) the \gausslib provides the \texttt{AffineMatrix3T<T>},
-and \texttt{AffineMatrix4T<T>} classes, where the 4th row (or column for row-vectors) is implicit:
+To reduce the memory footprint (and some computations), the \gausslib provides the \texttt{AffineMatrix4T<T>} class,
+where the 4th row (or column for row-vectors) is implicit, and the \texttt{AffineMatrix3T<T>} class,
+where the 3rd row (or column for row-vectors) is implicit:
 \begin{lstlisting}
 #include <Gauss/Gauss.h>
 
@@ -237,7 +238,7 @@ int main()
 	Gs::QuaternionT<double> qDouble;
 	
 	// Spherical Linear intERPolation (SLERP) between q0 and q1
-	auto q2 = Slerp(q0, q1, 0.5);
+	auto q2 = Gs::Slerp(q0, q1, 0.5);
 	
 	// Convert to 3x3 matrix
 	Gs::Matrix3 rotation = q2.ToMatrix3();
