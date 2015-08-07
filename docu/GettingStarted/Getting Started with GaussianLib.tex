@@ -83,9 +83,10 @@ In the \gausslib vectors are considered to be \textbf{column vectors} per defaul
 I.e. if you want a vector $y$ as a result of a multiplication with a matrix $M$ and a vector $x$,
 write: $y = M * x$.
 To use \textbf{row vectors} instead, define the macro \texttt{GS\_ROW\_VECTORS} before you include the library.
-There are three base classes for vectors: \texttt{Vector2T<T>}, \texttt{Vector3T<T>}, and \texttt{Vector4T<T>},
-where \texttt{<T>} specifies the template typename T. There are also pre-defined type aliases
-(\texttt{\textit{N}} is either 2, 3, or 4):
+There is the generalized base \mbox{\texttt{Vector<T, N>}} class, where \texttt{T} specifies the data type of the
+vector components and \texttt{N} specifies the number of components.
+There are three specialized template classes for vectors: \texttt{Vector<T, 2>}, \texttt{Vector<T, 3>},
+and \texttt{Vector<T, 4>}. There are also pre-defined type aliases (\texttt{\textit{N}} is either 2, 3, or 4):
 \begin{itemize}
 	\item \texttt{Vector\textit{N}} Is a type alias to \texttt{Vector\textit{N}T<Real>}, where \texttt{Real} is either
 		from type \texttt{float} or \texttt{double}.
@@ -118,9 +119,8 @@ int main()
 	return 0;
 }
 \end{lstlisting}
-The vector classes have not been generalized as much as the matrix class. This is due to support the public members
-\texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w}. I.e. you are not restricted to the bracket operator \texttt{[]}
-to access vector components:
+For the specialized Vector templates, there are public members available: \texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w}.
+I.e. you are not restricted to the bracket operator \texttt{[]} to access vector components:
 \begin{lstlisting}
 a.x = 2;
 a.z = 3;
