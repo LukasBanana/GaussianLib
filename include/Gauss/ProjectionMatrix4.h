@@ -269,14 +269,14 @@ class ProjectionMatrix4T
         {
             T w, h;
 
-            bool vertFOV        = (( flags & ProjectionFlags::HorizontalFOV ) != 0);
+            bool horzFOV        = (( flags & ProjectionFlags::HorizontalFOV ) != 0);
             bool rightHanded    = (( flags & ProjectionFlags::RightHanded   ) != 0);
             bool unitCube       = (( flags & ProjectionFlags::UnitCube      ) != 0);
 
-            if (vertFOV)
+            if (horzFOV)
             {
                 w = T(1) / std::tan(fov / T(2));
-                h = w / aspect;
+                h = w * aspect;
             }
             else
             {
