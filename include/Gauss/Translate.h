@@ -11,6 +11,7 @@
 
 #include "Decl.h"
 #include "Macros.h"
+#include "Vector3.h"
 
 
 namespace Gs

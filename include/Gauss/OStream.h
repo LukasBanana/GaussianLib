@@ -38,17 +38,6 @@ std::size_t Length(const T& value)
     return stream.str().size();
 }
 
-template <template <typename> class Vec, typename T>
-std::ostream& ShiftVectorOStream(std::ostream& stream, const Vec<T>& vec)
-{
-    stream << "( ";
-
-    for (std::size_t i = 0; i < Vec<T>::components; ++i)
-        stream << vec[i] << (i + 1 < Vec<T>::components ? " | " : " )");
-
-    return stream;
-}
-
 template <class M, typename T>
 std::ostream& ShiftAffineMatrixOStream(std::ostream& stream, const M& mat)
 {
@@ -116,28 +105,22 @@ std::ostream& ShiftAffineMatrixOStream(std::ostream& stream, const M& mat)
 } // /namespace Details
 
 
-template <typename T>
-std::ostream& operator << (std::ostream& stream, const Vector2T<T>& vec)
+template <typename T, std::size_t N>
+std::ostream& operator << (std::ostream& stream, const Vector<T, N>& vec)
 {
-    return Details::ShiftVectorOStream(stream, vec);
-}
+    stream << "( ";
 
-template <typename T>
-std::ostream& operator << (std::ostream& stream, const Vector3T<T>& vec)
-{
-    return Details::ShiftVectorOStream(stream, vec);
-}
+    for (std::size_t i = 0; i < N; ++i)
+        stream << vec[i] << (i + 1 < N ? " | " : " )");
 
-template <typename T>
-std::ostream& operator << (std::ostream& stream, const Vector4T<T>& vec)
-{
-    return Details::ShiftVectorOStream(stream, vec);
+    return stream;
 }
 
 template <typename T>
 std::ostream& operator << (std::ostream& stream, const QuaternionT<T>& vec)
 {
-    return Details::ShiftVectorOStream(stream, vec);
+    stream << "( " << vec.x << " | " << vec.y << " | " << vec.z << " | " << vec.w << " )";
+    return stream;
 }
 
 template <typename T, std::size_t Rows, std::size_t Cols>

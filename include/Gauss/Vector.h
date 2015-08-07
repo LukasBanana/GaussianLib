@@ -46,7 +46,7 @@ class Vector
 
         Vector(const Vector<T, N>& rhs)
         {
-            std::copy(std::begin(rhs.v_), std::end(rhs.v_), std::begin(v_));
+            std::copy(std::begin(rhs.v_), std::end(rhs.v_), v_);
         }
 
         Vector(UninitializeTag)

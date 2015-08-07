@@ -16,6 +16,7 @@
 #include "Tags.h"
 #include "AffineMatrix.h"
 #include "MatrixInitializer.h"
+#include "Vector3.h"
 
 #include <cmath>
 #include <cstring>

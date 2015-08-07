@@ -13,6 +13,7 @@
 #include "Details.h"
 #include "Determinant.h"
 #include "Inverse.h"
+#include "Decl.h"
 
 #include <cmath>
 #include <cstddef>
@@ -24,46 +25,39 @@ namespace Gs
 {
 
 
-/* --- Forward Declarations --- */
-
-template <typename T> class Vector2T;
-template <typename T> class Vector3T;
-template <typename T> class Vector4T;
-
-
 /* --- Global Functions --- */
 
 //! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T>
-T Angle(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T Angle(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     return std::acos( Dot(lhs, rhs) / (lhs.Length()*rhs.Length()) );
 }
 
 //! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T>
-T AngleNorm(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T AngleNorm(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     return std::acos(Dot(lhs, rhs));
 }
 
 //! Returns the squared length of the specified vector.
-template <template <typename> class Vec, typename T>
-T LengthSq(const Vec<T>& vec)
+template <typename T, std::size_t N>
+T LengthSq(const Vector<T, N>& vec)
 {
     return Dot(vec, vec);
 }
 
 //! Returns the length (euclidian norm) of the specified vector.
-template <template <typename> class Vec, typename T>
-T Length(const Vec<T>& vec)
+template <typename T, std::size_t N>
+T Length(const Vector<T, N>& vec)
 {
     return std::sqrt(LengthSq(vec));
 }
 
 //! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T>
-T DistanceSq(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T DistanceSq(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     auto result = rhs;
     result -= lhs;
@@ -71,8 +65,8 @@ T DistanceSq(const Vec<T>& lhs, const Vec<T>& rhs)
 }
 
 //! Returns the distance between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T>
-T Distance(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T Distance(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     auto result = rhs;
     result -= lhs;
@@ -80,22 +74,22 @@ T Distance(const Vec<T>& lhs, const Vec<T>& rhs)
 }
 
 //! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T>
-T Dot(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     T result = T(0);
     
-    for (std::size_t i = 0; i < Vec<T>::components; ++i)
+    for (std::size_t i = 0; i < N; ++i)
         result += lhs[i]*rhs[i];
 
     return result;
 }
 
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T>
-Vec<T> Cross(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T>
+Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
 {
-    return Vec<T>(
+    return Vector<T, 3>(
         lhs.y*rhs.z - rhs.y*lhs.z,
         rhs.x*lhs.z - lhs.x*rhs.z,
         lhs.x*rhs.y - rhs.x*lhs.y
@@ -103,8 +97,8 @@ Vec<T> Cross(const Vec<T>& lhs, const Vec<T>& rhs)
 }
 
 //! Normalizes the specified vector to the unit length of 1.
-template <template <typename> class Vec, typename T>
-void Normalize(Vec<T>& vec)
+template <typename T, std::size_t N>
+void Normalize(Vector<T, N>& vec)
 {
     auto len = LengthSq(vec);
     if (len != T(0) && len != T(1))
@@ -114,9 +108,21 @@ void Normalize(Vec<T>& vec)
     }
 }
 
+//! Normalizes the specified vector to the unit length of 1.
+template <typename T>
+void Normalize(QuaternionT<T>& q)
+{
+    auto len = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
+    if (len != T(0) && len != T(1))
+    {
+        len = T(1) / std::sqrt(len);
+        q *= len;
+    }
+}
+
 //! Resizes the specified vector to the specified length.
-template <template <typename> class Vec, typename T>
-void Resize(Vec<T>& vec, const T& length)
+template <typename T, std::size_t N>
+void Resize(Vector<T, N>& vec, const T& length)
 {
     auto len = LengthSq(vec);
     if (len != T(0) && len != length)
@@ -172,15 +178,10 @@ Quat<T> Slerp(const Quat<T>& from, Quat<T>& to, const T& t)
 #ifdef GS_ROW_VECTORS
 
 //! \brief Multiplies the N-dimensional vector with the NxN matrix with.
-template <template <typename> class Vec, typename T, std::size_t N>
-Vec<T> operator * (const Vec<T>& vec, const Matrix<T, N, N>& mat)
+template <typename T, std::size_t N>
+Vector<T, N> operator * (const Vector<T, N>& vec, const Matrix<T, N, N>& mat)
 {
-    static_assert(
-        Vec<T>::components == N,
-        "only N-dimensional vectors can be multiplied with NxN matrices"
-    );
-
-    Vec<T> result;
+    Vector<T, N> result;
 
     for (std::size_t c = 0; c < N; ++c)
     {
@@ -195,15 +196,10 @@ Vec<T> operator * (const Vec<T>& vec, const Matrix<T, N, N>& mat)
 #else
 
 //! \brief Multiplies the NxN matrix with the N-dimensional vector.
-template <template <typename> class Vec, typename T, std::size_t N>
-Vec<T> operator * (const Matrix<T, N, N>& mat, const Vec<T>& vec)
+template <typename T, std::size_t N>
+Vector<T, N> operator * (const Matrix<T, N, N>& mat, const Vector<T, N>& vec)
 {
-    static_assert(
-        Vec<T>::components == N,
-        "only NxN matrices can be multiplied with N-dimensional vectors"
-    );
-
-    Vec<T> result;
+    Vector<T, N> result;
 
     for (std::size_t r = 0; r < N; ++r)
     {

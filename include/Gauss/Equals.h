@@ -38,10 +38,10 @@ bool Equals<double>(const double& lhs, const double& rhs)
     return std::abs(lhs - rhs) < epsilon64;
 }
 
-template <template <typename> class Vec, typename T>
-bool Equals(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+bool Equals(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
-    for (std::size_t i = 0; i < Vec<T>::components; ++i)
+    for (std::size_t i = 0; i < N; ++i)
     {
         if (!Equals(lhs[i], rhs[i]))
             return false;

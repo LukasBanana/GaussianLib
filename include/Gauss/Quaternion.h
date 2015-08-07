@@ -9,6 +9,7 @@
 #define __GS_QUATERNION_H__
 
 
+#include "Decl.h"
 #include "Real.h"
 #include "Assert.h"
 #include "Algebra.h"
@@ -238,8 +239,7 @@ template <typename T> class QuaternionT
         Sets the quaternion to an euler rotation with the specified angles (in radian).
         \tparam Vec Specifies the vector type. This should be Vector3 or Vector4.
         */
-        template <template <typename> class Vec>
-        void SetEulerAngles(const Vec<T>& angles)
+        void SetEulerAngles(const Vector<T, 3>& angles)
         {
             const T cr = std::cos(angles.x/T(2));
             const T cp = std::cos(angles.y/T(2));
@@ -262,8 +262,7 @@ template <typename T> class QuaternionT
             Normalize();
         }
 
-        template <template <typename> class Vec>
-        void GetEulerAngles(Vec<T>& angles)
+        void GetEulerAngles(Vector<T, 3>& angles)
         {
             const T xx = x*x;
             const T yy = y*y;
@@ -275,8 +274,7 @@ template <typename T> class QuaternionT
             angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
         }
 
-        template <template <typename> class Vec>
-        void SetAngleAxis(const Vec<T>& axis, const T& angle)
+        void SetAngleAxis(const Vector<T, 3>& axis, const T& angle)
         {
             const T halfAngle   = angle / T(2);
             const T sine        = std::sin(halfAngle);
@@ -287,8 +285,7 @@ template <typename T> class QuaternionT
             w = std::cos(halfAngle);
         }
 
-        template <template <typename> class Vec>
-        void GetAngleAxis(Vec<T>& axis, T& angle)
+        void GetAngleAxis(Vector<T, 3>& axis, T& angle)
         {
             const T scale = std::sqrt(x*x + y*y + z*z);
 
@@ -350,8 +347,7 @@ template <typename T> class QuaternionT
         }
 
         //! Returns a new quaternion, rotated with the specified euler angles.
-        template <template <typename> class Vec>
-        static QuaternionT<T> EulerAngles(const Vec<T>& angles)
+        static QuaternionT<T> EulerAngles(const Vector<T, 3>& angles)
         {
             QuaternionT<T> result;
             result.SetEulerAngles(angles);
@@ -359,8 +355,7 @@ template <typename T> class QuaternionT
         }
 
         //! Returns a new quaternion, rotated with the specified angle axis.
-        template <template <typename> class Vec>
-        static QuaternionT<T> AngleAxis(const Vec<T>& axis, const T& angle)
+        static QuaternionT<T> AngleAxis(const Vector<T, 3>& axis, const T& angle)
         {
             QuaternionT<T> result;
             result.SetAngleAxis(axis, angle);
@@ -402,7 +397,7 @@ template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, cons
     return result;
 }
 
-template <typename T> QuaternionT<T> operator * (const T& lhs, const Vector4T<T>& rhs)
+template <typename T> QuaternionT<T> operator * (const T& lhs, const QuaternionT<T>& rhs)
 {
     auto result = rhs;
     result *= lhs;
@@ -410,9 +405,10 @@ template <typename T> QuaternionT<T> operator * (const T& lhs, const Vector4T<T>
 }
 
 //! Rotates the specified vector 'rhs' by the quaternion 'lhs' and returns the new rotated vector.
-template <template <typename> class Vec, typename T> Vec<T> operator * (const QuaternionT<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+Vector<T, N> operator * (const QuaternionT<T>& lhs, const Vector<T, N>& rhs)
 {
-    Vec<T> qvec(lhs.x, lhs.y, lhs.z);
+    Vector<T, N> qvec(lhs.x, lhs.y, lhs.z);
 
     auto uv = Cross(qvec, rhs);
     auto uuv = Cross(qvec, uv);

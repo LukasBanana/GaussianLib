@@ -9,11 +9,9 @@
 #define __GS_VECTOR3_H__
 
 
-#include "Real.h"
-#include "Assert.h"
+#include "Vector.h"
 #include "Algebra.h"
 #include "Swizzle.h"
-#include "Tags.h"
 
 #include <cmath>
 
@@ -28,7 +26,7 @@ Base 3D vector class with components: x, y, and z.
 This should be a primitive data type such as float, double, int etc.
 */
 template <typename T>
-class Vector3T
+class Vector<T, 3>
 {
     
     public:
@@ -37,43 +35,43 @@ class Vector3T
         static const std::size_t components = 3;
 
         #ifndef GS_DISABLE_AUTO_INIT
-        Vector3T() :
+        Vector() :
             x( T(0) ),
             y( T(0) ),
             z( T(0) )
         {
         }
         #else
-        Vector4T() = default;
+        Vector() = default;
         #endif
 
-        Vector3T(const Vector3T<T>& rhs) :
+        Vector(const Vector<T, 3>& rhs) :
             x( rhs.x ),
             y( rhs.y ),
             z( rhs.z )
         {
         }
 
-        explicit Vector3T(const T& scalar) :
+        explicit Vector(const T& scalar) :
             x( scalar ),
             y( scalar ),
             z( scalar )
         {
         }
 
-        Vector3T(const T& x, const T& y, const T& z) :
+        Vector(const T& x, const T& y, const T& z) :
             x( x ),
             y( y ),
             z( z )
         {
         }
 
-        Vector3T(UninitializeTag)
+        Vector(UninitializeTag)
         {
             // do nothing
         }
 
-        Vector3T<T>& operator += (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator += (const Vector<T, 3>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
@@ -81,7 +79,7 @@ class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator -= (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator -= (const Vector<T, 3>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
@@ -89,7 +87,7 @@ class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator *= (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator *= (const Vector<T, 3>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
@@ -97,7 +95,7 @@ class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator /= (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator /= (const Vector<T, 3>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
@@ -105,7 +103,7 @@ class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator *= (const T& rhs)
+        Vector<T, 3>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
@@ -113,7 +111,7 @@ class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator /= (const T& rhs)
+        Vector<T, 3>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
@@ -127,7 +125,7 @@ class Vector3T
         */
         T& operator [] (std::size_t component)
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < (Vector<T, 3>::components));
             return *((&x) + component);
         }
 
@@ -137,7 +135,7 @@ class Vector3T
         */
         const T& operator [] (std::size_t component) const
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < (Vector<T, 3>::components));
             return *((&x) + component);
         }
 
@@ -167,7 +165,7 @@ class Vector3T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector3T<T> Normalized() const
+        Vector<T, 3> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -188,9 +186,10 @@ class Vector3T
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector3T<C> Cast() const
+        template <typename C>
+        Vector<C, 3> Cast() const
         {
-            return Vector3T<C>(
+            return Vector<C, 3>(
                 static_cast<C>(x),
                 static_cast<C>(y),
                 static_cast<C>(z)
@@ -223,59 +222,9 @@ class Vector3T
 };
 
 
-/* --- Global Operators --- */
-
-template <typename T> Vector3T<T> operator + (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result += rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator - (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result -= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator * (const T& lhs, const Vector3T<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result /= rhs;
-    return result;
-}
-
-
 /* --- Type Alias --- */
+
+template <typename T> using Vector3T = Vector<T, 3>;
 
 using Vector3   = Vector3T<Real>;
 using Vector3f  = Vector3T<float>;

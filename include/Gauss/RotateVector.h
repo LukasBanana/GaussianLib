@@ -9,15 +9,14 @@
 #define __GS_ROTATE_VECTOR_H__
 
 
+#include "Decl.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+
+
 namespace Gs
 {
-
-
-/* --- Forward Declarations --- */
-
-template <typename T> class Vector2T;
-template <typename T> class Vector3T;
-template <typename T> class Vector4T;
 
 
 template <class M, typename T>

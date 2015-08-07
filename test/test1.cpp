@@ -304,6 +304,30 @@ static void equalsTest1()
     std::cout << "x equals z ? " << YesNo(Equals(x, z)) << std::endl;
 }
 
+static void vectorTest1()
+{
+    auto x = Vector<Real, 10>();
+    auto A = Matrix<Real, 10, 10>::Identity();
+    
+    x[0] = 12;
+    x[1] = 5;
+    x[2] = 3;
+    x[3] = -9;
+    x[4] = 16;
+    x[5] = -4;
+
+    A(0, 1) = 4;
+    A(5, 3) = 18;
+    A(2, 7) = -5;
+    A(4, 4) = 6;
+    A(8, 8) = -2;
+
+    std::cout << "x = " << x << std::endl;
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "A*x = " << A*x << std::endl;
+    std::cout << "Trace(A) = " << A.Trace() << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -316,7 +340,8 @@ int main()
     //matrixVectorTest1();
     //complexTest1();
     //projectionTest1();
-    equalsTest1();
+    //equalsTest1();
+    vectorTest1();
 
     #ifdef _WIN32
     system("pause");

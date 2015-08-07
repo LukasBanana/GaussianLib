@@ -18,15 +18,18 @@ namespace Gs
 
 /* --- Forward Declarations --- */
 
+// matrices
 template <typename T> class AffineMatrix3T;
 template <typename T> class AffineMatrix4T;
+
 template <typename T> class ProjectionMatrix4T;
+
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
 
-template <typename T> class Vector2T;
-template <typename T> class Vector3T;
-template <typename T> class Vector4T;
+// vectors
+template <typename T, std::size_t N> class Vector;
 
+// quaternions
 template <typename T> class QuaternionT;
 
 

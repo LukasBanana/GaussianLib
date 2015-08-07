@@ -9,11 +9,9 @@
 #define __GS_VECTOR4_H__
 
 
-#include "Real.h"
-#include "Assert.h"
+#include "Vector.h"
 #include "Algebra.h"
 #include "Swizzle.h"
-#include "Tags.h"
 
 #include <cmath>
 
@@ -28,7 +26,7 @@ Base 4D vector class with components: x, y, z, and w.
 This should be a primitive data type such as float, double, int etc.
 */
 template <typename T>
-class Vector4T
+class Vector<T, 4>
 {
     
     public:
@@ -37,7 +35,7 @@ class Vector4T
         static const std::size_t components = 4;
 
         #ifndef GS_DISABLE_AUTO_INIT
-        Vector4T() :
+        Vector() :
             x( T(0) ),
             y( T(0) ),
             z( T(0) ),
@@ -45,10 +43,10 @@ class Vector4T
         {
         }
         #else
-        Vector4T() = default;
+        Vector() = default;
         #endif
 
-        Vector4T(const Vector4T<T>& rhs) :
+        Vector(const Vector<T, 4>& rhs) :
             x( rhs.x ),
             y( rhs.y ),
             z( rhs.z ),
@@ -56,7 +54,7 @@ class Vector4T
         {
         }
 
-        explicit Vector4T(const T& scalar) :
+        explicit Vector(const T& scalar) :
             x( scalar ),
             y( scalar ),
             z( scalar ),
@@ -64,7 +62,7 @@ class Vector4T
         {
         }
 
-        Vector4T(const T& x, const T& y, const T& z, const T& w = T(1)) :
+        Vector(const T& x, const T& y, const T& z, const T& w = T(1)) :
             x( x ),
             y( y ),
             z( z ),
@@ -72,12 +70,12 @@ class Vector4T
         {
         }
 
-        Vector4T(UninitializeTag)
+        Vector(UninitializeTag)
         {
             // do nothing
         }
 
-        Vector4T<T>& operator += (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator += (const Vector<T, 4>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
@@ -86,7 +84,7 @@ class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator -= (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator -= (const Vector<T, 4>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
@@ -95,7 +93,7 @@ class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator *= (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator *= (const Vector<T, 4>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
@@ -104,7 +102,7 @@ class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator /= (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator /= (const Vector<T, 4>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
@@ -113,7 +111,7 @@ class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator *= (const T& rhs)
+        Vector<T, 4>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
@@ -122,7 +120,7 @@ class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator /= (const T& rhs)
+        Vector<T, 4>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
@@ -137,7 +135,7 @@ class Vector4T
         */
         T& operator [] (std::size_t component)
         {
-            GS_ASSERT(component < Vector4T<T>::components);
+            GS_ASSERT(component < (Vector<T, 4>::components));
             return *((&x) + component);
         }
 
@@ -147,7 +145,7 @@ class Vector4T
         */
         const T& operator [] (std::size_t component) const
         {
-            GS_ASSERT(component < Vector4T<T>::components);
+            GS_ASSERT(component < (Vector<T, 4>::components));
             return *((&x) + component);
         }
 
@@ -177,7 +175,7 @@ class Vector4T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector4T<T> Normalized() const
+        Vector<T, 4> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -198,9 +196,10 @@ class Vector4T
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector4T<C> Cast() const
+        template <typename C>
+        Vector<C, 4> Cast() const
         {
-            return Vector4T<C>(
+            return Vector<C, 4>(
                 static_cast<C>(x),
                 static_cast<C>(y),
                 static_cast<C>(z),
@@ -237,59 +236,9 @@ class Vector4T
 };
 
 
-/* --- Global Operators --- */
-
-template <typename T> Vector4T<T> operator + (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result += rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator - (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result -= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator * (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator * (const Vector4T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator * (const T& lhs, const Vector4T<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result /= rhs;
-    return result;
-}
-
-
 /* --- Type Alias --- */
+
+template <typename T> using Vector4T = Vector<T, 4>;
 
 using Vector4   = Vector4T<Real>;
 using Vector4f  = Vector4T<float>;

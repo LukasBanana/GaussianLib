@@ -9,18 +9,15 @@
 #define __GS_TRANSFORM_VECTOR_H__
 
 
+#include "Decl.h"
 #include "Macros.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
 
 
 namespace Gs
 {
-
-
-/* --- Forward Declarations --- */
-
-template <typename T> class Vector2T;
-template <typename T> class Vector3T;
-template <typename T> class Vector4T;
 
 
 template <typename M, typename T>
