@@ -119,6 +119,11 @@ class Vector<T, 3>
             return *this;
         }
 
+        Vector<T, 3> operator - () const
+        {
+            return Vector<T, 3>(-x, -y, -z);
+        }
+
         /**
         \brief Returns the specified vector component.
         \param[in] component Specifies the vector component index. This must be 0, 1, or 2.

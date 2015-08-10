@@ -116,6 +116,14 @@ class Vector
             return v_[component];
         }
 
+        Vector<T, N> operator - () const
+        {
+            auto result = *this;
+            for (std::size_t i = 0; i < N; ++i)
+                result[i] = -result[i];
+            return result;
+        }
+
         /**
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
