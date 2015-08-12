@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <vector>
+#include <type_traits>
 
 
 namespace Gs
@@ -26,6 +27,22 @@ namespace Gs
 
 
 /* --- Global Functions --- */
+
+//! Returns the value of 1 + 2 + ... + n = n*(n+1)/2.
+template <typename T>
+T GaussianSum(T n)
+{
+    static_assert(std::is_integral<T>::value, "GaussianSum function only allows integral types");
+    return n*(n + T(1))/T(2);
+}
+
+//! Returns the value of 1^2 + 2^2 + ... + n^2 = n*(n+1)*(2n+1)/6.
+template <typename T>
+T GaussianSumSq(T n)
+{
+    static_assert(std::is_integral<T>::value, "GaussianSumSq function only allows integral types");
+    return n*(n + T(1))*(n*T(2) + T(1))/T(6);
+}
 
 //! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
 template <typename T, std::size_t N>
