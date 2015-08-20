@@ -18,18 +18,13 @@ namespace Gs
 
 /* --- Constants --- */
 
-static const float epsilon32 = 0.00001f;
-static const double epsilon64 = 0.00000001;
-
 #ifdef GS_HIGH_PRECISION_FLOAT
 
 using Real = double;
-static const Real epsilon = epsilon64;
 
 #else
 
 using Real = float;
-static const Real epsilon = epsilon32;
 
 #endif
 

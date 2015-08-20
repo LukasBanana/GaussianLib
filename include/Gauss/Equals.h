@@ -10,6 +10,7 @@
 
 
 #include "Real.h"
+#include "Epsilon.h"
 
 #include <cmath>
 
@@ -29,13 +30,13 @@ bool Equals(const T& lhs, const T& rhs)
 template <>
 bool Equals<float>(const float& lhs, const float& rhs)
 {
-    return std::abs(lhs - rhs) < epsilon32;
+    return std::abs(lhs - rhs) <= Epsilon<float>::value;
 }
 
 template <>
 bool Equals<double>(const double& lhs, const double& rhs)
 {
-    return std::abs(lhs - rhs) < epsilon64;
+    return std::abs(lhs - rhs) <= Epsilon<double>::value;
 }
 
 template <typename T, std::size_t N>
