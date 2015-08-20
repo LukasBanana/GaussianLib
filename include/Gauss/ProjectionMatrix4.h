@@ -56,7 +56,7 @@ struct ProjectionFlags
 };
 
 //! Specifies where the coordinate system's origin of a planar projection is located.
-enum class PlanarProjectionOrigins
+enum class PlanarProjectionOrigin
 {
     //! Left-top corner of the screen.
     LeftTop,
@@ -388,7 +388,7 @@ class ProjectionMatrix4T
         \endcode
         \remarks Division by W after a multiplication with a vector is not necessary, since its value will be always 1 with this matrix.
         */
-        static void Planar(Matrix<T, 4, 4>& m, const T& width, const T& height, const PlanarProjectionOrigins origin = PlanarProjectionOrigins::LeftTop)
+        static void Planar(Matrix<T, 4, 4>& m, const T& width, const T& height, const PlanarProjectionOrigin origin = PlanarProjectionOrigin::LeftTop)
         {
             m.At(0, 0) = T(2)/width;
             m.At(1, 0) = T(0);
@@ -410,20 +410,20 @@ class ProjectionMatrix4T
             m.At(2, 3) = T(0);
             m.At(3, 3) = T(1);
 
-            if (origin == PlanarProjectionOrigins::LeftTop || origin == PlanarProjectionOrigins::RightTop)
+            if (origin == PlanarProjectionOrigin::LeftTop || origin == PlanarProjectionOrigin::RightTop)
             {
                 m.At(1, 1) = -m.At(1, 1);
                 m.At(1, 3) = -m.At(1, 3);
             }
-            if (origin == PlanarProjectionOrigins::RightTop || origin == PlanarProjectionOrigins::RightBottom)
+            if (origin == PlanarProjectionOrigin::RightTop || origin == PlanarProjectionOrigin::RightBottom)
             {
                 m.At(0, 0) = -m.At(0, 0);
                 m.At(0, 3) = -m.At(0, 3);
             }
         }
 
-        //! \see Planar(Matrix<T, 4, 4>&, const T&, const T&, const PlanarProjectionOrigins)
-        static Matrix<T, 4, 4> Planar(const T& width, const T& height, const PlanarProjectionOrigins origin = PlanarProjectionOrigins::LeftTop)
+        //! \see Planar(Matrix<T, 4, 4>&, const T&, const T&, const PlanarProjectionOrigin)
+        static Matrix<T, 4, 4> Planar(const T& width, const T& height, const PlanarProjectionOrigin origin = PlanarProjectionOrigin::LeftTop)
         {
             Matrix<T, 4, 4> m(UninitializeTag{});
             Planar(m, width, height, origin);
