@@ -328,6 +328,15 @@ static void vectorTest1()
     std::cout << "Trace(A) = " << A.Trace() << std::endl;
 }
 
+static void epsilonTest1()
+{
+    auto eps = Epsilon<float>::value;
+    float x = 0.1f;
+
+    std::cout << x << ((x < eps) ? " < " : " >= ") << eps << std::endl;
+
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -341,7 +350,8 @@ int main()
     //complexTest1();
     //projectionTest1();
     //equalsTest1();
-    vectorTest1();
+    //vectorTest1();
+    epsilonTest1();
 
     #ifdef _WIN32
     system("pause");

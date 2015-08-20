@@ -21,6 +21,7 @@
 
 #include "Algebra.h"
 #include "OStream.h"
+#include "Epsilon.h"
 
 #include "Determinant.h"
 #include "Inverse.h"
