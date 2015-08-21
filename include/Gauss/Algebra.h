@@ -154,13 +154,26 @@ void Resize(Vector<T, N>& vec, const T& length)
 \return Equivalent to: a*(1-t) + b*t
 */
 template <typename T, typename I>
+void Lerp(T& x, const T& a, const T& b, const I& t)
+{
+    x = b;
+    x -= a;
+    x *= t;
+    x += a;
+}
+
+/**
+\brief Computes a linear interpolation between the point 'a' and the point 'b'.
+\return Equivalent to: a*(1-t) + b*t
+*/
+template <typename T, typename I>
 T Lerp(const T& a, const T& b, const I& t)
 {
-    auto result = b;
-    result -= a;
-    result *= t;
-    result += a;
-    return result;
+    T x = b;
+    x -= a;
+    x *= t;
+    x += a;
+    return x;
 }
 
 /**
