@@ -88,15 +88,15 @@ void QuaternionToMatrix(M& out, const Q<T>& in)
     const auto& w = in.w;
 
     out.At(0, 0) = T(1) - T(2)*y*y - T(2)*z*z;
-    out.At(0, 1) =        T(2)*x*y + T(2)*z*w;
-    out.At(0, 2) =        T(2)*x*z - T(2)*y*w;
+    out.At(1, 0) =        T(2)*x*y + T(2)*z*w;
+    out.At(2, 0) =        T(2)*x*z - T(2)*y*w;
 
-    out.At(1, 0) =        T(2)*x*y - T(2)*z*w;
+    out.At(0, 1) =        T(2)*x*y - T(2)*z*w;
     out.At(1, 1) = T(1) - T(2)*x*x - T(2)*z*z;
-    out.At(1, 2) =        T(2)*z*y + T(2)*x*w;
+    out.At(2, 1) =        T(2)*z*y + T(2)*x*w;
 
-    out.At(2, 0) =        T(2)*x*z + T(2)*y*w;
-    out.At(2, 1) =        T(2)*z*y - T(2)*x*w;
+    out.At(0, 2) =        T(2)*x*z + T(2)*y*w;
+    out.At(1, 2) =        T(2)*z*y - T(2)*x*w;
     out.At(2, 2) = T(1) - T(2)*x*x - T(2)*y*y;
 }
 
