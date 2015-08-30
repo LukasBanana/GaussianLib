@@ -14,6 +14,7 @@
 #include "Determinant.h"
 #include "Inverse.h"
 #include "Matrix.h"
+#include "Vector4.h"
 
 
 namespace Gs
