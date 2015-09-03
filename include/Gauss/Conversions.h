@@ -38,9 +38,9 @@ void MatrixToQuaternion(Q<T>& out, const M& in)
     if (trace > T(0))
     {
         const T s = T(2) * std::sqrt(trace);
-        out.x = (in.At(1, 2) - in.At(2, 1)) / s;
-        out.y = (in.At(2, 0) - in.At(0, 2)) / s;
-        out.z = (in.At(0, 1) - in.At(1, 0)) / s;
+        out.x = (in.At(2, 1) - in.At(1, 2)) / s;
+        out.y = (in.At(0, 2) - in.At(2, 0)) / s;
+        out.z = (in.At(1, 0) - in.At(0, 1)) / s;
         out.w = T(0.25) * s;
     }
     else
@@ -49,25 +49,25 @@ void MatrixToQuaternion(Q<T>& out, const M& in)
         {
             const T s = T(2) * std::sqrt(T(1) + in.At(0, 0) - in.At(1, 1) - in.At(2, 2));
             out.x = T(0.25) * s;
-            out.y = (in.At(1, 0) + in.At(0, 1) ) / s;
-            out.z = (in.At(0, 2) + in.At(2, 0) ) / s;
-            out.w = (in.At(1, 2) - in.At(2, 1) ) / s;
+            out.y = (in.At(0, 1) + in.At(1, 0) ) / s;
+            out.z = (in.At(2, 0) + in.At(0, 2) ) / s;
+            out.w = (in.At(2, 1) - in.At(1, 2) ) / s;
         }
         else if (in.At(1, 1) > in.At(2, 2))
         {
             const T s = T(2) * std::sqrt(T(1) + in.At(1, 1) - in.At(0, 0) - in.At(2, 2));
-            out.x = (in.At(1, 0) + in.At(0, 1) ) / s;
+            out.x = (in.At(0, 1) + in.At(1, 0) ) / s;
             out.y = T(0.25) * s;
-            out.z = (in.At(2, 1) + in.At(1, 2) ) / s;
-            out.w = (in.At(2, 0) - in.At(0, 2) ) / s;
+            out.z = (in.At(1, 2) + in.At(2, 1) ) / s;
+            out.w = (in.At(0, 2) - in.At(2, 0) ) / s;
         }
         else
         {
             const T s = T(2) * std::sqrt(T(1) + in.At(2, 2) - in.At(0, 0) - in.At(1, 1));
-            out.x = (in.At(2, 0) + in.At(0, 2) ) / s;
-            out.y = (in.At(2, 1) + in.At(1, 2) ) / s;
+            out.x = (in.At(0, 2) + in.At(2, 0) ) / s;
+            out.y = (in.At(1, 2) + in.At(2, 1) ) / s;
             out.z = T(0.25) * s;
-            out.w = (in.At(0, 1) - in.At(1, 0) ) / s;
+            out.w = (in.At(1, 0) - in.At(0, 1) ) / s;
         }
     }
 
