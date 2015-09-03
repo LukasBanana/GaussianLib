@@ -26,18 +26,13 @@ bool IsNearlyZero(float x)
 }
 \endcode
 \tparam T Specifies the data type. This structure is only defined for float and double!
+\remarks Include <Gauss/DefConsts.h> only in a single source file, to define the constants for this structure.
 */
 template <typename T>
 struct Epsilon
 {
     static const T value;
 };
-
-template <>
-const float Epsilon<float>::value = 1.0e-6f;//0.000001f;
-
-template <>
-const double Epsilon<double>::value = 1.0e-8;//0.00000001;
 
 
 } // /namespace Gs

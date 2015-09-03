@@ -13,6 +13,7 @@
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
+#include <Gauss/DefConsts.h>
 
 #include <iostream>
 #include <sstream>
@@ -330,10 +331,14 @@ static void vectorTest1()
 
 static void epsilonTest1()
 {
-    auto eps = Epsilon<float>::value;
+    auto eps1 = Epsilon<float>::value;
+    auto eps2 = Epsilon<double>::value;
     float x = 0.1f;
 
-    std::cout << x << ((x < eps) ? " < " : " >= ") << eps << std::endl;
+    std::cout << "epsilon<float> = " << eps1 << std::endl;
+    std::cout << "epsilon<double> = " << eps2 << std::endl;
+    std::cout << x << ((x < eps1) ? " < " : " >= ") << eps1 << std::endl;
+    std::cout << "pi = " << pi << std::endl;
 
 }
 
