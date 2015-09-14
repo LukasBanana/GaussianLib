@@ -238,6 +238,50 @@ bool Inverse(ProjectionMatrix4T<T>& inv, const ProjectionMatrix4T<T>& m)
     return true;
 }
 
+#ifdef GS_ENABLE_INVERSE_OPERATOR
+
+namespace Details
+{
+
+template <class M>
+M InverseOp(const M& m, int e)
+{
+    GS_ASSERT(e == -1);
+    return m.Inverse();
+}
+
+} // /namespace Details
+
+//! Inverse matrix operator. Input parameter 'e' must always be -1.
+template <typename T, std::size_t N>
+Matrix<T, N, N> operator ^ (const Matrix<T, N, N>& m, int e)
+{
+    return Details::InverseOp(m, e);
+}
+
+//! Inverse matrix operator. Input parameter 'e' must always be -1.
+template <typename T>
+AffineMatrix3T<T> operator ^ (const AffineMatrix3T<T>& m, int e)
+{
+    return Details::InverseOp(m, e);
+}
+
+//! Inverse matrix operator. Input parameter 'e' must always be -1.
+template <typename T>
+AffineMatrix4T<T> operator ^ (const AffineMatrix4T<T>& m, int e)
+{
+    return Details::InverseOp(m, e);
+}
+
+//! Inverse matrix operator. Input parameter 'e' must always be -1.
+template <typename T>
+ProjectionMatrix4T<T> operator ^ (const ProjectionMatrix4T<T>& m, int e)
+{
+    return Details::InverseOp(m, e);
+}
+
+#endif
+
 
 } // /namespace Gs
 

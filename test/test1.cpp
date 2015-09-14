@@ -164,8 +164,8 @@ static void affineMatrixTest1()
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
-    std::cout << "Inv(A) = " << std::endl << A.Inverse() << std::endl;
-    std::cout << "A*Inv(A) = " << std::endl << A*A.Inverse() << std::endl;
+    std::cout << "Inv(A) = " << std::endl << (A^-2) << std::endl;
+    std::cout << "A*Inv(A) = " << std::endl << A*(A^-1) << std::endl;
     std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "Inv(B) = " << std::endl << B.Inverse() << std::endl;
     std::cout << "B*Inv(B) = " << std::endl << B*B.Inverse() << std::endl;
@@ -347,16 +347,23 @@ int main()
     std::cout << "GaussianLib Test 1" << std::endl;
     std::cout << "==================" << std::endl;
 
-    //commonTest1();
-    //affineMatrixTest1();
-    //affineMatrixTest2();
-    //quaternionTest1();
-    //matrixVectorTest1();
-    //complexTest1();
-    //projectionTest1();
-    //equalsTest1();
-    //vectorTest1();
-    epsilonTest1();
+    try
+    {
+        //commonTest1();
+        affineMatrixTest1();
+        //affineMatrixTest2();
+        //quaternionTest1();
+        //matrixVectorTest1();
+        //complexTest1();
+        //projectionTest1();
+        //equalsTest1();
+        //vectorTest1();
+        //epsilonTest1();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
 
     #ifdef _WIN32
     system("pause");

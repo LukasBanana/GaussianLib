@@ -13,8 +13,14 @@
 #   define GS_ENABLE_ASSERT
 #endif
 
+//! Uses a runtime exception instead of an assert.
+#define GS_ASSERT_EXCEPTION
+
 //! Enables the swizzle operator in the vector classes. If undefined, swizzle operator is disabled (default).
 #define GS_ENABLE_SWIZZLE_OPERATOR
+
+//! Enables the inverse matrix operator, i.e. allows "A^-1" expressions as shortcut for "A.Inverse()".
+#define GS_ENABLE_INVERSE_OPERATOR
 
 //! Disables automatic data initialization. If undefined, automatic initialization is enabled (default). 
 //#define GS_DISABLE_AUTO_INIT
