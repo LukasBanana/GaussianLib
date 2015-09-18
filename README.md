@@ -6,11 +6,6 @@ License
 
 [3-Clause BSD License](https://github.com/LukasBanana/GaussianLib/blob/master/LICENSE.txt)
 
-Status
-------
-
-**Alpha**
-
 Getting Started:
 ----------------
 [Getting Started with GaussianLib.pdf](https://github.com/LukasBanana/GaussianLib/blob/master2/docu/GettingStarted/Getting%20Started%20with%20GaussianLib.pdf)
@@ -25,7 +20,8 @@ Example
 // Optional macro to switch between column- or row vectors:
 // #define GS_ROW_VECTORS
 
-#include <Gauss/Gauss.h>
+#include <Gauss/Gauss.h>     // include gaussian lib main header
+#include <Gauss/DefConsts.h> // implement constant definitions
 #include <iostream>
 
 static const Gs::Real pi = Gs::Real(3.141592654);
