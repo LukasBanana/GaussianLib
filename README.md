@@ -68,7 +68,7 @@ int main()
     C.MakeInverse();
     
     // Declare affine 4x4 matrix (only stores 3x4 elements,
-    // or 4x3 elements wether GS_ROW_VECTORS is defined or not).
+    // or 4x3 elements whether GS_ROW_VECTORS is defined or not).
     // This requires less storage and most functions (such as "Inverse")
     // are much faster than with a common 4x4 matrix.
     Gs::AffineMatrix4 D = Gs::AffineMatrix4::Identity();
