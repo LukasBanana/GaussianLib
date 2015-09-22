@@ -30,6 +30,20 @@ using Real = float;
 
 static const Real pi = Real(3.14159265358979323846);
 
+//! Converts radian to degree.
+template <typename T>
+T Rad2Deg(const T& x)
+{
+    return x*T(180)/T(pi);
+}
+
+//! Converts degree to radian.
+template <typename T>
+T Deg2Rad(const T& x)
+{
+    return x*T(pi)/T(180);
+}
+
 
 } // /namespace Gs
 
