@@ -350,12 +350,12 @@ int main()
     try
     {
         //commonTest1();
-        affineMatrixTest1();
+        //affineMatrixTest1();
         //affineMatrixTest2();
         //quaternionTest1();
         //matrixVectorTest1();
         //complexTest1();
-        //projectionTest1();
+        projectionTest1();
         //equalsTest1();
         //vectorTest1();
         //epsilonTest1();

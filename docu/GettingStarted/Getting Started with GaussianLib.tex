@@ -93,12 +93,14 @@ but the \gausslib is intended to be a template- and headers only library.
 
 In the \gausslib vectors are considered to be \textbf{column vectors} per default, as it is common in mathematics.
 I.e. if you want a vector $y$ as a result of a multiplication with a matrix $M$ and a vector $x$,
-write: $y = M * x$.
+write: $y = M \times x$.
 To use \textbf{row vectors} instead, define the macro \texttt{GS\_ROW\_VECTORS} before you include the library.
 There is the generalized base \mbox{\texttt{Vector<T, N>}} class, where \texttt{T} specifies the data type of the
 vector components and \texttt{N} specifies the number of components.
 There are three specialized template classes for vectors: \texttt{Vector<T, 2>}, \texttt{Vector<T, 3>},
-and \texttt{Vector<T, 4>}. There are also pre-defined type aliases (\texttt{\textit{N}} is either 2, 3, or 4):
+and \texttt{Vector<T, 4>}. These specialized templates allow you to access the components by their names
+\texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w}. For larger vectors you need to use the bracket operator \texttt{[]}.
+There are also pre-defined type aliases (\texttt{\textit{N}} is either 2, 3, or 4):
 \begin{itemize}
 	\item \texttt{Vector\textit{N}} Is a type alias to \texttt{Vector\textit{N}T<Real>}, where \texttt{Real} is either
 		from type \texttt{float} or \texttt{double}.
@@ -118,8 +120,10 @@ int main()
 {
 	Gs::Vector3 a(1, 2, 3), b(4, 5, 6);
 	
-	std::cout << "a = " << a << std::endl;
-	std::cout << "b = " << b << std::endl;
+	std::cout << "a = " << a << std::endl;                   // Prints "( 1 | 2 | 3 )" to standard output
+	std::cout << "b = " << b << std::endl;                   // Prints "( 4 | 5 | 6 )" to standard output
+	std::cout << "a.x = " << a.x << std::endl;               // Component access by name
+	std::cout << "b.x = " << b[0] << std::endl;              // Component access by [] operator
 	std::cout << "a * b = " << a*b << std::endl;             // Per-component multiplication
 	std::cout << "a . b = " << Dot(a, b) << std::endl;       // Dot product (or scalar product)
 	std::cout << "a X b = " << Cross(a, b) << std::endl;     // Cross product (or vector product)
@@ -309,7 +313,7 @@ There are two extra header files, which can be included optionally:
 #define GS_ENABLE_SWIZZLE_OPERATOR
 #include <Gauss/Gauss.h>
 
-// Includes all type aliases with name conventions of the DirectX High Level Shading Language HLSL.
+// Includes all type aliases with name conventions of the DirectX High Level Shading Language (HLSL).
 #include <Gauss/HLSLTypes.h>
 
 // Includes all type aliases with name conventions of the OpenGL Shading Language (GLSL).
