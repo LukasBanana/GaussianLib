@@ -10,10 +10,10 @@
 #define GS_HIGH_PRECISION_FLOAT
 //#define GS_ROW_VECTORS
 
+#include <Gauss/DefConsts.h>
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
-#include <Gauss/DefConsts.h>
 
 #include <iostream>
 #include <sstream>
