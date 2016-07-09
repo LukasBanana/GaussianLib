@@ -20,8 +20,8 @@ Example
 // Optional macro to switch between column- or row vectors:
 // #define GS_ROW_VECTORS
 
+#include <Gauss/DefConsts.h> // implement constant definitions (must only be contained in a single source file!)
 #include <Gauss/Gauss.h>     // include gaussian lib main header
-#include <Gauss/DefConsts.h> // implement constant definitions
 #include <iostream>
 
 static const Gs::Real pi = Gs::Real(3.141592654);
