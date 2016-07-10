@@ -22,25 +22,25 @@ namespace Gs
 /* --- Global Functions --- */
 
 template <typename T>
-bool Equals(const T& lhs, const T& rhs)
+inline bool Equals(const T& lhs, const T& rhs)
 {
     return lhs == rhs;
 }
 
 template <>
-bool Equals<float>(const float& lhs, const float& rhs)
+inline bool Equals<float>(const float& lhs, const float& rhs)
 {
     return std::abs(lhs - rhs) <= Epsilon<float>();
 }
 
 template <>
-bool Equals<double>(const double& lhs, const double& rhs)
+inline bool Equals<double>(const double& lhs, const double& rhs)
 {
     return std::abs(lhs - rhs) <= Epsilon<double>();
 }
 
 template <typename T, std::size_t N>
-bool Equals(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
+inline bool Equals(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     for (std::size_t i = 0; i < N; ++i)
     {

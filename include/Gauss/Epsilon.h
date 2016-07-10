@@ -33,20 +33,20 @@ bool IsNearlyZero(float x)
 \tparam T Specifies the data type. This function is only defined for float and double!
 */
 template <typename T>
-T Epsilon()
+inline T Epsilon()
 {
     static_assert(std::is_integral<T>::value, "'Gs::Epsilon' function only allows floating-point types");
     return T(__GS_EPSILON_F32__);
 }
 
 template <>
-float Epsilon()
+inline float Epsilon()
 {
     return __GS_EPSILON_F32__;
 }
 
 template <>
-double Epsilon()
+inline double Epsilon()
 {
     return __GS_EPSILON_F64__;
 }
