@@ -59,7 +59,7 @@ It provides only basic linear algebra functionality for Vectors, Matrices, and Q
 In the following we consider to have a single C++ file named ``Example.cpp''.
 More over \texttt{\%GaussianLibPath\%} denotes your GaussianLib installation directory.
 
-\subsection*{GNU/C++}
+\subsubsection*{GNU/C++}
 
 The \gausslib requires \texttt{g++} version 4.8.1 or higher, with C++11 feature set enabled.
 To compile your application with GNU/C++ (or MinGW on Windows), type this into a command line:
@@ -68,26 +68,46 @@ To compile your application with GNU/C++ (or MinGW on Windows), type this into a
 \end{quote}
 If everything worked properly, your executable is named ``ExampleOutput''.
 
-\subsection*{VisualC++}
+\subsubsection*{VisualC++}
 
 The \gausslib requires VisualC++ 2013 (12.0) or higher, to support the C++11 features, which are used in the library.
 
-\subsection*{Special Case Header}
 
-There is one header file, specifically \texttt{<Gauss/DefConsts.h>}, which must only be included in a single source file.
-This is because it contains the definitions of a few constants. Some compilers (like VisualC++) allow this to be
-included several times, but others (like GCC) don't. The head of your \texttt{main.cpp} file could look like this:
+%----------------------------------------------------------------------------------------
+%	FINE TUNING
+%----------------------------------------------------------------------------------------
+
+\section*{Fine Tuning}
+
+By default, all vectors, quaternions, and matrices are initialized. To increase performance by not automatically
+initialize this data, add the following to your compiler pre-defined macros:
+\begin{quote}
+\texttt{GS\_DISABLE\_AUTO\_INIT}
+\end{quote}
+If you don't want to disable the automatic initialization overall, you can explicitly construct a data type
+who is uninitialized. This can be done with \texttt{UninitializeTag}:
 \begin{lstlisting}
-#include <Gauss/DefConsts.h> // must only be contained in a single source file!
-#include <Gauss/Gauss.h>     // might be contained in any source or header file
+Gs::Matrix4 m(Gs::UninitializeTag{});
 \end{lstlisting}
-This could have been solved by providing a library file (\texttt{*.lib} for VisualC++ and \texttt{*.a} for GCC),
-but the \gausslib is intended to be a template- and headers only library.
+\texttt{UninitializeTag} is an empty \texttt{struct}, so no memory will be allocated. It's just a hint to the compiler,
+to call another constructor, which does no initialization.
+Note, that uninitialized data should always be explicitly marked as such!
+This is useful when the data is initialized manually after construction anways:
+\begin{lstlisting}
+Gs::Matrix4 m(Gs::UninitializeTag{});
+m[0] = 1;
+m[1] = -1;
+m[2] = 2.5;
+/* ... */
+m[15] = 1;
+\end{lstlisting}
 
 
 %----------------------------------------------------------------------------------------
 %	VECTORS
 %----------------------------------------------------------------------------------------
+
+\newpage
 
 \section*{Vectors}
 
@@ -148,6 +168,8 @@ a[0] += 2; // equivalent to a.x += 2;
 %	MATRICES
 %----------------------------------------------------------------------------------------
 
+\newpage
+
 \section*{Matrices}
 
 There is only a single general-purpose class for matrices
@@ -200,6 +222,8 @@ int main()
 %----------------------------------------------------------------------------------------
 %	AFFINE MATRICES
 %----------------------------------------------------------------------------------------
+
+\newpage
 
 \section*{Affine Matrices}
 \label{sec:affine_matrices}
@@ -272,6 +296,8 @@ int main()
 %	SWIZZLE OPERATOR
 %----------------------------------------------------------------------------------------
 
+\newpage
+
 \section*{Swizzle Operator}
 
 For the three vector classes, there is support for the \textit{swizzle operator} (like in shading languages):
@@ -335,26 +361,6 @@ int main()
 }
 \end{lstlisting}
 
-
-%----------------------------------------------------------------------------------------
-%	FINE TUNING
-%----------------------------------------------------------------------------------------
-
-\section*{Fine Tuning}
-
-By default, all vectors, quaternions, and matrices are initialized. To increase performance by not automatically
-initialize this data, add the following to your compiler pre-defined macros:
-\begin{quote}
-\texttt{GS\_DISABLE\_AUTO\_INIT}
-\end{quote}
-If you don't want to disable the automatic initialization overall, you can explicitly construct a data type
-who is uninitialized. This can be done with \texttt{UninitializeTag}:
-\begin{lstlisting}
-Gs::Matrix4 m(Gs::UninitializeTag{});
-\end{lstlisting}
-\texttt{UninitializeTag} is an empty \texttt{struct}, so no memory will be allocated. It's just a hint to the compiler,
-to call another constructor, which does no initialization.
-Note, that uninitialized data should always be explicitly marked as such!
 
 
 
