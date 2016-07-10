@@ -30,13 +30,13 @@ bool Equals(const T& lhs, const T& rhs)
 template <>
 bool Equals<float>(const float& lhs, const float& rhs)
 {
-    return std::abs(lhs - rhs) <= Epsilon<float>::value;
+    return std::abs(lhs - rhs) <= Epsilon<float>();
 }
 
 template <>
 bool Equals<double>(const double& lhs, const double& rhs)
 {
-    return std::abs(lhs - rhs) <= Epsilon<double>::value;
+    return std::abs(lhs - rhs) <= Epsilon<double>();
 }
 
 template <typename T, std::size_t N>

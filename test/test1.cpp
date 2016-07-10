@@ -10,7 +10,6 @@
 #define GS_HIGH_PRECISION_FLOAT
 //#define GS_ROW_VECTORS
 
-#include <Gauss/DefConsts.h>
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
@@ -331,8 +330,8 @@ static void vectorTest1()
 
 static void epsilonTest1()
 {
-    auto eps1 = Epsilon<float>::value;
-    auto eps2 = Epsilon<double>::value;
+    auto eps1 = Epsilon<float>();
+    auto eps2 = Epsilon<double>();
     float x = 0.1f;
 
     std::cout << "epsilon<float> = " << eps1 << std::endl;

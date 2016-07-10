@@ -11,28 +11,45 @@
 
 #include "Real.h"
 
+#include <type_traits>
+
 
 namespace Gs
 {
 
 
+#define __GS_EPSILON_F32__ (1.0e-6f) // 0.000001f
+#define __GS_EPSILON_F64__ (1.0e-8)  // 0.00000001
+
 /**
-Structure with a value which is very small (~0.000001)
+Function with a return value which is very small (~0.000001)
 which can be used for zero comparision with floating-point values.
 \code
 bool IsNearlyZero(float x)
 {
-    return std::abs(x) <= Gs::Epsilon<float>::value;
+    return std::abs(x) <= Gs::Epsilon<float>();
 }
 \endcode
-\tparam T Specifies the data type. This structure is only defined for float and double!
-\remarks Include <Gauss/DefConsts.h> only in a single source file, to define the constants for this structure.
+\tparam T Specifies the data type. This function is only defined for float and double!
 */
 template <typename T>
-struct Epsilon
+T Epsilon()
 {
-    static const T value;
-};
+    static_assert(std::is_integral<T>::value, "'Gs::Epsilon' function only allows floating-point types");
+    return T(__GS_EPSILON_F32__);
+}
+
+template <>
+float Epsilon()
+{
+    return __GS_EPSILON_F32__;
+}
+
+template <>
+double Epsilon()
+{
+    return __GS_EPSILON_F64__;
+}
 
 
 } // /namespace Gs
