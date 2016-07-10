@@ -1,6 +1,6 @@
 /*
  * Details.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -39,7 +39,7 @@ class MatrixHelper
         MatrixHelper() = delete;
 
     protected:
-        
+
         friend T Gs::Determinant<T, Rows>(const Matrix<T, Rows, Cols>&);
         //friend bool Gs::Inverse<T, Rows>(Matrix<T, Rows, Cols>&, const Matrix<T, Rows, Cols>&);
 
@@ -61,19 +61,19 @@ class MatrixHelper
             if (order == 1)
                 return mat[0];
 
-            std::vector<T> minor((order - 1)*(order - 1));
+            std::vector<T> minorMat((order - 1)*(order - 1), T());
 
             T det = T(0);
 
             for (std::size_t i = 0; i < order; ++i)
             {
-                GetMinorMatrix(mat, minor, 0, i, order);
+                GetMinorMatrix(mat, minorMat, 0, i, order);
                 if (i % 2 == 1)
-                    det -= mat[i] * OrderedDeterminant(minor, order - 1);
+                    det -= mat[i] * OrderedDeterminant(minorMat, order - 1);
                 else
-                    det += mat[i] * OrderedDeterminant(minor, order - 1);
+                    det += mat[i] * OrderedDeterminant(minorMat, order - 1);
             }
-    
+
             return det;
         }
 
@@ -87,7 +87,7 @@ class MatrixHelper
     private:
 
         static void GetMinorMatrix(
-            const std::vector<T>& mat, std::vector<T>& minor, std::size_t row, std::size_t column, std::size_t order)
+            const std::vector<T>& mat, std::vector<T>& minorMat, std::size_t row, std::size_t column, std::size_t order)
         {
             for (std::size_t r = 1, i = 0; r < order; ++r)
             {
@@ -97,7 +97,7 @@ class MatrixHelper
                     {
                         if (c != column)
                         {
-                            minor[i*(order - 1) + j] = mat[r*order + c];
+                            minorMat[i*(order - 1) + j] = mat[r*order + c];
                             ++j;
                         }
                     }
