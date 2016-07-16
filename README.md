@@ -1,4 +1,4 @@
-GaussianLib - A basic linear algebra C++ library for 2D and 3D applications
+goGaussianLib - A basic linear algebra C++ library for 2D and 3D applications
 ===========================================================================
 
 License
@@ -6,9 +6,12 @@ License
 
 [3-Clause BSD License](https://github.com/LukasBanana/GaussianLib/blob/master/LICENSE.txt)
 
+
 Getting Started:
 ----------------
+
 [Getting Started with GaussianLib.pdf](https://github.com/LukasBanana/GaussianLib/blob/master2/docu/GettingStarted/Getting%20Started%20with%20GaussianLib.pdf)
+
 
 Example
 -------
