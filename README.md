@@ -1,5 +1,5 @@
-GaussianLib - Basic Linear Algebra C++ Library for 2D/3D Apps
-=============================================================
+GaussianLib - Basic Linear Algebra Library for modern C++
+=========================================================
 
 Why GaussianLib?
 ----------------
