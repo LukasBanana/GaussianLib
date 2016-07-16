@@ -5,20 +5,16 @@ Why GaussianLib?
 ----------------
 
 1. **It's Simple**
-
-...GaussianLib has a very simple interface, consists only of header files (so no pre-compilation or the like is necessary), and has useful helper classes especially for 2D and 3D applications.
+⋅⋅⋅GaussianLib has a very simple interface, consists only of header files (so no pre-compilation or the like is necessary), and has useful helper classes especially for 2D and 3D applications.
 
 2. **It's Flexible**
-
-...GaussianLib provides a few <a href="https://github.com/LukasBanana/GaussianLib/blob/master2/include/Gauss/Config.h">macros</a> to fines tune its usability. Among others, the library provides either column- or row vectors, which makes it easier to use the library in different software environments such as *OpenGL* and *Direct3D*.
+⋅⋅⋅GaussianLib provides a few <a href="https://github.com/LukasBanana/GaussianLib/blob/master2/include/Gauss/Config.h">macros</a> to fines tune its usability. Among others, the library provides either column- or row vectors, which makes it easier to use the library in different software environments such as *OpenGL* and *Direct3D*.
 
 3. **It's Efficient**
-
-...GaussianLib provides optimized classes such as *AffineMatrix3* and *AffineMatrix4* for heavy use of affine matrix transformation, which is common in graphics applications.
+⋅⋅⋅GaussianLib provides optimized classes such as *AffineMatrix3* and *AffineMatrix4* for heavy use of affine matrix transformation, which is common in graphics applications.
 
 4. **It's Open Source**
-
-...GaussianLib is licensed under the terms of the *3-Clause BSD License*, so you are free to use this software in private or commercial products without any fees :-)
+⋅⋅⋅GaussianLib is licensed under the terms of the *3-Clause BSD License*, so you are free to use this software in private or commercial products without any fees :-)
 
 
 License
