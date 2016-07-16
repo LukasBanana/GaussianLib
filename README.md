@@ -1,4 +1,4 @@
-goGaussianLib - A basic linear algebra C++ library for 2D and 3D applications
+GaussianLib - A basic linear algebra C++ library for 2D and 3D applications
 ===========================================================================
 
 Why GaussianLib?
