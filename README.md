@@ -8,7 +8,7 @@ Why GaussianLib?
 GaussianLib has a very simple interface, consists only of header files (so no pre-compilation or the like is necessary), and has useful helper classes especially for 2D and 3D applications.
 
 2. **It's Flexible**:
-GaussianLib provides a few [macros](https://github.com/LukasBanana/GaussianLib/blob/master2/include/Gauss/Config.h) to fines tune its usability. Among others, the library provides either column- or row vectors, which makes it easier to use the library in different software environments such as *OpenGL* and *Direct3D*.
+GaussianLib provides a few [macros](https://github.com/LukasBanana/GaussianLib/blob/master2/include/Gauss/Config.h) to fine tune its behavior. Among others, the library provides either column- or row vectors, which makes it easier to use the library in different software environments such as *OpenGL* and *Direct3D*.
 
 3. **It's Efficient**:
 GaussianLib provides optimized classes such as *AffineMatrix3* and *AffineMatrix4* for heavy use of affine matrix transformation, which is common in graphics applications.
