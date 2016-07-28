@@ -21,7 +21,7 @@ namespace Gs
 
 
 /**
-Base 2D vector class with components: x, and y.
+\brief Base 2D vector class with components: x, and y.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */

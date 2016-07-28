@@ -21,7 +21,7 @@ namespace Gs
 
 
 /**
-Base 4D vector class with components: x, y, z, and w.
+\brief Base 4D vector class with components: x, y, z, and w.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */

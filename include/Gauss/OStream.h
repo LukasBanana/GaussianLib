@@ -123,6 +123,13 @@ std::ostream& operator << (std::ostream& stream, const QuaternionT<T>& vec)
     return stream;
 }
 
+template <typename T>
+std::ostream& operator << (std::ostream& stream, const SphericalT<T>& vec)
+{
+    stream << "( radius: " << vec.radius << ", theta: " << vec.theta << ", phi: " << vec.phi << " )";
+    return stream;
+}
+
 template <typename T, std::size_t Rows, std::size_t Cols>
 std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& mat)
 {

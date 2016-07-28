@@ -9,6 +9,7 @@
 #define __GS_VECTOR3_H__
 
 
+#include "Decl.h"
 #include "Vector.h"
 #include "Algebra.h"
 #include "Swizzle.h"
@@ -21,7 +22,7 @@ namespace Gs
 
 
 /**
-Base 3D vector class with components: x, y, and z.
+\brief Base 3D vector class with components: x, y, and z.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
@@ -64,6 +65,18 @@ class Vector<T, 3>
             y( y ),
             z( z )
         {
+        }
+
+        /**
+        \brief Converts the specified sphercial coordinate into a cartesian coordinate.
+        \remarks The implementation of this constructor is included in the "Appendix.h" file.
+        */
+        Vector(const SphericalT<T>& sphericalCoord)
+        {
+            const auto sinTheta = std::sin(sphericalCoord.theta);
+            x = sphericalCoord.radius * std::cos(sphericalCoord.phi) * sinTheta;
+            y = sphericalCoord.radius * std::sin(sphericalCoord.phi) * sinTheta;
+            z = sphericalCoord.radius * std::cos(sphericalCoord.theta);
         }
 
         Vector(UninitializeTag)

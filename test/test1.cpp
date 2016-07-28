@@ -338,7 +338,22 @@ static void epsilonTest1()
     std::cout << "epsilon<double> = " << eps2 << std::endl;
     std::cout << x << ((x < eps1) ? " < " : " >= ") << eps1 << std::endl;
     std::cout << "pi = " << pi << std::endl;
+}
 
+static void sphericalTest1()
+{
+    auto ShowCoords = [](const Vector3& v)
+    {
+        std::cout << "cartesian coordinate a = " << v << std::endl;
+        std::cout << "spherical coordinate b = " << Spherical(v) << std::endl;
+        std::cout << "cartesian coordinate b = " << Vector3(Spherical(v)) << std::endl << std::endl;
+    };
+
+    ShowCoords({ 1, 2, 3 });
+    ShowCoords({ -4, 0, 8 });
+    ShowCoords({ 0, 0, 0 });
+    ShowCoords({ 0.01f, -0.08f, 0.0005f });
+    ShowCoords({ -3948, 4933, -239382 });
 }
 
 int main()
@@ -354,10 +369,11 @@ int main()
         //quaternionTest1();
         //matrixVectorTest1();
         //complexTest1();
-        projectionTest1();
+        //projectionTest1();
         //equalsTest1();
         //vectorTest1();
         //epsilonTest1();
+        sphericalTest1();
     }
     catch (const std::exception& e)
     {

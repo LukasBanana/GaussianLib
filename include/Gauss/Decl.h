@@ -18,7 +18,7 @@ namespace Gs
 
 /* --- Forward Declarations --- */
 
-// matrices
+// Matrices
 template <typename T> class AffineMatrix3T;
 template <typename T> class AffineMatrix4T;
 
@@ -26,11 +26,14 @@ template <typename T> class ProjectionMatrix4T;
 
 template <typename T, std::size_t Rows, std::size_t Cols> class Matrix;
 
-// vectors
+// Vectors
 template <typename T, std::size_t N> class Vector;
 
-// quaternions
+// Quaternions
 template <typename T> class QuaternionT;
+
+// Spherical
+template <typename T> class SphericalT;
 
 
 } // /namespace Gs
