@@ -25,6 +25,8 @@ namespace Gs
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 \remarks To use operators such as +, - etc. convert it to a Vector3.
+A spherical coordinate with a radius of 1, and both theta and phi equal to 0 will result in a Vector3 (0, 0, 1),
+i.e. pointing towards the Z coordinate.
 \see Vector3
 */
 template <typename T>
