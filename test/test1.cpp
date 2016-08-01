@@ -356,6 +356,28 @@ static void sphericalTest1()
     ShowCoords({ -3948, 4933, -239382 });
 }
 
+static void crossProductTest1()
+{
+    Vector3 a(1, 0, 0);
+    Vector3 b(0, 1, 0);
+    b.Normalize();
+
+    std::cout << "a = " << a << std::endl;
+    std::cout << "b = " << b << std::endl;
+    std::cout << "Cross(a, b) = " << Cross(a, b).Normalized() << std::endl;
+}
+
+static void rotateVectorTest1()
+{
+    Vector3 vec(1, 2, 3);
+    Vector3 axis(0, 1, 0);
+
+    Real angle = Deg2Rad(45.0f);
+    auto x = RotateVectorAroundAxis(vec, axis, angle);
+
+    std::cout << "vec = " << vec << ", axis = " << axis << ", angle = " << angle << ", x = " << x << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -373,7 +395,9 @@ int main()
         //equalsTest1();
         //vectorTest1();
         //epsilonTest1();
-        sphericalTest1();
+        //sphericalTest1();
+        //crossProductTest1();
+        rotateVectorTest1();
     }
     catch (const std::exception& e)
     {
