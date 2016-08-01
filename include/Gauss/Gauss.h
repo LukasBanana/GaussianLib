@@ -17,18 +17,19 @@
 #include "AffineMatrix3.h"
 #include "AffineMatrix4.h"
 #include "ProjectionMatrix4.h"
-#include "Equals.h"
 #include "Spherical.h"
 
 #include "Algebra.h"
 #include "OStream.h"
 #include "Epsilon.h"
 
+#include "Equals.h"
 #include "Determinant.h"
 #include "Inverse.h"
 #include "Translate.h"
 #include "Scale.h"
 #include "Rotate.h"
+#include "Compare.h"
 
 #include "TransformVector.h"
 #include "RotateVector.h"

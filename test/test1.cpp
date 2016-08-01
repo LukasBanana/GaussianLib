@@ -378,6 +378,21 @@ static void rotateVectorTest1()
     std::cout << "vec = " << vec << ", axis = " << axis << ", angle = " << angle << ", x = " << x << std::endl;
 }
 
+static void sortingTest1()
+{
+    Vector3 a(1, 2, 3);
+    Vector3 b(2, 3, 4);
+
+    Matrix3 A, B;
+    A.LoadIdentity();
+    B.LoadIdentity();
+    A(2, 1) = 5;
+
+    std::cout << std::boolalpha;
+    std::cout << "a = " << a << ", b = " << b << ", a < b: " << Compare(a, b) << std::endl;
+    std::cout << "A = " << std::endl << A << "B = " << std::endl << B << "A < B: " << Compare(A, B) << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -397,7 +412,8 @@ int main()
         //epsilonTest1();
         //sphericalTest1();
         //crossProductTest1();
-        rotateVectorTest1();
+        //rotateVectorTest1();
+        sortingTest1();
     }
     catch (const std::exception& e)
     {
