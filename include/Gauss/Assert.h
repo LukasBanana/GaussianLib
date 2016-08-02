@@ -24,7 +24,7 @@
             if (!(expr))                                        \
             {                                                   \
                 throw std::runtime_error(                       \
-                    "Assertion failed: (" #expr "), file "      \
+                    "assertion failed: (" #expr "), file "      \
                     __FILE__ ", line " _GS_TOSTRING_(__LINE__)  \
                 );                                              \
             }
