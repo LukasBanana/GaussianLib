@@ -21,7 +21,7 @@ namespace Gs
 
 
 /**
-Base vector class with N components.
+\brief Base vector class with N components.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 \tparam N Specifies the number of components. There are specialized templates for N = 2, 3, and 4.

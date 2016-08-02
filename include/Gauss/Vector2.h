@@ -216,7 +216,8 @@ class Vector<T, 2>
 
 /* --- Type Alias --- */
 
-template <typename T> using Vector2T = Vector<T, 2>;
+template <typename T>
+using Vector2T = Vector<T, 2>;
 
 using Vector2   = Vector2T<Real>;
 using Vector2f  = Vector2T<float>;

@@ -243,7 +243,8 @@ class Vector<T, 4>
 
 /* --- Type Alias --- */
 
-template <typename T> using Vector4T = Vector<T, 4>;
+template <typename T>
+using Vector4T = Vector<T, 4>;
 
 using Vector4   = Vector4T<Real>;
 using Vector4f  = Vector4T<float>;
