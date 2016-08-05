@@ -274,6 +274,11 @@ template <typename T> class QuaternionT
             angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
         }
 
+        /**
+        \brief Sets the rotation of this quaternion by the specified euler axis.
+        \param[in] aixs Specifies the aixs. This must be normalized!
+        \param[in] angle Specifies the rotation angle (in radians).
+        */
         void SetAngleAxis(const Vector<T, 3>& axis, const T& angle)
         {
             const T halfAngle   = angle / T(2);
