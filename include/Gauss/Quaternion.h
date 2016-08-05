@@ -262,7 +262,7 @@ template <typename T> class QuaternionT
             Normalize();
         }
 
-        void GetEulerAngles(Vector<T, 3>& angles)
+        void GetEulerAngles(Vector<T, 3>& angles) const
         {
             const T xx = x*x;
             const T yy = y*y;
@@ -290,7 +290,7 @@ template <typename T> class QuaternionT
             w = std::cos(halfAngle);
         }
 
-        void GetAngleAxis(Vector<T, 3>& axis, T& angle)
+        void GetAngleAxis(Vector<T, 3>& axis, T& angle) const
         {
             const T scale = std::sqrt(x*x + y*y + z*z);
 
