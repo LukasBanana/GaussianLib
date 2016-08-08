@@ -138,7 +138,7 @@ template <typename T> class QuaternionT
         }
 
         /**
-        Normalizes the quaternion to the unit length of 1.
+        \brief Normalizes the quaternion to the unit length of 1.
         \see Normalized
         \see Length
         */
@@ -148,7 +148,7 @@ template <typename T> class QuaternionT
         }
 
         /**
-        Returns a normalized instance of this quaternion.
+        \brief Returns a normalized instance of this quaternion.
         \see Normalize
         */
         QuaternionT<T> Normalized() const
@@ -180,12 +180,11 @@ template <typename T> class QuaternionT
         }
 
         /**
-        Computes a spherical linear interpolation between the two quaternions and stores the result into this quaternion.
+        \brief Computes a spherical linear interpolation between the two quaternions and stores the result into this quaternion.
         \param[in] t Specifies the interpolation factor. This should be in the range [0.0, 1.0].
         */
-        void Slerp(const QuaternionT<T>& from, const QuaternionT<T>& to, const T& t)
+        void Slerp(const QuaternionT<T>& from, QuaternionT<T> to, const T& t)
         {
-            T to1[4];
             T omega, cosom, sinom;
             T scale0, scale1;
 
@@ -196,17 +195,10 @@ template <typename T> class QuaternionT
             if (cosom < T(0))
             {
                 cosom = -cosom;
-                to1[0] = -to.x;
-                to1[0] = -to.y;
-                to1[0] = -to.z;
-                to1[0] = -to.w;
-            }
-            else
-            {
-                to1[0] = to.x;
-                to1[0] = to.y;
-                to1[0] = to.z;
-                to1[0] = to.w;
+                to.x = -to.x;
+                to.y = -to.y;
+                to.z = -to.z;
+                to.w = -to.w;
             }
             
             /* Calculate coefficients */
@@ -229,16 +221,13 @@ template <typename T> class QuaternionT
             }
 
             /* Calculate final values */
-            x = scale0*from.x + scale1*to1[0];
-            y = scale0*from.y + scale1*to1[1];
-            z = scale0*from.z + scale1*to1[2];
-            w = scale0*from.w + scale1*to1[3];
+            x = scale0*from.x + scale1*to.x;
+            y = scale0*from.y + scale1*to.y;
+            z = scale0*from.z + scale1*to.z;
+            w = scale0*from.w + scale1*to.w;
         }
 
-        /**
-        Sets the quaternion to an euler rotation with the specified angles (in radian).
-        \tparam Vec Specifies the vector type. This should be Vector3 or Vector4.
-        */
+        //! Sets the quaternion to an euler rotation with the specified angles (in radian).
         void SetEulerAngles(const Vector<T, 3>& angles)
         {
             const T cr = std::cos(angles.x/T(2));
