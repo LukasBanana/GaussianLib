@@ -102,6 +102,18 @@ T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
     return result;
 }
 
+//! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
+template <typename T>
+T Dot(const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+{
+    T result = T(0);
+    
+    for (std::size_t i = 0; i < QuaternionT<T>::components; ++i)
+        result += lhs[i]*rhs[i];
+
+    return result;
+}
+
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
 template <typename T>
 Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
