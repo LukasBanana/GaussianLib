@@ -214,6 +214,26 @@ Quat<T> Slerp(const Quat<T>& from, const Quat<T>& to, const T& t)
     return q;
 }
 
+/**
+\brief Returns a smooth 'hermite interpolation' in the range [0, 1].
+\remarks This hermite interpolation is: 3x^2 - 2x^3.
+*/
+template <typename T>
+T SmoothStep(const T& x)
+{
+    return x*x * (T(3) - x*T(2));
+}
+
+/**
+\brief Returns a smooth 'hermite interpolation' in the range [0, 1].
+\remarks This hermite interpolation is: 6x^5 - 15x^4 + 10x^3.
+*/
+template <typename T>
+T SmootherStep(const T& x)
+{
+    return x*x*x * (x*(x*T(6) - T(15)) + T(10));
+}
+
 
 /* --- Global Operators --- */
 
