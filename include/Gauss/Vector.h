@@ -188,7 +188,7 @@ template <typename T, std::size_t N>
 Vector<T, N> operator / (const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     auto result = lhs;
-    result *= rhs;
+    result /= rhs;
     return result;
 }
 
