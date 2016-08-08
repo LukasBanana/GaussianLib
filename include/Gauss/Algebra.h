@@ -195,7 +195,7 @@ T Clamp(const T& x, const T& minima, const T& maxima)
 \see QuaternionT::Slerp
 */
 template <template <typename> class Quat, typename T>
-Quat<T> Slerp(const Quat<T>& from, Quat<T>& to, const T& t)
+Quat<T> Slerp(const Quat<T>& from, const Quat<T>& to, const T& t)
 {
     Quat<T> q;
     q.Slerp(from, to, t);
