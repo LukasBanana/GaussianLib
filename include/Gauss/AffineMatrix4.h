@@ -266,8 +266,15 @@ class AffineMatrix4T
                 result(c, r) = (*this)(r, c);
             }
 
+            #ifdef GS_ROW_VECTORS
             for (std::size_t i = 0; i < ThisType::columnsSparse; ++i)
-                result(i, ThisType::rowsSparse);
+                result(i, TransposedType::columns - 1) = (*this)(ThisType::rowsSparse - 1, i);
+            #else
+            for (std::size_t i = 0; i < ThisType::rowsSparse; ++i)
+                result(TransposedType::rows - 1, i) = (*this)(i, ThisType::columnsSparse - 1);
+            #endif
+
+            result(TransposedType::rows - 1, TransposedType::columns - 1) = T(1);
 
             return result;
         }

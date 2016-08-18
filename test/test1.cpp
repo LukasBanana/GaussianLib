@@ -163,9 +163,10 @@ static void affineMatrixTest1()
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
-    std::cout << "Inv(A) = " << std::endl << (A^-2) << std::endl;
+    std::cout << "Inv(A) = " << std::endl << (A^-1) << std::endl;
     std::cout << "A*Inv(A) = " << std::endl << A*(A^-1) << std::endl;
     std::cout << "B = " << std::endl << B << std::endl;
+    std::cout << "B^T = " << std::endl << B.Transposed() << std::endl;
     std::cout << "Inv(B) = " << std::endl << B.Inverse() << std::endl;
     std::cout << "B*Inv(B) = " << std::endl << B*B.Inverse() << std::endl;
     std::cout << "| A | = " << A.Determinant() << std::endl;
@@ -401,7 +402,7 @@ int main()
     try
     {
         //commonTest1();
-        //affineMatrixTest1();
+        affineMatrixTest1();
         //affineMatrixTest2();
         //quaternionTest1();
         //matrixVectorTest1();
@@ -413,7 +414,7 @@ int main()
         //sphericalTest1();
         //crossProductTest1();
         //rotateVectorTest1();
-        sortingTest1();
+        //sortingTest1();
     }
     catch (const std::exception& e)
     {
