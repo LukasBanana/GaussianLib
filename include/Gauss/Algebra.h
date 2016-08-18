@@ -154,7 +154,7 @@ template <typename T, std::size_t N>
 void Resize(Vector<T, N>& vec, const T& length)
 {
     auto len = LengthSq(vec);
-    if (len != T(0) && len != length)
+    if (len != T(0))
     {
         len = length / std::sqrt(len);
         vec *= len;
