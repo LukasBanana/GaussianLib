@@ -11,6 +11,7 @@
 
 #include "Real.h"
 #include "Epsilon.h"
+#include "Decl.h"
 
 #include <cmath>
 
@@ -24,19 +25,19 @@ namespace Gs
 template <typename T>
 inline bool Equals(const T& lhs, const T& rhs)
 {
-    return lhs == rhs;
+    return (lhs == rhs);
 }
 
 template <>
 inline bool Equals<float>(const float& lhs, const float& rhs)
 {
-    return std::abs(lhs - rhs) <= Epsilon<float>();
+    return (std::abs(lhs - rhs) <= Epsilon<float>());
 }
 
 template <>
 inline bool Equals<double>(const double& lhs, const double& rhs)
 {
-    return std::abs(lhs - rhs) <= Epsilon<double>();
+    return (std::abs(lhs - rhs) <= Epsilon<double>());
 }
 
 template <typename T, std::size_t N>
