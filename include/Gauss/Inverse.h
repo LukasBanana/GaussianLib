@@ -12,6 +12,7 @@
 #include "Decl.h"
 #include "Details.h"
 #include "Determinant.h"
+#include "Assert.h"
 
 
 namespace Gs
