@@ -329,6 +329,37 @@ class AffineMatrix4T
             return Vector3T<T>(At(0, 3), At(1, 3), At(2, 3));
         }
 
+        /**
+        Sets the scaling of this matrix.
+        \param[in] vec Specifies the scaling vector.
+        \note This will destroy the rotation. You can set the rotation and scaling at once with 'SetRotationAndScale'.
+        \see SetRotationAndScale
+        */
+        void SetScale(const Vector3T<T>& vec)
+        {
+            At(0, 0) = vec.x;
+            At(1, 0) = vec.x;
+            At(2, 0) = vec.x;
+
+            At(0, 1) = vec.y;
+            At(1, 1) = vec.y;
+            At(2, 1) = vec.y;
+
+            At(0, 2) = vec.z;
+            At(1, 2) = vec.z;
+            At(2, 2) = vec.z;
+        }
+
+        //! Returns the unsigned scaling of this matrix (independent of rotation and shearing).
+        Vector3T<T> GetScale() const
+        {
+            return Vector3T<T>(
+                Vector3T<T>(At(0, 0), At(1, 0), At(2, 0)).Length(),
+                Vector3T<T>(At(0, 1), At(1, 1), At(2, 1)).Length(),
+                Vector3T<T>(At(0, 2), At(1, 2), At(2, 2)).Length()
+            );
+        }
+
         void ToMatrix4(Matrix<T, 4, 4>& m) const
         {
             m.At(0, 0) = At(0, 0);
