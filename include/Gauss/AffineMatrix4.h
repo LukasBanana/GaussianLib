@@ -17,6 +17,7 @@
 #include "AffineMatrix.h"
 #include "MatrixInitializer.h"
 #include "Vector3.h"
+#include "Vector4.h"
 
 #include <cmath>
 #include <cstring>
