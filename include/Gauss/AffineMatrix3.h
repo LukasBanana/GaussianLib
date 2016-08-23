@@ -83,12 +83,12 @@ class AffineMatrix3T
 
         using ThisType          = AffineMatrix3T<T>;
         using TransposedType    = Matrix<T, AffineMatrix3T<T>::rows, AffineMatrix3T<T>::columns>;
-        using Initializer       = MatrixInitializer<AffineMatrix3T<T>, T, AffineMatrix3T<T>::columnsSparse>;
+        using Initializer       = Details::MatrixInitializer<AffineMatrix3T<T>, T, AffineMatrix3T<T>::columnsSparse>;
 
         AffineMatrix3T()
         {
             #ifndef GS_ENABLE_AUTO_INIT
-            Reset();
+            LoadIdentity();
             #endif
         }
 

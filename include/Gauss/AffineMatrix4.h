@@ -85,12 +85,12 @@ class AffineMatrix4T
 
         using ThisType          = AffineMatrix4T<T>;
         using TransposedType    = Matrix<T, AffineMatrix4T<T>::rows, AffineMatrix4T<T>::columns>;
-        using Initializer       = MatrixInitializer<AffineMatrix4T<T>, T, AffineMatrix4T<T>::columnsSparse>;
+        using Initializer       = Details::MatrixInitializer<AffineMatrix4T<T>, T, AffineMatrix4T<T>::columnsSparse>;
 
         AffineMatrix4T()
         {
             #ifndef GS_ENABLE_AUTO_INIT
-            Reset();
+            LoadIdentity();
             #endif
         }
 

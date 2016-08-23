@@ -92,12 +92,12 @@ class Matrix
 
         using ThisType          = Matrix<T, Rows, Cols>;
         using TransposedType    = Matrix<T, Cols, Rows>;
-        using Initializer       = MatrixInitializer<Matrix<T, Rows, Cols>, T, Cols>;
+        using Initializer       = Details::MatrixInitializer<Matrix<T, Rows, Cols>, T, Cols>;
 
         Matrix()
         {
             #ifndef GS_DISABLE_AUTO_INIT
-            Reset();
+            Details::MatrixDefaultInitializer<T, Rows, Cols>::Initialize(*this);
             #endif
         }
 
