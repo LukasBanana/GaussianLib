@@ -317,6 +317,31 @@ class AffineMatrix4T
 
         /* --- Extended functions for affine transformations --- */
 
+        /**
+        \brief Returns the specified (implicit) row vector.
+        \param[in] row Specifies the row. This must be in the range [0, rows).
+        \remarks This function uses the "At" function to access the matrix elements.
+        \see At
+        */
+        Vector4T<T> GetRow(std::size_t row) const
+        {
+            if (row + 1 == rows)
+                return Vector4T<T>(0, 0, 0, 1);
+            else
+                return Vector4T<T>(At(row, 0), At(row, 1), At(row, 2), At(row, 3));
+        }
+
+        /**
+        \brief Returns the specified (implicit) column vector.
+        \param[in] col Specifies the column. This must be in the range [0, columns).
+        \remarks This function uses the "At" function to access the matrix elements.
+        \see At
+        */
+        Vector4T<T> GetColumn(std::size_t col) const
+        {
+            return Vector4T<T>(At(0, col), At(1, col), At(2, col), (col + 1 == columns ? T(1) : T(0)));
+        }
+
         void SetPosition(const Vector3T<T>& position)
         {
             At(0, 3) = position.x;
@@ -337,17 +362,25 @@ class AffineMatrix4T
         */
         void SetScale(const Vector3T<T>& vec)
         {
-            At(0, 0) = vec.x;
-            At(1, 0) = vec.x;
-            At(2, 0) = vec.x;
+            Vector3T<T> col0(At(0, 0), At(1, 0), At(2, 0));
+            Vector3T<T> col1(At(0, 1), At(1, 1), At(2, 1));
+            Vector3T<T> col2(At(0, 2), At(1, 2), At(2, 2));
 
-            At(0, 1) = vec.y;
-            At(1, 1) = vec.y;
-            At(2, 1) = vec.y;
+            col0.Resize(vec.x);
+            col1.Resize(vec.x);
+            col2.Resize(vec.x);
 
-            At(0, 2) = vec.z;
-            At(1, 2) = vec.z;
-            At(2, 2) = vec.z;
+            At(0, 0) = col0.x;
+            At(1, 0) = col0.y;
+            At(2, 0) = col0.z;
+
+            At(0, 1) = col1.x;
+            At(1, 1) = col1.y;
+            At(2, 1) = col1.z;
+
+            At(0, 2) = col2.x;
+            At(1, 2) = col2.y;
+            At(2, 2) = col2.z;
         }
 
         //! Returns the unsigned scaling of this matrix (independent of rotation and shearing).

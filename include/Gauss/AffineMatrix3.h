@@ -311,6 +311,31 @@ class AffineMatrix3T
 
         /* --- Extended functions for affine transformations --- */
 
+        /**
+        \brief Returns the specified (implicit) row vector.
+        \param[in] row Specifies the row. This must be in the range [0, rows).
+        \remarks This function uses the "At" function to access the matrix elements.
+        \see At
+        */
+        Vector3T<T> GetRow(std::size_t row) const
+        {
+            if (row + 1 == rows)
+                return Vector3T<T>(0, 0, 1);
+            else
+                return Vector3T<T>(At(row, 0), At(row, 1), At(row, 2));
+        }
+
+        /**
+        \brief Returns the specified (implicit) column vector.
+        \param[in] col Specifies the column. This must be in the range [0, columns).
+        \remarks This function uses the "At" function to access the matrix elements.
+        \see At
+        */
+        Vector3T<T> GetColumn(std::size_t col) const
+        {
+            return Vector3T<T>(At(0, col), At(1, col), (col + 1 == columns ? T(1) : T(0)));
+        }
+
         //! Sets the position of this affine transformation.
         void SetPosition(const Vector2T<T>& position)
         {
@@ -339,10 +364,17 @@ class AffineMatrix3T
         */
         void SetScale(const Vector2T<T>& vec)
         {
-            At(0, 0) = vec.x;
-            At(1, 0) = vec.x;
-            At(0, 1) = vec.y;
-            At(1, 1) = vec.y;
+            Vector2T<T> col0(At(0, 0), At(1, 0)),
+            Vector2T<T> col1(At(0, 1), At(1, 1));
+
+            col0.Resize(vec.x);
+            col1.Resize(vec.y);
+
+            At(0, 0) = col0.x;
+            At(1, 0) = col0.y;
+
+            At(0, 1) = col1.x;
+            At(1, 1) = col1.y;
         }
 
         //! Returns the unsigned scaling of this matrix (independent of rotation and shearing).
