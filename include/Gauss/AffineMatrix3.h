@@ -365,7 +365,7 @@ class AffineMatrix3T
         void SetScale(const Vector2T<T>& vec)
         {
             Vector2T<T> col0(At(0, 0), At(1, 0)),
-            Vector2T<T> col1(At(0, 1), At(1, 1));
+                        col1(At(0, 1), At(1, 1));
 
             col0.Resize(vec.x);
             col1.Resize(vec.y);
