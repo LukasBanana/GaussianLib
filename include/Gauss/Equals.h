@@ -52,6 +52,21 @@ inline bool Equals(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 }
 
 
+/* --- Global Operators --- */
+
+template <typename T, std::size_t N>
+bool operator == (const Vector<T, N>& lhs, const Vector<T, N>& rhs)
+{
+    return Equals(lhs, rhs);
+}
+
+template <typename T, std::size_t N>
+bool operator != (const Vector<T, N>& lhs, const Vector<T, N>& rhs)
+{
+    return !(lhs == rhs);
+}
+
+
 } // /namespace Gs
 
 
