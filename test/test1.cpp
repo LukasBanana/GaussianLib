@@ -8,7 +8,7 @@
 //#define GS_ROW_MAJOR_STORAGE
 #define GS_ENABLE_SWIZZLE_OPERATOR
 #define GS_HIGH_PRECISION_FLOAT
-#define GS_ROW_VECTORS
+//#define GS_ROW_VECTORS
 
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
@@ -430,6 +430,18 @@ static void flipTest1()
     std::cout << "B = " << std::endl << B << std::endl;
 }
 
+static void rotateMatrixTest1()
+{
+    AffineMatrix4 A;
+    A << 1, 0, 0,   7,
+         0, 1, 0,   3,
+         0, 0, 1, -12;
+
+    A.RotateX(45*Gs::pi/180);
+
+    std::cout << "A = " << std::endl << A << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -451,7 +463,8 @@ int main()
         //crossProductTest1();
         //rotateVectorTest1();
         //sortingTest1();
-        flipTest1();
+        //flipTest1();
+        rotateMatrixTest1();
     }
     catch (const std::exception& e)
     {
