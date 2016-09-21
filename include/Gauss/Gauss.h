@@ -30,6 +30,7 @@
 #include "Scale.h"
 #include "Rotate.h"
 #include "Compare.h"
+#include "Flip.h"
 
 #include "TransformVector.h"
 #include "RotateVector.h"

@@ -8,7 +8,7 @@
 //#define GS_ROW_MAJOR_STORAGE
 #define GS_ENABLE_SWIZZLE_OPERATOR
 #define GS_HIGH_PRECISION_FLOAT
-//#define GS_ROW_VECTORS
+#define GS_ROW_VECTORS
 
 #include <Gauss/Gauss.h>
 #include <Gauss/HLSLTypes.h>
@@ -280,7 +280,12 @@ static void projectionTest1()
     std::cout << "Planar      Projection R = " << std::endl << R << std::endl;
     std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
     std::cout << "a = " << a << std::endl;
-    std::cout << "Project(R, a) = " << (R * a).xy() << std::endl;
+    std::cout << "Project(R, a) = ";
+    #ifdef GS_ROW_VECTORS
+    std::cout << (a * R).xy() << std::endl;
+    #else
+    std::cout << (R * a).xy() << std::endl;
+    #endif
 }
 
 static void equalsTest1()
@@ -325,7 +330,11 @@ static void vectorTest1()
 
     std::cout << "x = " << x << std::endl;
     std::cout << "A = " << std::endl << A << std::endl;
+    #ifdef GS_ROW_VECTORS
+    std::cout << "x*A = " << x*A << std::endl;
+    #else
     std::cout << "A*x = " << A*x << std::endl;
+    #endif
     std::cout << "Trace(A) = " << A.Trace() << std::endl;
 }
 
@@ -394,6 +403,33 @@ static void sortingTest1()
     std::cout << "A = " << std::endl << A << "B = " << std::endl << B << "A < B: " << Compare(A, B) << std::endl;
 }
 
+static void flipTest1()
+{
+    Matrix4 A;
+    A <<  1,  2,  3,  4,
+          5,  6,  7,  8,
+          9, 10, 11, 12,
+         13, 14, 15, 16;
+
+    AffineMatrix4 B;
+    #ifdef GS_ROW_VECTORS
+    B <<  1,  2,  3,
+          4,  5,  6, 
+          7,  8,  9,
+         10, 11, 12;
+    #else
+    B <<  1,  2,  3,  4,
+          5,  6,  7,  8,
+          9, 10, 11, 12;
+    #endif
+
+    Gs::FlipAxis(A, 1);
+    Gs::FlipAxis(B, 1);
+
+    std::cout << "A = " << std::endl << A << std::endl;
+    std::cout << "B = " << std::endl << B << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -402,7 +438,7 @@ int main()
     try
     {
         //commonTest1();
-        affineMatrixTest1();
+        //affineMatrixTest1();
         //affineMatrixTest2();
         //quaternionTest1();
         //matrixVectorTest1();
@@ -415,6 +451,7 @@ int main()
         //crossProductTest1();
         //rotateVectorTest1();
         //sortingTest1();
+        flipTest1();
     }
     catch (const std::exception& e)
     {

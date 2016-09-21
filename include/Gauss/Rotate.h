@@ -54,7 +54,6 @@ void FreeRotation(M& mat, const Vector3T<T>& axis, const T& angle)
 } // /namespace Details
 
 
-
 /**
 \brief Computes a free rotation around an axis and stores the result into the matrix 'm'.
 \tparam M Specifies the matrix type. This should be Matrix3, Matrix4, or AffineMatrix4.
@@ -63,9 +62,8 @@ This type must implement the following interface:
 static const std::size_t rows;    // >= 3
 static const std::size_t columns; // >= 3
 \endcode
-\tparam Vec Specifies the vector type. This should be Vector3, or Vector4.
 \tparam T Specifies the data type. This should should be float or double.
-\param[out] mat Specifies the resulting matrix.
+\param[in,out] mat Specifies the matrix which is to be rotated.
 \param[in] axis Specifies the rotation axis. This must be normalized!
 \param[in] angle Specifies the rotation angle (in radians).
 */
