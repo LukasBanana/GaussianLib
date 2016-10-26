@@ -14,8 +14,8 @@
 #include <cassert>
 
 
-#define _GS_TOSTRING_PRIMARY_(x) #x
-#define _GS_TOSTRING_(x) _GS_TOSTRING_PRIMARY_(x)
+#define GS_TOSTRING_PRIMARY(x) #x
+#define GS_TOSTRING(x) GS_TOSTRING_PRIMARY(x)
 
 #ifdef GS_ENABLE_ASSERT
 #   ifdef GS_ASSERT_EXCEPTION
@@ -25,7 +25,7 @@
             {                                                   \
                 throw std::runtime_error(                       \
                     "assertion failed: (" #expr "), file "      \
-                    __FILE__ ", line " _GS_TOSTRING_(__LINE__)  \
+                    __FILE__ ", line " GS_TOSTRING(__LINE__)  \
                 );                                              \
             }
 #   else
