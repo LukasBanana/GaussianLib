@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_SWIZZLE_H__
-#define __GS_SWIZZLE_H__
+#ifndef GS_SWIZZLE_H
+#define GS_SWIZZLE_H
 
 
 #include "Decl.h"

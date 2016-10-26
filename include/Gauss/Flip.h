@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_FLIP_H__
-#define __GS_FLIP_H__
+#ifndef GS_FLIP_H
+#define GS_FLIP_H
 
 
 #include "Decl.h"

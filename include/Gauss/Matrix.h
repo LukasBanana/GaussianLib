@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_MATRIX_H__
-#define __GS_MATRIX_H__
+#ifndef GS_MATRIX_H
+#define GS_MATRIX_H
 
 
 #include "Real.h"

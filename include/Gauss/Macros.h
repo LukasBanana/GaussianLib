@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_MACROS_H__
-#define __GS_MACROS_H__
+#ifndef GS_MACROS_H
+#define GS_MACROS_H
 
 
 #include "Config.h"

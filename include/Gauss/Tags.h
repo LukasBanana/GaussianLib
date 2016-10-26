@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_TAGS_H__
-#define __GS_TAGS_H__
+#ifndef GS_TAGS_H
+#define GS_TAGS_H
 
 
 namespace Gs

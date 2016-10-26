@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_DETAILS_H__
-#define __GS_DETAILS_H__
+#ifndef GS_DETAILS_H
+#define GS_DETAILS_H
 
 
 #include "Decl.h"

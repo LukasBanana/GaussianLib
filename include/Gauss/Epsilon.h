@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_EPSILON_H__
-#define __GS_EPSILON_H__
+#ifndef GS_EPSILON_H
+#define GS_EPSILON_H
 
 
 #include "Real.h"

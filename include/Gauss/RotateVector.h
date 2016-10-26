@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_ROTATE_VECTOR_H__
-#define __GS_ROTATE_VECTOR_H__
+#ifndef GS_ROTATE_VECTOR_H
+#define GS_ROTATE_VECTOR_H
 
 
 #include "Decl.h"

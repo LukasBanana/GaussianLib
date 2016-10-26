@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_CONFIG_H__
-#define __GS_CONFIG_H__
+#ifndef GS_CONFIG_H
+#define GS_CONFIG_H
 
 
 #ifdef _DEBUG

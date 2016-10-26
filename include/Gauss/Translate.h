@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_TRANSLATE_H__
-#define __GS_TRANSLATE_H__
+#ifndef GS_TRANSLATE_H
+#define GS_TRANSLATE_H
 
 
 #include "Decl.h"

@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_EQUALS_H__
-#define __GS_EQUALS_H__
+#ifndef GS_EQUALS_H
+#define GS_EQUALS_H
 
 
 #include "Real.h"

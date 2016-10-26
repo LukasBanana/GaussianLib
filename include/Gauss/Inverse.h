@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_INVERSE_H__
-#define __GS_INVERSE_H__
+#ifndef GS_INVERSE_H
+#define GS_INVERSE_H
 
 
 #include "Decl.h"

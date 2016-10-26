@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_GLSL_TYPES_H__
-#define __GS_GLSL_TYPES_H__
+#ifndef GS_GLSL_TYPES_H
+#define GS_GLSL_TYPES_H
 
 // <<< extension header >>>
 

@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_QUATERNION_H__
-#define __GS_QUATERNION_H__
+#ifndef GS_QUATERNION_H
+#define GS_QUATERNION_H
 
 
 #include "Decl.h"

@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_AFFINE_MATRIX_H__
-#define __GS_AFFINE_MATRIX_H__
+#ifndef GS_AFFINE_MATRIX_H
+#define GS_AFFINE_MATRIX_H
 
 
 #include "Tags.h"

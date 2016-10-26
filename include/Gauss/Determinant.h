@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_DETERMINANT_H__
-#define __GS_DETERMINANT_H__
+#ifndef GS_DETERMINANT_H
+#define GS_DETERMINANT_H
 
 
 #include "Details.h"

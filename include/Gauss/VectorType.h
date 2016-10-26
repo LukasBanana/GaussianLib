@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_VECTOR_TYPE_H__
-#define __GS_VECTOR_TYPE_H__
+#ifndef GS_VECTOR_TYPE_H
+#define GS_VECTOR_TYPE_H
 
 
 #include "Vector2.h"

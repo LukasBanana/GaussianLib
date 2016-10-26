@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_ASSERT_H__
-#define __GS_ASSERT_H__
+#ifndef GS_ASSERT_H
+#define GS_ASSERT_H
 
 
 #include "Config.h"

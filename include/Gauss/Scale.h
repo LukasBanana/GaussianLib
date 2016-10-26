@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_SCALE_H__
-#define __GS_SCALE_H__
+#ifndef GS_SCALE_H
+#define GS_SCALE_H
 
 
 #include "Decl.h"

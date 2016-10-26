@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_DECL_H__
-#define __GS_DECL_H__
+#ifndef GS_DECL_H
+#define GS_DECL_H
 
 
 #include <cstddef>

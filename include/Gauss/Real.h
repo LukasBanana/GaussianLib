@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_REAL_H__
-#define __GS_REAL_H__
+#ifndef GS_REAL_H
+#define GS_REAL_H
 
 
 #include <cmath>

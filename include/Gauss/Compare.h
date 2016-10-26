@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_COMPARE_H__
-#define __GS_COMPARE_H__
+#ifndef GS_COMPARE_H
+#define GS_COMPARE_H
 
 
 #include "Real.h"

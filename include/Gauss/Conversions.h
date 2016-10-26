@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_CONVERSIONS_H__
-#define __GS_CONVERSIONS_H__
+#ifndef GS_CONVERSIONS_H
+#define GS_CONVERSIONS_H
 
 
 #include <cmath>

@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_GAUSS_H__
-#define __GS_GAUSS_H__
+#ifndef GS_GAUSS_H
+#define GS_GAUSS_H
 
 
 #include "Vector2.h"

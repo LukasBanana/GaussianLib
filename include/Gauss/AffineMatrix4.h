@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_AFFINE_MATRIX4_H__
-#define __GS_AFFINE_MATRIX4_H__
+#ifndef GS_AFFINE_MATRIX4_H
+#define GS_AFFINE_MATRIX4_H
 
 
 #include "Real.h"

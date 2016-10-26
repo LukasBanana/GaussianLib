@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_ALGEBRA_H__
-#define __GS_ALGEBRA_H__
+#ifndef GS_ALGEBRA_H
+#define GS_ALGEBRA_H
 
 
 #include "Macros.h"
