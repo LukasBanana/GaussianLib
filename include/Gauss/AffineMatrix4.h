@@ -368,8 +368,8 @@ class AffineMatrix4T
                         col2(At(0, 2), At(1, 2), At(2, 2));
 
             col0.Resize(vec.x);
-            col1.Resize(vec.x);
-            col2.Resize(vec.x);
+            col1.Resize(vec.y);
+            col2.Resize(vec.z);
 
             At(0, 0) = col0.x;
             At(1, 0) = col0.y;
