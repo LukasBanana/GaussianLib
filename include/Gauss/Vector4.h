@@ -54,6 +54,14 @@ class Vector<T, 4>
         {
         }
 
+        explicit Vector(const Vector<T, 3>& rhs, const T& w = T(1)) :
+            x( rhs.x ),
+            y( rhs.y ),
+            z( rhs.z ),
+            w( T(1)  )
+        {
+        }
+
         explicit Vector(const T& scalar) :
             x( scalar ),
             y( scalar ),
