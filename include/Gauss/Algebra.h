@@ -14,6 +14,7 @@
 #include "Determinant.h"
 #include "Inverse.h"
 #include "Decl.h"
+#include "Real.h"
 
 #include <cmath>
 #include <cstddef>
@@ -42,6 +43,20 @@ T GaussianSumSq(T n)
 {
     static_assert(std::is_integral<T>::value, "GaussianSumSq function only allows integral types");
     return n*(n + T(1))*(n*T(2) + T(1))/T(6);
+}
+
+//! Computes a normal (gaussian) distribution value for the specified (1-dimensional) position x with the specified mean and variance.
+template <typename T>
+T NormalDistribution(const T& x, const T& mean, const T& variance)
+{
+    return std::exp(-(x - mean)*(x - mean) / (variance + variance)) / std::sqrt(T(2) * T(Gs::pi) * variance);
+}
+
+//! Computes a normal (gaussian) distribution value for the specified (1-dimensional) position x with the specified mean and variance.
+template <typename T>
+T NormalDistribution(const T& x)
+{
+    return std::exp(-(x*x) / T(2)) / std::sqrt(T(2) * T(Gs::pi));
 }
 
 //! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
