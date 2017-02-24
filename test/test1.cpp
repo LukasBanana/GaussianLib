@@ -442,6 +442,17 @@ static void rotateMatrixTest1()
     std::cout << "A = " << std::endl << A << std::endl;
 }
 
+static void rcpTest1()
+{
+	const Real x = Gs::pi;
+	const Vector3 v(1, 2, 3);
+	const Matrix4 A;
+
+	std::cout << "Rcp(" << x << ") = " << Rcp(x) << std::endl;
+	std::cout << "Rcp(" << v << ") = " << Rcp(v) << std::endl;
+	std::cout << "Rcp(" << std::endl << A << ") = " << std::endl << Gs::Rcp(A) << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -465,6 +476,7 @@ int main()
         //sortingTest1();
         //flipTest1();
         rotateMatrixTest1();
+		rcpTest1();
     }
     catch (const std::exception& e)
     {

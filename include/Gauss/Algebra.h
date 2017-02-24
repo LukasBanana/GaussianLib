@@ -249,6 +249,37 @@ T SmootherStep(const T& x)
     return x*x*x * (x*(x*T(6) - T(15)) + T(10));
 }
 
+//! Returns the reciprocal of the specified scalar value.
+template <typename T>
+T Rcp(const T& x)
+{
+	return T(1) / x;
+}
+
+//! Returns the per-component reciprocal of the specified N-dimensional vector.
+template <typename T, std::size_t N>
+Vector<T, N> Rcp(const Vector<T, N>& vec)
+{
+	Vector<T, N> vecRcp(UninitializeTag{});
+
+	for (std::size_t i = 0; i < N; ++i)
+		vecRcp[i] = T(1) / vec[i];
+
+	return vecRcp;
+}
+
+//! Returns the per-component reciprocal of the specified NxM-dimensional matrix.
+template <typename T, std::size_t N, std::size_t M>
+Matrix<T, N, M> Rcp(const Matrix<T, N, M>& mat)
+{
+	Matrix<T, N, M> matRcp(UninitializeTag{});
+
+	for (std::size_t i = 0; i < N*M; ++i)
+		matRcp[i] = T(1) / mat[i];
+
+	return matRcp;
+}
+
 
 /* --- Global Operators --- */
 
