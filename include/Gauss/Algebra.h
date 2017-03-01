@@ -11,7 +11,6 @@
 
 #include "Macros.h"
 #include "Details.h"
-#include "SparseMatrix4.h"
 
 #include <cmath>
 #include <cstddef>
@@ -155,7 +154,7 @@ T Determinant(const M<T, 1, 1>& m)
 template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 2, 2>& m)
 {
-    return m(0, 0)*m(1, 1) - m(0, 1)*m(1, 0);
+    return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
 }
 
 //! Computes the determinant of the specified 3x3 matrix 'm'.
@@ -163,8 +162,8 @@ template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 3, 3>& m)
 {
     return
-        ( m(0, 0) * m(1, 1) * m(2, 2) ) + ( m(0, 1) * m(1, 2) * m(2, 0) ) + ( m(0, 2) * m(1, 0) * m(2, 1) ) -
-        ( m(2, 0) * m(1, 1) * m(0, 2) ) - ( m(2, 0) * m(1, 2) * m(0, 0) ) - ( m(2, 2) * m(1, 0) * m(0, 1) );
+        ( m(0, 0) * m(1, 1) * m(2, 2) ) + ( m(1, 0) * m(2, 1) * m(0, 2) ) + ( m(2, 0) * m(0, 1) * m(1, 2) ) -
+        ( m(0, 2) * m(1, 1) * m(2, 0) ) - ( m(0, 2) * m(2, 1) * m(0, 0) ) - ( m(2, 2) * m(0, 1) * m(1, 0) );
 }
 
 //! Computes the determinant of the specified 4x4 matrix 'm'.
@@ -172,18 +171,13 @@ template <template <typename, std::size_t, std::size_t> class M, typename T>
 T Determinant(const M<T, 4, 4>& m)
 {
     return
-        ( m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0) ) * ( m(2, 2) * m(3, 3) - m(2, 3) * m(3, 2) ) -
-        ( m(0, 0) * m(1, 2) - m(0, 2) * m(1, 0) ) * ( m(2, 1) * m(3, 3) - m(2, 3) * m(3, 1) ) +
-        ( m(0, 0) * m(1, 3) - m(0, 3) * m(1, 0) ) * ( m(2, 1) * m(3, 2) - m(2, 2) * m(3, 1) ) +
-        ( m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1) ) * ( m(2, 0) * m(3, 3) - m(2, 3) * m(3, 0) ) -
-        ( m(0, 1) * m(1, 3) - m(0, 3) * m(1, 1) ) * ( m(2, 0) * m(3, 2) - m(2, 2) * m(3, 0) ) +
-        ( m(0, 2) * m(1, 3) - m(0, 3) * m(1, 2) ) * ( m(2, 0) * m(3, 1) - m(2, 1) * m(3, 0) );
+        ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) ) * ( m(2, 2) * m(3, 3) - m(3, 2) * m(2, 3) ) -
+        ( m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1) ) * ( m(1, 2) * m(3, 3) - m(3, 2) * m(1, 3) ) +
+        ( m(0, 0) * m(3, 1) - m(3, 0) * m(0, 1) ) * ( m(1, 2) * m(2, 3) - m(2, 2) * m(1, 3) ) +
+        ( m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1) ) * ( m(0, 2) * m(3, 3) - m(3, 2) * m(0, 3) ) -
+        ( m(1, 0) * m(3, 1) - m(3, 0) * m(1, 1) ) * ( m(0, 2) * m(2, 3) - m(2, 2) * m(0, 3) ) +
+        ( m(2, 0) * m(3, 1) - m(3, 0) * m(2, 1) ) * ( m(0, 2) * m(1, 3) - m(1, 2) * m(0, 3) );
 }
-
-//! Computes the determinant of the specified sparse 4x4 matrix 'm'.
-/*template <typename T> T Determinant(const SparseMatrix4<T>& m)
-{
-}*/
 
 
 /* --- "Inverse" Functions --- */
