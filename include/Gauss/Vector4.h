@@ -5,14 +5,13 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_VECTOR4_H__
-#define __GS_VECTOR4_H__
+#ifndef GS_VECTOR4_H
+#define GS_VECTOR4_H
 
 
-#include "Real.h"
-#include "Assert.h"
+#include "Vector.h"
 #include "Algebra.h"
-#include "SwizzleRef.h"
+#include "Swizzle.h"
 
 #include <cmath>
 
@@ -22,11 +21,12 @@ namespace Gs
 
 
 /**
-Base 4D vector class with components: x, y, z, and w.
+\brief Base 4D vector class with components: x, y, z, and w.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector4T
+template <typename T>
+class Vector<T, 4>
 {
     
     public:
@@ -34,8 +34,8 @@ template <typename T> class Vector4T
         //! Specifies the number of vector components.
         static const std::size_t components = 4;
 
-        #ifdef GS_ENABLE_AUTO_INIT
-        Vector4T() :
+        #ifndef GS_DISABLE_AUTO_INIT
+        Vector() :
             x( T(0) ),
             y( T(0) ),
             z( T(0) ),
@@ -43,10 +43,10 @@ template <typename T> class Vector4T
         {
         }
         #else
-        Vector4T() = default;
+        Vector() = default;
         #endif
 
-        Vector4T(const Vector4T<T>& rhs) :
+        Vector(const Vector<T, 4>& rhs) :
             x( rhs.x ),
             y( rhs.y ),
             z( rhs.z ),
@@ -54,7 +54,15 @@ template <typename T> class Vector4T
         {
         }
 
-        explicit Vector4T(const T& scalar) :
+        explicit Vector(const Vector<T, 3>& rhs, const T& w = T(1)) :
+            x( rhs.x ),
+            y( rhs.y ),
+            z( rhs.z ),
+            w( T(1)  )
+        {
+        }
+
+        explicit Vector(const T& scalar) :
             x( scalar ),
             y( scalar ),
             z( scalar ),
@@ -62,7 +70,7 @@ template <typename T> class Vector4T
         {
         }
 
-        Vector4T(const T& x, const T& y, const T& z, const T& w = T(1)) :
+        Vector(const T& x, const T& y, const T& z, const T& w = T(1)) :
             x( x ),
             y( y ),
             z( z ),
@@ -70,7 +78,12 @@ template <typename T> class Vector4T
         {
         }
 
-        Vector4T<T>& operator += (const Vector4T<T>& rhs)
+        Vector(UninitializeTag)
+        {
+            // do nothing
+        }
+
+        Vector<T, 4>& operator += (const Vector<T, 4>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
@@ -79,7 +92,7 @@ template <typename T> class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator -= (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator -= (const Vector<T, 4>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
@@ -88,7 +101,7 @@ template <typename T> class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator *= (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator *= (const Vector<T, 4>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
@@ -97,7 +110,7 @@ template <typename T> class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator /= (const Vector4T<T>& rhs)
+        Vector<T, 4>& operator /= (const Vector<T, 4>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
@@ -106,7 +119,7 @@ template <typename T> class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator *= (const T& rhs)
+        Vector<T, 4>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
@@ -115,7 +128,7 @@ template <typename T> class Vector4T
             return *this;
         }
 
-        Vector4T<T>& operator /= (const T& rhs)
+        Vector<T, 4>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
@@ -124,13 +137,18 @@ template <typename T> class Vector4T
             return *this;
         }
 
+        Vector<T, 4> operator - () const
+        {
+            return Vector<T, 4>(-x, -y, -z, -w);
+        }
+
         /**
         \brief Returns the specified vector component.
         \param[in] component Specifies the vector component index. This must be 0, 1, 2, or 3.
         */
         T& operator [] (std::size_t component)
         {
-            GS_ASSERT(component < Vector4T<T>::components);
+            GS_ASSERT(component < (Vector<T, 4>::components));
             return *((&x) + component);
         }
 
@@ -140,7 +158,7 @@ template <typename T> class Vector4T
         */
         const T& operator [] (std::size_t component) const
         {
-            GS_ASSERT(component < Vector4T<T>::components);
+            GS_ASSERT(component < (Vector<T, 4>::components));
             return *((&x) + component);
         }
 
@@ -157,7 +175,7 @@ template <typename T> class Vector4T
         }
 
         /**
-        Normalizes the vector to the unit length of 1.
+        Normalizes this vector to the unit length of 1.
         \see Normalized
         \see Length
         */
@@ -170,7 +188,7 @@ template <typename T> class Vector4T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector4T<T> Normalized() const
+        Vector<T, 4> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -178,12 +196,23 @@ template <typename T> class Vector4T
         }
 
         /**
+        Resizes this vector to the specified length.
+        \see Normalize
+        \see Length
+        */
+        void Resize(const T& length)
+        {
+            Gs::Resize(*this, length);
+        }
+
+        /**
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector4T<C> Cast() const
+        template <typename C>
+        Vector<C, 4> Cast() const
         {
-            return Vector4T<C>(
+            return Vector<C, 4>(
                 static_cast<C>(x),
                 static_cast<C>(y),
                 static_cast<C>(z),
@@ -220,82 +249,10 @@ template <typename T> class Vector4T
 };
 
 
-/* --- Global Operators --- */
-
-template <typename T> Vector4T<T> operator + (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result += rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator - (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result -= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator * (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const Vector4T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator * (const Vector4T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator * (const T& lhs, const Vector4T<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
-
-template <typename T> Vector4T<T> operator / (const Vector4T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result /= rhs;
-    return result;
-}
-
-
-/* --- Appendix to SwizzleRef4 class --- */
-
-#ifdef GS_ENABLE_SWIZZLE_OPERATOR
-
-template <typename T> SwizzleRef4<T>& SwizzleRef4<T>::operator = (const Vector4T<typename std::remove_const<T>::type>& rhs)
-{
-    x_ = rhs.x;
-    y_ = rhs.y;
-    z_ = rhs.z;
-    w_ = rhs.w;
-    return *this;
-}
-
-template <typename T> SwizzleRef4<T>::operator Vector4T<typename std::remove_const<T>::type> () const
-{
-    return Vector4T<typename std::remove_const<T>::type>(x_, y_, z_, w_);
-}
-
-__GS_SWIZZLE_VECTOR_OP_ALL__(4)
-
-#endif
-
-
 /* --- Type Alias --- */
+
+template <typename T>
+using Vector4T = Vector<T, 4>;
 
 using Vector4   = Vector4T<Real>;
 using Vector4f  = Vector4T<float>;

@@ -5,17 +5,22 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_ALGEBRA_H__
-#define __GS_ALGEBRA_H__
+#ifndef GS_ALGEBRA_H
+#define GS_ALGEBRA_H
 
 
 #include "Macros.h"
 #include "Details.h"
+#include "Determinant.h"
+#include "Inverse.h"
+#include "Decl.h"
+#include "Real.h"
 
 #include <cmath>
 #include <cstddef>
 #include <algorithm>
 #include <vector>
+#include <type_traits>
 
 
 namespace Gs
@@ -24,32 +29,67 @@ namespace Gs
 
 /* --- Global Functions --- */
 
+//! Returns the value of 1 + 2 + ... + n = n*(n+1)/2.
+template <typename T>
+T GaussianSum(T n)
+{
+    static_assert(std::is_integral<T>::value, "GaussianSum function only allows integral types");
+    return n*(n + T(1))/T(2);
+}
+
+//! Returns the value of 1^2 + 2^2 + ... + n^2 = n*(n+1)*(2n+1)/6.
+template <typename T>
+T GaussianSumSq(T n)
+{
+    static_assert(std::is_integral<T>::value, "GaussianSumSq function only allows integral types");
+    return n*(n + T(1))*(n*T(2) + T(1))/T(6);
+}
+
+//! Computes a normal (gaussian) distribution value for the specified (1-dimensional) position x with the specified mean and variance.
+template <typename T>
+T NormalDistribution(const T& x, const T& mean, const T& variance)
+{
+    return std::exp(-(x - mean)*(x - mean) / (variance + variance)) / std::sqrt(T(2) * T(Gs::pi) * variance);
+}
+
+//! Computes a normal (gaussian) distribution value for the specified (1-dimensional) position x with the specified mean and variance.
+template <typename T>
+T NormalDistribution(const T& x)
+{
+    return std::exp(-(x*x) / T(2)) / std::sqrt(T(2) * T(Gs::pi));
+}
+
 //! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T> T Angle(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T Angle(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     return std::acos( Dot(lhs, rhs) / (lhs.Length()*rhs.Length()) );
 }
 
 //! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T> T AngleNorm(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T AngleNorm(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     return std::acos(Dot(lhs, rhs));
 }
 
 //! Returns the squared length of the specified vector.
-template <template <typename> class Vec, typename T> T LengthSq(const Vec<T>& vec)
+template <typename T, std::size_t N>
+T LengthSq(const Vector<T, N>& vec)
 {
     return Dot(vec, vec);
 }
 
 //! Returns the length (euclidian norm) of the specified vector.
-template <template <typename> class Vec, typename T> T Length(const Vec<T>& vec)
+template <typename T, std::size_t N>
+T Length(const Vector<T, N>& vec)
 {
     return std::sqrt(LengthSq(vec));
 }
 
 //! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T> T DistanceSq(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T DistanceSq(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     auto result = rhs;
     result -= lhs;
@@ -57,7 +97,8 @@ template <template <typename> class Vec, typename T> T DistanceSq(const Vec<T>& 
 }
 
 //! Returns the distance between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T> T Distance(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T Distance(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     auto result = rhs;
     result -= lhs;
@@ -65,20 +106,34 @@ template <template <typename> class Vec, typename T> T Distance(const Vec<T>& lh
 }
 
 //! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T> T Dot(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
 {
     T result = T(0);
     
-    for (std::size_t i = 0; i < Vec<T>::components; ++i)
+    for (std::size_t i = 0; i < N; ++i)
+        result += lhs[i]*rhs[i];
+
+    return result;
+}
+
+//! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
+template <typename T>
+T Dot(const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+{
+    T result = T(0);
+    
+    for (std::size_t i = 0; i < QuaternionT<T>::components; ++i)
         result += lhs[i]*rhs[i];
 
     return result;
 }
 
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
-template <template <typename> class Vec, typename T> Vec<T> Cross(const Vec<T>& lhs, const Vec<T>& rhs)
+template <typename T>
+Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
 {
-    return Vec<T>(
+    return Vector<T, 3>(
         lhs.y*rhs.z - rhs.y*lhs.z,
         rhs.x*lhs.z - lhs.x*rhs.z,
         lhs.x*rhs.y - rhs.x*lhs.y
@@ -86,12 +141,37 @@ template <template <typename> class Vec, typename T> Vec<T> Cross(const Vec<T>& 
 }
 
 //! Normalizes the specified vector to the unit length of 1.
-template <template <typename> class Vec, typename T> void Normalize(Vec<T>& vec)
+template <typename T, std::size_t N>
+void Normalize(Vector<T, N>& vec)
 {
     auto len = LengthSq(vec);
-    if (len != Real(0) && len != Real(1))
+    if (len != T(0) && len != T(1))
     {
         len = T(1) / std::sqrt(len);
+        vec *= len;
+    }
+}
+
+//! Normalizes the specified vector to the unit length of 1.
+template <typename T>
+void Normalize(QuaternionT<T>& q)
+{
+    auto len = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
+    if (len != T(0) && len != T(1))
+    {
+        len = T(1) / std::sqrt(len);
+        q *= len;
+    }
+}
+
+//! Resizes the specified vector to the specified length.
+template <typename T, std::size_t N>
+void Resize(Vector<T, N>& vec, const T& length)
+{
+    auto len = LengthSq(vec);
+    if (len != T(0))
+    {
+        len = length / std::sqrt(len);
         vec *= len;
     }
 }
@@ -100,20 +180,35 @@ template <template <typename> class Vec, typename T> void Normalize(Vec<T>& vec)
 \brief Computes a linear interpolation between the point 'a' and the point 'b'.
 \return Equivalent to: a*(1-t) + b*t
 */
-template <typename T, typename I> T Lerp(const T& a, const T& b, const I& t)
+template <typename T, typename I>
+void Lerp(T& x, const T& a, const T& b, const I& t)
 {
-    auto result = b;
-    result -= a;
-    result *= t;
-    result += a;
-    return result;
+    x = b;
+    x -= a;
+    x *= t;
+    x += a;
+}
+
+/**
+\brief Computes a linear interpolation between the point 'a' and the point 'b'.
+\return Equivalent to: a*(1-t) + b*t
+*/
+template <typename T, typename I>
+T Lerp(const T& a, const T& b, const I& t)
+{
+    T x = b;
+    x -= a;
+    x *= t;
+    x += a;
+    return x;
 }
 
 /**
 \brief Clamps the value 'x' into the range [minima, maxima].
-\return min{}
+\return max{ minima, min{ x, maxima } }
 */
-template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
+template <typename T>
+T Clamp(const T& x, const T& minima, const T& maxima)
 {
     if (x <= minima)
         return minima;
@@ -122,176 +217,109 @@ template <typename T> T Clamp(const T& x, const T& minima, const T& maxima)
     return x;
 }
 
-
-/* --- Determinant Functions --- */
+/**
+\brief Returns the spherical linear interpolation between the two quaternions 'from' and 'to'.
+\see QuaternionT::Slerp
+*/
+template <template <typename> class Quat, typename T>
+Quat<T> Slerp(const Quat<T>& from, const Quat<T>& to, const T& t)
+{
+    Quat<T> q;
+    q.Slerp(from, to, t);
+    return q;
+}
 
 /**
-\brief Computes the determinant of an arbitrary NxN matrix.
-\tparam M Specifies the matrix type. This should be "Matrix".
-\tparam T Specifies the data type. This should be float or double.
-\tparam Rows Specifies the rows of the matrix.
-\tparam Cols Specifies the columns of the matrix.
-\remarks The template arguments 'Rows' and 'Cols' must be equal, otherwise a compile time error will occur,
-since a determinant is only defined for squared matrices.
-\param[in] m Specifies the squared matrix for which the determinant is to be computed.
+\brief Returns a smooth 'hermite interpolation' in the range [0, 1].
+\remarks This hermite interpolation is: 3x^2 - 2x^3.
 */
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-T Determinant(const M<T, Rows, Cols>& m)
+template <typename T>
+T SmoothStep(const T& x)
 {
-    static_assert(Rows == Cols, "determinants can only be computed for squared matrices");
-    using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
-    return Helper::OrderedDeterminant(Helper::MatrixToArray(m), Rows);
+    return x*x * (T(3) - x*T(2));
 }
 
-//! Computes the determinant of the specified 1x1 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 1, 1>& m)
+/**
+\brief Returns a smooth 'hermite interpolation' in the range [0, 1].
+\remarks This hermite interpolation is: 6x^5 - 15x^4 + 10x^3.
+*/
+template <typename T>
+T SmootherStep(const T& x)
 {
-    return m(0, 0);
+    return x*x*x * (x*(x*T(6) - T(15)) + T(10));
 }
 
-//! Computes the determinant of the specified 2x2 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 2, 2>& m)
+//! Returns the reciprocal of the specified scalar value.
+template <typename T>
+T Rcp(const T& x)
 {
-    return m(0, 0)*m(1, 1) - m(1, 0)*m(0, 1);
+	return T(1) / x;
 }
 
-//! Computes the determinant of the specified 3x3 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 3, 3>& m)
+//! Returns the per-component reciprocal of the specified N-dimensional vector.
+template <typename T, std::size_t N>
+Vector<T, N> Rcp(const Vector<T, N>& vec)
 {
-    return
-        ( m(0, 0) * m(1, 1) * m(2, 2) ) + ( m(1, 0) * m(2, 1) * m(0, 2) ) + ( m(2, 0) * m(0, 1) * m(1, 2) ) -
-        ( m(0, 2) * m(1, 1) * m(2, 0) ) - ( m(0, 2) * m(2, 1) * m(0, 0) ) - ( m(2, 2) * m(0, 1) * m(1, 0) );
+	Vector<T, N> vecRcp(UninitializeTag{});
+
+	for (std::size_t i = 0; i < N; ++i)
+		vecRcp[i] = T(1) / vec[i];
+
+	return vecRcp;
 }
 
-//! Computes the determinant of the specified 4x4 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-T Determinant(const M<T, 4, 4>& m)
+//! Returns the per-component reciprocal of the specified NxM-dimensional matrix.
+template <typename T, std::size_t N, std::size_t M>
+Matrix<T, N, M> Rcp(const Matrix<T, N, M>& mat)
 {
-    return
-        ( m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1) ) * ( m(2, 2) * m(3, 3) - m(3, 2) * m(2, 3) ) -
-        ( m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1) ) * ( m(1, 2) * m(3, 3) - m(3, 2) * m(1, 3) ) +
-        ( m(0, 0) * m(3, 1) - m(3, 0) * m(0, 1) ) * ( m(1, 2) * m(2, 3) - m(2, 2) * m(1, 3) ) +
-        ( m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1) ) * ( m(0, 2) * m(3, 3) - m(3, 2) * m(0, 3) ) -
-        ( m(1, 0) * m(3, 1) - m(3, 0) * m(1, 1) ) * ( m(0, 2) * m(2, 3) - m(2, 2) * m(0, 3) ) +
-        ( m(2, 0) * m(3, 1) - m(3, 0) * m(2, 1) ) * ( m(0, 2) * m(1, 3) - m(1, 2) * m(0, 3) );
-}
+	Matrix<T, N, M> matRcp(UninitializeTag{});
 
+	for (std::size_t i = 0; i < N*M; ++i)
+		matRcp[i] = T(1) / mat[i];
 
-/* --- "Inverse" Functions --- */
-
-//! Computes the inverse of the specified matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T, std::size_t Rows, std::size_t Cols>
-bool Inverse(M<T, Rows, Cols>& inv, const M<T, Rows, Cols>& m)
-{
-    static_assert(Rows == Cols, "inverses can only be computed for squared matrices");
-    //using Helper = Details::MatrixHelper<M, T, Rows, Cols>;
-    //return Helper::OrderedInverse(inv, Helper::MatrixToArray(m), Rows);
-    return false;//!!!
-}
-
-//! Computes the inverse of the specified 2x2 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-bool Inverse(M<T, 2, 2>& inv, const M<T, 2, 2>& m)
-{
-    /* Compute inverse determinant */
-    T d = Determinant(m);
-
-    if (d == T(0))
-        return false;
-
-    d = T(1) / d;
-
-    /* Compute inverse matrix */
-    inv(0, 0) = d * (  m(1, 1) );
-    inv(0, 1) = d * ( -m(1, 0) );
-    inv(1, 0) = d * ( -m(0, 1) );
-    inv(1, 1) = d * (  m(0, 0) );
-
-    return true;
-}
-
-//! Computes the inverse of the specified 3x3 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-bool Inverse(M<T, 3, 3>& inv, const M<T, 3, 3>& m)
-{
-    /* Compute inverse determinant */
-    T d = Determinant(m);
-
-    if (d == T(0))
-        return false;
-
-    d = T(1) / d;
-
-    /* Compute inverse matrix */
-    inv(0, 0) = d * ( m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1) );
-    inv(0, 1) = d * ( m(1, 1) * m(2, 0) - m(1, 0) * m(2, 2) );
-    inv(0, 2) = d * ( m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0) );
-    inv(1, 0) = d * ( m(0, 2) * m(2, 1) - m(0, 1) * m(2, 2) );
-    inv(1, 1) = d * ( m(0, 0) * m(2, 2) - m(0, 2) * m(2, 0) );
-    inv(1, 2) = d * ( m(0, 1) * m(2, 0) - m(0, 0) * m(2, 1) );
-    inv(2, 0) = d * ( m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1) );
-    inv(2, 1) = d * ( m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0) );
-    inv(2, 2) = d * ( m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0) );
-
-    return true;
-}
-
-//! Computes the inverse of the specified 4x4 matrix 'm'.
-template <template <typename, std::size_t, std::size_t> class M, typename T>
-bool Inverse(M<T, 4, 4>& inv, const M<T, 4, 4>& m)
-{
-    /* Compute inverse determinant */
-    T d = Determinant(m);
-
-    if (d == T(0))
-        return false;
-
-    d = T(1) / d;
-
-    /* Compute inverse matrix */
-    inv(0, 0) = d * ( m(1, 1) * (m(2, 2) * m(3, 3) - m(2, 3) * m(3, 2)) + m(1, 2) * (m(2, 3) * m(3, 1) - m(2, 1) * m(3, 3)) + m(1, 3) * (m(2, 1) * m(3, 2) - m(2, 2) * m(3, 1)) );
-    inv(0, 1) = d * ( m(1, 2) * (m(2, 0) * m(3, 3) - m(2, 3) * m(3, 0)) + m(1, 3) * (m(2, 2) * m(3, 0) - m(2, 0) * m(3, 2)) + m(1, 0) * (m(2, 3) * m(3, 2) - m(2, 2) * m(3, 3)) );
-    inv(0, 2) = d * ( m(1, 3) * (m(2, 0) * m(3, 1) - m(2, 1) * m(3, 0)) + m(1, 0) * (m(2, 1) * m(3, 3) - m(2, 3) * m(3, 1)) + m(1, 1) * (m(2, 3) * m(3, 0) - m(2, 0) * m(3, 3)) );
-    inv(0, 3) = d * ( m(1, 0) * (m(2, 2) * m(3, 1) - m(2, 1) * m(3, 2)) + m(1, 1) * (m(2, 0) * m(3, 2) - m(2, 2) * m(3, 0)) + m(1, 2) * (m(2, 1) * m(3, 0) - m(2, 0) * m(3, 1)) );
-    inv(1, 0) = d * ( m(2, 1) * (m(0, 2) * m(3, 3) - m(0, 3) * m(3, 2)) + m(2, 2) * (m(0, 3) * m(3, 1) - m(0, 1) * m(3, 3)) + m(2, 3) * (m(0, 1) * m(3, 2) - m(0, 2) * m(3, 1)) );
-    inv(1, 1) = d * ( m(2, 2) * (m(0, 0) * m(3, 3) - m(0, 3) * m(3, 0)) + m(2, 3) * (m(0, 2) * m(3, 0) - m(0, 0) * m(3, 2)) + m(2, 0) * (m(0, 3) * m(3, 2) - m(0, 2) * m(3, 3)) );
-    inv(1, 2) = d * ( m(2, 3) * (m(0, 0) * m(3, 1) - m(0, 1) * m(3, 0)) + m(2, 0) * (m(0, 1) * m(3, 3) - m(0, 3) * m(3, 1)) + m(2, 1) * (m(0, 3) * m(3, 0) - m(0, 0) * m(3, 3)) );
-    inv(1, 3) = d * ( m(2, 0) * (m(0, 2) * m(3, 1) - m(0, 1) * m(3, 2)) + m(2, 1) * (m(0, 0) * m(3, 2) - m(0, 2) * m(3, 0)) + m(2, 2) * (m(0, 1) * m(3, 0) - m(0, 0) * m(3, 1)) );
-    inv(2, 0) = d * ( m(3, 1) * (m(0, 2) * m(1, 3) - m(0, 3) * m(1, 2)) + m(3, 2) * (m(0, 3) * m(1, 1) - m(0, 1) * m(1, 3)) + m(3, 3) * (m(0, 1) * m(1, 2) - m(0, 2) * m(1, 1)) );
-    inv(2, 1) = d * ( m(3, 2) * (m(0, 0) * m(1, 3) - m(0, 3) * m(1, 0)) + m(3, 3) * (m(0, 2) * m(1, 0) - m(0, 0) * m(1, 2)) + m(3, 0) * (m(0, 3) * m(1, 2) - m(0, 2) * m(1, 3)) );
-    inv(2, 2) = d * ( m(3, 3) * (m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0)) + m(3, 0) * (m(0, 1) * m(1, 3) - m(0, 3) * m(1, 1)) + m(3, 1) * (m(0, 3) * m(1, 0) - m(0, 0) * m(1, 3)) );
-    inv(2, 3) = d * ( m(3, 0) * (m(0, 2) * m(1, 1) - m(0, 1) * m(1, 2)) + m(3, 1) * (m(0, 0) * m(1, 2) - m(0, 2) * m(1, 0)) + m(3, 2) * (m(0, 1) * m(1, 0) - m(0, 0) * m(1, 1)) );
-    inv(3, 0) = d * ( m(0, 1) * (m(1, 3) * m(2, 2) - m(1, 2) * m(2, 3)) + m(0, 2) * (m(1, 1) * m(2, 3) - m(1, 3) * m(2, 1)) + m(0, 3) * (m(1, 2) * m(2, 1) - m(1, 1) * m(2, 2)) );
-    inv(3, 1) = d * ( m(0, 2) * (m(1, 3) * m(2, 0) - m(1, 0) * m(2, 3)) + m(0, 3) * (m(1, 0) * m(2, 2) - m(1, 2) * m(2, 0)) + m(0, 0) * (m(1, 2) * m(2, 3) - m(1, 3) * m(2, 2)) );
-    inv(3, 2) = d * ( m(0, 3) * (m(1, 1) * m(2, 0) - m(1, 0) * m(2, 1)) + m(0, 0) * (m(1, 3) * m(2, 1) - m(1, 1) * m(2, 3)) + m(0, 1) * (m(1, 0) * m(2, 3) - m(1, 3) * m(2, 0)) );
-    inv(3, 3) = d * ( m(0, 0) * (m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1)) + m(0, 1) * (m(1, 2) * m(2, 0) - m(1, 0) * m(2, 2)) + m(0, 2) * (m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0)) );
-
-    return true;
+	return matRcp;
 }
 
 
 /* --- Global Operators --- */
 
-//! \brief Multiplies the NxN matrix with the N-dimensional vector.
-template <template <typename> class Vec, template <typename, std::size_t, std::size_t> class Mat, typename T, std::size_t N>
-Vec<T> operator * (const Mat<T, N, N>& mat, const Vec<T>& vec)
-{
-    static_assert(Vec<T>::components == N, __GS_FILE_LINE__ "function only allows multiplication of an NxN matrix with an N-dimensional vector");
+#ifdef GS_ROW_VECTORS
 
-    Vec<T> result;
+//! \brief Multiplies the N-dimensional vector with the NxN matrix with.
+template <typename T, std::size_t N>
+Vector<T, N> operator * (const Vector<T, N>& vec, const Matrix<T, N, N>& mat)
+{
+    Vector<T, N> result;
+
+    for (std::size_t c = 0; c < N; ++c)
+    {
+        result[c] = T(0);
+        for (std::size_t r = 0; r < N; ++r)
+            result[c] += mat(r, c)*vec[r];
+    }
+
+    return result;
+}
+
+#else
+
+//! \brief Multiplies the NxN matrix with the N-dimensional vector.
+template <typename T, std::size_t N>
+Vector<T, N> operator * (const Matrix<T, N, N>& mat, const Vector<T, N>& vec)
+{
+    Vector<T, N> result;
 
     for (std::size_t r = 0; r < N; ++r)
     {
-        result[r] = 0;
+        result[r] = T(0);
         for (std::size_t c = 0; c < N; ++c)
             result[r] += mat(r, c)*vec[c];
     }
 
     return result;
 }
+
+#endif
 
 
 } // /namespace Gs

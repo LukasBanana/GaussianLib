@@ -1,0 +1,368 @@
+\documentclass{article}
+\title{Getting Started with GaussianLib}
+\author{Lukas Hermanns}
+\date{\today}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{pxfonts}
+\usepackage{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{xspace}
+
+\geometry{
+	a4paper,
+	left=15mm,
+	right=15mm,
+	top=20mm,
+	bottom=20mm
+}
+
+\begin{document}
+
+\definecolor{brightBlueColor}{rgb}{0.5, 0.5, 1.0}
+\definecolor{darkBlueColor}{rgb}{0.0, 0.0, 0.5}
+
+\def\gausslib{\textsc{GaussianLib}\xspace}
+
+\lstset{
+	language = C++,
+	basicstyle = \footnotesize\ttfamily,
+	commentstyle = \itshape\color{brightBlueColor},
+	keywordstyle = \bfseries\color{darkBlueColor},
+	stringstyle = \color{red},
+	frame = single,
+	tabsize = 4,
+	showstringspaces=false,
+	numbers=none
+}
+
+\maketitle
+
+
+%----------------------------------------------------------------------------------------
+%	INTRRODUCTION
+%----------------------------------------------------------------------------------------
+
+\section*{Introduction}
+
+The \gausslib is a simple C++ library for 2D and 3D applications.
+It provides only basic linear algebra functionality for Vectors, Matrices, and Quaternions.
+
+
+%----------------------------------------------------------------------------------------
+%	COMPILATION
+%----------------------------------------------------------------------------------------
+
+\section*{Compilation}
+
+In the following we consider to have a single C++ file named ``Example.cpp''.
+More over \texttt{\%GaussianLibPath\%} denotes your GaussianLib installation directory.
+
+\subsubsection*{GNU/C++}
+
+The \gausslib requires \texttt{g++} version 4.8.1 or higher, with C++11 feature set enabled.
+To compile your application with GNU/C++ (or MinGW on Windows), type this into a command line:
+\begin{quote}
+\texttt{g++ -I \%GaussianLibPath\%/include -std=c++11 Example.cpp -o ExampleOutput}
+\end{quote}
+If everything worked properly, your executable is named ``ExampleOutput''.
+
+\subsubsection*{VisualC++}
+
+The \gausslib requires VisualC++ 2013 (12.0) or higher, to support the C++11 features, which are used in the library.
+
+
+%----------------------------------------------------------------------------------------
+%	FINE TUNING
+%----------------------------------------------------------------------------------------
+
+\section*{Fine Tuning}
+
+By default, all vectors, quaternions, and matrices are initialized. To increase performance by not automatically
+initialize this data, add the following to your compiler pre-defined macros:
+\begin{quote}
+\texttt{GS\_DISABLE\_AUTO\_INIT}
+\end{quote}
+If you don't want to disable the automatic initialization overall, you can explicitly construct a data type
+who is uninitialized. This can be done with \texttt{UninitializeTag}:
+\begin{lstlisting}
+Gs::Matrix4 m(Gs::UninitializeTag{});
+\end{lstlisting}
+\texttt{UninitializeTag} is an empty \texttt{struct}, so no memory will be allocated. It's just a hint to the compiler,
+to call another constructor, which does no initialization.
+Note, that uninitialized data should always be explicitly marked as such!
+This is useful when the data is initialized manually after construction anways:
+\begin{lstlisting}
+Gs::Matrix4 m(Gs::UninitializeTag{});
+m[0] = 1;
+m[1] = -1;
+m[2] = 2.5;
+/* ... */
+m[15] = 1;
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------------------
+%	VECTORS
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\section*{Vectors}
+
+In the \gausslib vectors are considered to be \textbf{column vectors} per default, as it is common in mathematics.
+I.e. if you want a vector $y$ as a result of a multiplication with a matrix $M$ and a vector $x$,
+write: $y = M \times x$.
+To use \textbf{row vectors} instead, define the macro \texttt{GS\_ROW\_VECTORS} before you include the library.
+There is the generalized base \mbox{\texttt{Vector<T, N>}} class, where \texttt{T} specifies the data type of the
+vector components and \texttt{N} specifies the number of components.
+There are three specialized template classes for vectors: \texttt{Vector<T, 2>}, \texttt{Vector<T, 3>},
+and \texttt{Vector<T, 4>}. These specialized templates allow you to access the components by their names
+\texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w}. For larger vectors you need to use the bracket operator \texttt{[]}.
+There are also pre-defined type aliases (\texttt{\textit{N}} is either 2, 3, or 4):
+\begin{itemize}
+	\item \texttt{Vector\textit{N}} Is a type alias to \texttt{Vector\textit{N}T<Real>}, where \texttt{Real} is either
+		from type \texttt{float} or \texttt{double}.
+	\item \texttt{Vector\textit{N}f} Is a type alias to \texttt{Vector\textit{N}T<float>}.
+	\item \texttt{Vector\textit{N}d} Is a type alias to \texttt{Vector\textit{N}T<double>}.
+	\item \texttt{Vector\textit{N}i} Is a type alias to \texttt{Vector\textit{N}T<int>}.
+	\item \texttt{Vector\textit{N}ui} Is a type alias to \texttt{Vector\textit{N}T<unsigned int>}.
+	\item \texttt{Vector\textit{N}b} Is a type alias to \texttt{Vector\textit{N}T<char>}.
+	\item \texttt{Vector\textit{N}ub} Is a type alias to \texttt{Vector\textit{N}T<unsigned char>}.
+\end{itemize}
+
+\begin{lstlisting}
+#include <Gauss/Gauss.h>
+#include <iostream>
+
+int main()
+{
+	Gs::Vector3 a(1, 2, 3), b(4, 5, 6);
+	
+	std::cout << "a = " << a << std::endl;                   // Prints "( 1 | 2 | 3 )" to standard output
+	std::cout << "b = " << b << std::endl;                   // Prints "( 4 | 5 | 6 )" to standard output
+	std::cout << "a.x = " << a.x << std::endl;               // Component access by name
+	std::cout << "b.x = " << b[0] << std::endl;              // Component access by [] operator
+	std::cout << "a * b = " << a*b << std::endl;             // Per-component multiplication
+	std::cout << "a . b = " << Gs::Dot(a, b) << std::endl;   // Dot product (or scalar product)
+	std::cout << "a X b = " << Gs::Cross(a, b) << std::endl; // Cross product (or vector product)
+	std::cout << "a V b = " << Gs::Angle(a, b) << std::endl; // Vector angle (in radians)
+	std::cout << "|a| = " << a.Length() << std::endl;        // Vector length (or norm of the vector)
+	std::cout << "|a|^2 = " << a.LengthSq() << std::endl;    // Squared vector length
+	std::cout << "a / |a| = " << a.Normalize() << std::endl; // Normalized vector (unit length of 1)
+	
+	return 0;
+}
+\end{lstlisting}
+For the specialized Vector templates, there are public members available: \texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w}.
+I.e. you are not restricted to the bracket operator \texttt{[]} to access vector components:
+\begin{lstlisting}
+a.x = 2;
+a.z = 3;
+a[0] += 2; // equivalent to a.x += 2;
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------------------
+%	MATRICES
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\section*{Matrices}
+
+There is only a single general-purpose class for matrices
+(except AffineMatrix3T and AffineMatrix4T, see section \ref{sec:affine_matrices}{Affine Matrices}):
+\texttt{Matrix<T, Rows, Cols>}, where \texttt{T} specifies the template typename T, \texttt{Rows} specifies the
+number of rows of the matrix, and \texttt{Cols} specifies the number of columns of the matrix.
+
+\begin{lstlisting}
+#include <Gauss/Gauss.h>
+#include <iostream>
+
+int main()
+{
+	Gs::Matrix4 A;
+	A << 1,  0, 2, 0,
+	     0, -2, 0, 1,
+	     4,  0, 5, 6,
+	     0,  1, 0, 1;
+	
+	Gs::Matrix<float, 3, 4> B;
+	B << 4, 2,  9, -1,
+	     0, 1,  6,  2,
+	     3, 7, -2,  0;
+	
+	Gs::Matrix<float, 4, 3> C;
+	C = B.Transposed();
+	
+	Gs::Matrix<float, 3, 3> D;
+	D = B*C;
+	
+	Gs::Matrix<float, 4, 4> E;
+	E = C*B;
+	
+	std::cout << "A = " << std::endl << A << std::endl;
+	std::cout << "B = " << std::endl << B << std::endl;
+	std::cout << "C = " << std::endl << C << std::endl;
+	std::cout << "B*C = " << std::endl << D << std::endl;
+	std::cout << "C*B = " << std::endl << E << std::endl;
+	
+	std::cout << "A^-1 = " << std::endl << A.Inverse() << std::endl;
+	std::cout << "A*A^-1 = " << std::endl << A*A.Inverse() << std::endl;
+	std::cout << "Trace(A) = " << std::endl << A.Trace() << std::endl;
+	std::cout << "Determinant(A) = " << std::endl << A.Determinant() << std::endl;
+
+	return 0;
+}
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------------------
+%	AFFINE MATRICES
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\section*{Affine Matrices}
+\label{sec:affine_matrices}
+
+In 3D applications a 4x4 matrix is frequently used for affine transformations of 3D models,
+i.e. translation, rotation, scaling, and sometimes shearing.
+However, with many 3D models, such transformations require a lot of memory.
+Moreover, the 4th row of these 4x4 affine matrices is always $(0, 0, 0, 1)$ --- except that row vectors are used,
+where the 4th column is always $(0, 0, 0, 1)$.
+
+To reduce the memory footprint (and some computations), the \gausslib provides the \texttt{AffineMatrix4T<T>} class,
+where the 4th row (or column for row-vectors) is implicit, and the \texttt{AffineMatrix3T<T>} class,
+where the 3rd row (or column for row-vectors) is implicit:
+\begin{lstlisting}
+#include <Gauss/Gauss.h>
+
+int main()
+{
+	// Affine matrices are always initialized to their identity matrix
+	Gs::AffineMatrix4 m;
+	
+	m.Translate(Gs::Vector3(0, 4, -2));
+	m.RotateX(M_PI*0.5);
+	m.RotateFree(Gs::Vector3(1, 1, 1), M_PI*1.5);
+	m.Scale(Gs::Vector3(1, 0.5, 2));
+	m.MakeInverse();
+	
+	Gs::Vector3 v(0, 0, 1);
+	auto a = Gs::TransformVector(m, v); // Rotate and Translate (with implicit v.w = 1)
+	auto b = Gs::RotateVector(m, v); // Only rotate
+	
+	return 0;
+}
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------------------
+%	QUATERNIONS
+%----------------------------------------------------------------------------------------
+
+\section*{Quaternions}
+
+Quaternions have the four components \texttt{x}, \texttt{y}, \texttt{z}, and \texttt{w} just like Vector4.
+In contrast to vectors, quaterions can only have floating-point components.
+\begin{lstlisting}
+#include <Gauss/Gauss.h>
+
+int main()
+{
+	Gs::Quaternion q0, q1; // Equivalent to Gs::QuaternionT<Gs::Real>
+	Gs::Quaternionf qFloat;
+	Gs::QuaternionT<double> qDouble;
+	
+	// Spherical Linear intERPolation (SLERP) between q0 and q1
+	auto q2 = Gs::Slerp(q0, q1, 0.5);
+	
+	// Convert to 3x3 matrix
+	Gs::Matrix3 rotation = q2.ToMatrix3();
+	
+	// Store rotation of quaterion in the left-upper 3x3 matrix of the sparse 4x4 matrix 'transform'
+	Gs::AffineMatrix4 transform;
+	Gs::QuaternionToMatrix(transform, q2);
+	
+	return 0;
+}
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------------------
+%	SWIZZLE OPERATOR
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\section*{Swizzle Operator}
+
+For the three vector classes, there is support for the \textit{swizzle operator} (like in shading languages):
+\begin{lstlisting}
+// Enable `swizzle operator'
+#define GS_ENABLE_SWIZZLE_OPERATOR
+
+#include <Gauss/Gauss.h>
+
+int main()
+{
+	Gs::Vector4 a, b;
+	Gs::Vector3 c, d
+	Gs::Vector2 e, f;
+	
+	e = a.xy();
+	f = a.zz();
+	c = a.xxz() + e.yxy()*2.0f;
+	b = a.xyxy();
+	
+	// References can not be used (pointless operation).
+	//a.yz() += e;
+	//a.zx() *= 2;
+	
+	a = e.xxyy();
+}
+\end{lstlisting}
+Every combination is possible!
+
+
+%----------------------------------------------------------------------------------------
+%	SHADING LANGUAGES
+%----------------------------------------------------------------------------------------
+
+\section*{Shading Languages}
+
+There are two extra header files, which can be included optionally:
+\begin{lstlisting}
+#define GS_ENABLE_SWIZZLE_OPERATOR
+#include <Gauss/Gauss.h>
+
+// Includes all type aliases with name conventions of the DirectX High Level Shading Language (HLSL).
+#include <Gauss/HLSLTypes.h>
+
+// Includes all type aliases with name conventions of the OpenGL Shading Language (GLSL).
+#include <Gauss/GLSLTypes.h>
+
+int main()
+{
+	// HLSL types
+	float4x4 m0;
+	double2x3 m1;
+	int3 v0;
+	
+	// GLSL types
+	mat4 m2 = m0;
+	ivec2 v1 = v0.yz();
+	ivec3 v2 = v0.xxy();
+	
+	return 0;
+}
+\end{lstlisting}
+
+
+
+
+
+\end{document}

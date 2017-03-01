@@ -5,14 +5,13 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_VECTOR2_H__
-#define __GS_VECTOR2_H__
+#ifndef GS_VECTOR2_H
+#define GS_VECTOR2_H
 
 
-#include "Real.h"
-#include "Assert.h"
+#include "Vector.h"
 #include "Algebra.h"
-#include "SwizzleRef.h"
+#include "Swizzle.h"
 
 #include <cmath>
 
@@ -22,11 +21,12 @@ namespace Gs
 
 
 /**
-Base 2D vector class with components: x, and y.
+\brief Base 2D vector class with components: x, and y.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector2T
+template <typename T>
+class Vector<T, 2>
 {
     
     public:
@@ -34,74 +34,84 @@ template <typename T> class Vector2T
         //! Specifies the number of vector components.
         static const std::size_t components = 2;
 
-        #ifdef GS_ENABLE_AUTO_INIT
-        Vector2T() :
+        #ifndef GS_DISABLE_AUTO_INIT
+        Vector() :
             x( T(0) ),
             y( T(0) )
         {
         }
         #else
-        Vector2T() = default;
+        Vector() = default;
         #endif
 
-        Vector2T(const Vector2T<T>& rhs) :
+        Vector(const Vector<T, 2>& rhs) :
             x( rhs.x ),
             y( rhs.y )
         {
         }
 
-        explicit Vector2T(const T& scalar) :
+        explicit Vector(const T& scalar) :
             x( scalar ),
             y( scalar )
         {
         }
 
-        Vector2T(const T& x, const T& y) :
+        Vector(const T& x, const T& y) :
             x( x ),
             y( y )
         {
         }
 
-        Vector2T<T>& operator += (const Vector2T<T>& rhs)
+        Vector(UninitializeTag)
+        {
+            // do nothing
+        }
+
+        Vector<T, 2>& operator += (const Vector<T, 2>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
             return *this;
         }
 
-        Vector2T<T>& operator -= (const Vector2T<T>& rhs)
+        Vector<T, 2>& operator -= (const Vector<T, 2>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
             return *this;
         }
 
-        Vector2T<T>& operator *= (const Vector2T<T>& rhs)
+        Vector<T, 2>& operator *= (const Vector<T, 2>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
             return *this;
         }
 
-        Vector2T<T>& operator /= (const Vector2T<T>& rhs)
+        Vector<T, 2>& operator /= (const Vector<T, 2>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
             return *this;
         }
 
-        Vector2T<T>& operator *= (const T& rhs)
+        Vector<T, 2>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
             return *this;
         }
 
-        Vector2T<T>& operator /= (const T& rhs)
+        Vector<T, 2>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
             return *this;
+        }
+
+        Vector<T, 2> operator - () const
+        {
+            return Vector<T, 2>(-x, -y);
         }
 
         /**
@@ -110,7 +120,7 @@ template <typename T> class Vector2T
         */
         T& operator [] (std::size_t component)
         {
-            GS_ASSERT(component < Vector2T<T>::components);
+            GS_ASSERT(component < (Vector<T, 2>::components));
             return *((&x) + component);
         }
 
@@ -120,7 +130,7 @@ template <typename T> class Vector2T
         */
         const T& operator [] (std::size_t component) const
         {
-            GS_ASSERT(component < Vector2T<T>::components);
+            GS_ASSERT(component < (Vector<T, 2>::components));
             return *((&x) + component);
         }
 
@@ -137,9 +147,10 @@ template <typename T> class Vector2T
         }
 
         /**
-        Normalizes the vector to the unit length of 1.
+        Normalizes this vector to the unit length of 1.
         \see Normalized
         \see Length
+        \see Resize
         */
         void Normalize()
         {
@@ -150,7 +161,7 @@ template <typename T> class Vector2T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector2T<T> Normalized() const
+        Vector<T, 2> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -158,12 +169,23 @@ template <typename T> class Vector2T
         }
 
         /**
+        Resizes this vector to the specified length.
+        \see Normalize
+        \see Length
+        */
+        void Resize(const T& length)
+        {
+            Gs::Resize(*this, length);
+        }
+
+        /**
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector2T<C> Cast() const
+        template <typename C>
+        Vector<C, 2> Cast() const
         {
-            return Vector2T<C>(
+            return Vector<C, 2>(
                 static_cast<C>(x),
                 static_cast<C>(y)
             );
@@ -192,80 +214,10 @@ template <typename T> class Vector2T
 };
 
 
-/* --- Global Operators --- */
-
-template <typename T> Vector2T<T> operator + (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
-{
-    auto result = lhs;
-    result += rhs;
-    return result;
-}
-
-template <typename T> Vector2T<T> operator - (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
-{
-    auto result = lhs;
-    result -= rhs;
-    return result;
-}
-
-template <typename T> Vector2T<T> operator * (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector2T<T> operator / (const Vector2T<T>& lhs, const Vector2T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector2T<T> operator * (const Vector2T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector2T<T> operator * (const T& lhs, const Vector2T<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
-
-template <typename T> Vector2T<T> operator / (const Vector2T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result /= rhs;
-    return result;
-}
-
-
-/* --- Appendix to SwizzleRef2 class --- */
-
-#ifdef GS_ENABLE_SWIZZLE_OPERATOR
-
-template <typename T> SwizzleRef2<T>& SwizzleRef2<T>::operator = (const Vector2T<typename std::remove_const<T>::type>& rhs)
-{
-    x_ = rhs.x;
-    y_ = rhs.y;
-    return *this;
-}
-
-template <typename T> SwizzleRef2<T>::operator Vector2T<typename std::remove_const<T>::type> () const
-{
-    return Vector2T<typename std::remove_const<T>::type>(x_, y_);
-}
-
-__GS_SWIZZLE_VECTOR_OP_ALL__(2)
-
-#endif
-
-
 /* --- Type Alias --- */
+
+template <typename T>
+using Vector2T = Vector<T, 2>;
 
 using Vector2   = Vector2T<Real>;
 using Vector2f  = Vector2T<float>;

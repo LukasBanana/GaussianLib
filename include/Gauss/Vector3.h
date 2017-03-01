@@ -5,14 +5,14 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_VECTOR3_H__
-#define __GS_VECTOR3_H__
+#ifndef GS_VECTOR3_H
+#define GS_VECTOR3_H
 
 
-#include "Real.h"
-#include "Assert.h"
+#include "Decl.h"
+#include "Vector.h"
 #include "Algebra.h"
-#include "SwizzleRef.h"
+#include "Swizzle.h"
 
 #include <cmath>
 
@@ -22,11 +22,12 @@ namespace Gs
 
 
 /**
-Base 3D vector class with components: x, y, and z.
+\brief Base 3D vector class with components: x, y, and z.
 \tparam T Specifies the data type of the vector components.
 This should be a primitive data type such as float, double, int etc.
 */
-template <typename T> class Vector3T
+template <typename T>
+class Vector<T, 3>
 {
     
     public:
@@ -34,39 +35,56 @@ template <typename T> class Vector3T
         //! Specifies the number of vector components.
         static const std::size_t components = 3;
 
-        #ifdef GS_ENABLE_AUTO_INIT
-        Vector3T() :
+        #ifndef GS_DISABLE_AUTO_INIT
+        Vector() :
             x( T(0) ),
             y( T(0) ),
             z( T(0) )
         {
         }
         #else
-        Vector4T() = default;
+        Vector() = default;
         #endif
 
-        Vector3T(const Vector3T<T>& rhs) :
+        Vector(const Vector<T, 3>& rhs) :
             x( rhs.x ),
             y( rhs.y ),
             z( rhs.z )
         {
         }
 
-        explicit Vector3T(const T& scalar) :
+        explicit Vector(const T& scalar) :
             x( scalar ),
             y( scalar ),
             z( scalar )
         {
         }
 
-        Vector3T(const T& x, const T& y, const T& z) :
+        Vector(const T& x, const T& y, const T& z) :
             x( x ),
             y( y ),
             z( z )
         {
         }
 
-        Vector3T<T>& operator += (const Vector3T<T>& rhs)
+        /**
+        \brief Converts the specified sphercial coordinate into a cartesian coordinate.
+        \remarks The implementation of this constructor is included in the "Appendix.h" file.
+        */
+        Vector(const SphericalT<T>& sphericalCoord)
+        {
+            const auto sinTheta = std::sin(sphericalCoord.theta);
+            x = sphericalCoord.radius * std::cos(sphericalCoord.phi) * sinTheta;
+            y = sphericalCoord.radius * std::sin(sphericalCoord.phi) * sinTheta;
+            z = sphericalCoord.radius * std::cos(sphericalCoord.theta);
+        }
+
+        Vector(UninitializeTag)
+        {
+            // do nothing
+        }
+
+        Vector<T, 3>& operator += (const Vector<T, 3>& rhs)
         {
             x += rhs.x;
             y += rhs.y;
@@ -74,7 +92,7 @@ template <typename T> class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator -= (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator -= (const Vector<T, 3>& rhs)
         {
             x -= rhs.x;
             y -= rhs.y;
@@ -82,7 +100,7 @@ template <typename T> class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator *= (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator *= (const Vector<T, 3>& rhs)
         {
             x *= rhs.x;
             y *= rhs.y;
@@ -90,7 +108,7 @@ template <typename T> class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator /= (const Vector3T<T>& rhs)
+        Vector<T, 3>& operator /= (const Vector<T, 3>& rhs)
         {
             x /= rhs.x;
             y /= rhs.y;
@@ -98,7 +116,7 @@ template <typename T> class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator *= (const T& rhs)
+        Vector<T, 3>& operator *= (const T& rhs)
         {
             x *= rhs;
             y *= rhs;
@@ -106,12 +124,17 @@ template <typename T> class Vector3T
             return *this;
         }
 
-        Vector3T<T>& operator /= (const T& rhs)
+        Vector<T, 3>& operator /= (const T& rhs)
         {
             x /= rhs;
             y /= rhs;
             z /= rhs;
             return *this;
+        }
+
+        Vector<T, 3> operator - () const
+        {
+            return Vector<T, 3>(-x, -y, -z);
         }
 
         /**
@@ -120,7 +143,7 @@ template <typename T> class Vector3T
         */
         T& operator [] (std::size_t component)
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < (Vector<T, 3>::components));
             return *((&x) + component);
         }
 
@@ -130,7 +153,7 @@ template <typename T> class Vector3T
         */
         const T& operator [] (std::size_t component) const
         {
-            GS_ASSERT(component < Vector3T<T>::components);
+            GS_ASSERT(component < (Vector<T, 3>::components));
             return *((&x) + component);
         }
 
@@ -147,7 +170,7 @@ template <typename T> class Vector3T
         }
 
         /**
-        Normalizes the vector to the unit length of 1.
+        Normalizes this vector to the unit length of 1.
         \see Normalized
         \see Length
         */
@@ -160,7 +183,7 @@ template <typename T> class Vector3T
         Returns a normalized instance of this vector.
         \see Normalize
         */
-        Vector3T<T> Normalized() const
+        Vector<T, 3> Normalized() const
         {
             auto vec = *this;
             vec.Normalize();
@@ -168,12 +191,23 @@ template <typename T> class Vector3T
         }
 
         /**
+        Resizes this vector to the specified length.
+        \see Normalize
+        \see Length
+        */
+        void Resize(const T& length)
+        {
+            Gs::Resize(*this, length);
+        }
+
+        /**
         Returns a type casted instance of this vector.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> Vector3T<C> Cast() const
+        template <typename C>
+        Vector<C, 3> Cast() const
         {
-            return Vector3T<C>(
+            return Vector<C, 3>(
                 static_cast<C>(x),
                 static_cast<C>(y),
                 static_cast<C>(z)
@@ -206,81 +240,10 @@ template <typename T> class Vector3T
 };
 
 
-/* --- Global Operators --- */
-
-template <typename T> Vector3T<T> operator + (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result += rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator - (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result -= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const Vector3T<T>& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator * (const Vector3T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result *= rhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator * (const T& lhs, const Vector3T<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
-
-template <typename T> Vector3T<T> operator / (const Vector3T<T>& lhs, const T& rhs)
-{
-    auto result = lhs;
-    result /= rhs;
-    return result;
-}
-
-
-/* --- Appendix to SwizzleRef3 class --- */
-
-#ifdef GS_ENABLE_SWIZZLE_OPERATOR
-
-template <typename T> SwizzleRef3<T>& SwizzleRef3<T>::operator = (const Vector3T<typename std::remove_const<T>::type>& rhs)
-{
-    x_ = rhs.x;
-    y_ = rhs.y;
-    z_ = rhs.z;
-    return *this;
-}
-
-template <typename T> SwizzleRef3<T>::operator Vector3T<typename std::remove_const<T>::type> () const
-{
-    return Vector3T<typename std::remove_const<T>::type>(x_, y_, z_);
-}
-
-__GS_SWIZZLE_VECTOR_OP_ALL__(3)
-
-#endif
-
-
 /* --- Type Alias --- */
+
+template <typename T>
+using Vector3T = Vector<T, 3>;
 
 using Vector3   = Vector3T<Real>;
 using Vector3f  = Vector3T<float>;

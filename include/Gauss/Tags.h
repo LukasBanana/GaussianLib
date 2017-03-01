@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_TAGS_H__
-#define __GS_TAGS_H__
+#ifndef GS_TAGS_H
+#define GS_TAGS_H
 
 
 namespace Gs
@@ -15,7 +15,7 @@ namespace Gs
 
 /**
 \brief Common uninitialize tag.
-\remarks This can be used to explicitly let a container uninitialized:
+\remarks This can be used to explicitly construct an uninitialized vector, matrix or quaternion:
 \code
 Gs::Matrix4 m(Gs::UninitializeTag{});
 // ...

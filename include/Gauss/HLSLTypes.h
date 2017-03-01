@@ -5,101 +5,96 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_HLSL_TYPES_H__
-#define __GS_HLSL_TYPES_H__
+#ifndef GS_HLSL_TYPES_H
+#define GS_HLSL_TYPES_H
+
+// <<< extension header >>>
 
 
 #include <Gauss/Gauss.h>
 
 
-namespace Gs
-{
-
-
 /* --- Type Alias --- */
 
-using float2    = Vector2f;
-using float3    = Vector3f;
-using float4    = Vector4f;
+using float2    = Gs::Vector2f;
+using float3    = Gs::Vector3f;
+using float4    = Gs::Vector4f;
 
-using double2   = Vector2d;
-using double3   = Vector3d;
-using double4   = Vector4d;
+using double2   = Gs::Vector2d;
+using double3   = Gs::Vector3d;
+using double4   = Gs::Vector4d;
 
-using int2      = Vector2i;
-using int3      = Vector3i;
-using int4      = Vector4i;
+using int2      = Gs::Vector2i;
+using int3      = Gs::Vector3i;
+using int4      = Gs::Vector4i;
 
-using uint2     = Vector2ui;
-using uint3     = Vector3ui;
-using uint4     = Vector4ui;
+using uint2     = Gs::Vector2ui;
+using uint3     = Gs::Vector3ui;
+using uint4     = Gs::Vector4ui;
 
-using bool2     = Vector2T<bool>;
-using bool3     = Vector3T<bool>;
-using bool4     = Vector4T<bool>;
+using bool2     = Gs::Vector2T<bool>;
+using bool3     = Gs::Vector3T<bool>;
+using bool4     = Gs::Vector4T<bool>;
 
-using float2x2  = Matrix2f;
-using float2x3  = Matrix<float, 2, 3>;
-using float2x4  = Matrix<float, 2, 4>;
+using float2x2  = Gs::Matrix2f;
+using float2x3  = Gs::Matrix<float, 2, 3>;
+using float2x4  = Gs::Matrix<float, 2, 4>;
 
-using float3x2  = Matrix<float, 3, 2>;
-using float3x3  = Matrix3f;
-using float3x4  = Matrix<float, 3, 4>;
+using float3x2  = Gs::Matrix<float, 3, 2>;
+using float3x3  = Gs::Matrix3f;
+using float3x4  = Gs::Matrix<float, 3, 4>;
 
-using float4x2  = Matrix<float, 4, 2>;
-using float4x3  = Matrix<float, 4, 3>;
-using float4x4  = Matrix4f;
+using float4x2  = Gs::Matrix<float, 4, 2>;
+using float4x3  = Gs::Matrix<float, 4, 3>;
+using float4x4  = Gs::Matrix4f;
 
-using double2x2 = Matrix2d;
-using double2x3 = Matrix<double, 2, 3>;
-using double2x4 = Matrix<double, 2, 4>;
+using double2x2 = Gs::Matrix2d;
+using double2x3 = Gs::Matrix<double, 2, 3>;
+using double2x4 = Gs::Matrix<double, 2, 4>;
 
-using double3x2 = Matrix<double, 3, 2>;
-using double3x3 = Matrix3d;
-using double3x4 = Matrix<double, 3, 4>;
+using double3x2 = Gs::Matrix<double, 3, 2>;
+using double3x3 = Gs::Matrix3d;
+using double3x4 = Gs::Matrix<double, 3, 4>;
 
-using double4x2 = Matrix<double, 4, 2>;
-using double4x3 = Matrix<double, 4, 3>;
-using double4x4 = Matrix4d;
+using double4x2 = Gs::Matrix<double, 4, 2>;
+using double4x3 = Gs::Matrix<double, 4, 3>;
+using double4x4 = Gs::Matrix4d;
 
-using int2x2    = Matrix2i;
-using int2x3    = Matrix<int, 2, 3>;
-using int2x4    = Matrix<int, 2, 4>;
+using int2x2    = Gs::Matrix2i;
+using int2x3    = Gs::Matrix<int, 2, 3>;
+using int2x4    = Gs::Matrix<int, 2, 4>;
 
-using int3x2    = Matrix<int, 3, 2>;
-using int3x3    = Matrix3i;
-using int3x4    = Matrix<int, 3, 4>;
+using int3x2    = Gs::Matrix<int, 3, 2>;
+using int3x3    = Gs::Matrix3i;
+using int3x4    = Gs::Matrix<int, 3, 4>;
 
-using int4x2    = Matrix<int, 3, 2>;
-using int4x3    = Matrix<int, 3, 3>;
-using int4x4    = Matrix4i;
+using int4x2    = Gs::Matrix<int, 3, 2>;
+using int4x3    = Gs::Matrix<int, 3, 3>;
+using int4x4    = Gs::Matrix4i;
 
-using uint2x2   = Matrix2ui;
-using uint2x3   = Matrix<unsigned int, 2, 3>;
-using uint2x4   = Matrix<unsigned int, 2, 4>;
+using uint2x2   = Gs::Matrix2ui;
+using uint2x3   = Gs::Matrix<unsigned int, 2, 3>;
+using uint2x4   = Gs::Matrix<unsigned int, 2, 4>;
 
-using uint3x2   = Matrix<unsigned int, 3, 2>;
-using uint3x3   = Matrix3ui;
-using uint3x4   = Matrix<unsigned int, 3, 4>;
+using uint3x2   = Gs::Matrix<unsigned int, 3, 2>;
+using uint3x3   = Gs::Matrix3ui;
+using uint3x4   = Gs::Matrix<unsigned int, 3, 4>;
 
-using uint4x2   = Matrix<unsigned int, 4, 2>;
-using uint4x3   = Matrix<unsigned int, 4, 3>;
-using uint4x4   = Matrix4ui;
+using uint4x2   = Gs::Matrix<unsigned int, 4, 2>;
+using uint4x3   = Gs::Matrix<unsigned int, 4, 3>;
+using uint4x4   = Gs::Matrix4ui;
 
-using bool2x2   = Matrix<bool, 2, 2>;
-using bool2x3   = Matrix<bool, 2, 3>;
-using bool2x4   = Matrix<bool, 2, 4>;
+using bool2x2   = Gs::Matrix<bool, 2, 2>;
+using bool2x3   = Gs::Matrix<bool, 2, 3>;
+using bool2x4   = Gs::Matrix<bool, 2, 4>;
 
-using bool3x2   = Matrix<bool, 3, 2>;
-using bool3x3   = Matrix<bool, 3, 3>;
-using bool3x4   = Matrix<bool, 3, 4>;
+using bool3x2   = Gs::Matrix<bool, 3, 2>;
+using bool3x3   = Gs::Matrix<bool, 3, 3>;
+using bool3x4   = Gs::Matrix<bool, 3, 4>;
 
-using bool4x2   = Matrix<bool, 4, 2>;
-using bool4x3   = Matrix<bool, 4, 3>;
-using bool4x4   = Matrix<bool, 4, 4>;
-
-
-} // /namespace Gs
+using bool4x2   = Gs::Matrix<bool, 4, 2>;
+using bool4x3   = Gs::Matrix<bool, 4, 3>;
+using bool4x4   = Gs::Matrix<bool, 4, 4>;
 
 
 #endif

@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_REAL_H__
-#define __GS_REAL_H__
+#ifndef GS_REAL_H
+#define GS_REAL_H
 
 
 #include <cmath>
@@ -18,21 +18,31 @@ namespace Gs
 
 /* --- Constants --- */
 
-static const float epsilon32 = 0.00001f;
-static const double epsilon64 = 0.00000001;
-
-
-#ifdef GD_HIGH_PRECISION_FLOAT
+#ifdef GS_HIGH_PRECISION_FLOAT
 
 using Real = double;
-static const Real epsilon = epsilon64;
 
 #else
 
 using Real = float;
-static const Real epsilon = epsilon32;
 
 #endif
+
+static const Real pi = Real(3.14159265358979323846);
+
+//! Converts radian to degree.
+template <typename T>
+T Rad2Deg(const T& x)
+{
+    return x*T(180)/T(pi);
+}
+
+//! Converts degree to radian.
+template <typename T>
+T Deg2Rad(const T& x)
+{
+    return x*T(pi)/T(180);
+}
 
 
 } // /namespace Gs

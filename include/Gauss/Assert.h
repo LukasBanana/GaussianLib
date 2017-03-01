@@ -5,8 +5,8 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_ASSERT_H__
-#define __GS_ASSERT_H__
+#ifndef GS_ASSERT_H
+#define GS_ASSERT_H
 
 
 #include "Config.h"
@@ -14,8 +14,23 @@
 #include <cassert>
 
 
+#define GS_TOSTRING_PRIMARY(x) #x
+#define GS_TOSTRING(x) GS_TOSTRING_PRIMARY(x)
+
 #ifdef GS_ENABLE_ASSERT
-#   define GS_ASSERT(expr) assert((expr))
+#   ifdef GS_ASSERT_EXCEPTION
+#       include <exception>
+#       define GS_ASSERT(expr)                                  \
+            if (!(expr))                                        \
+            {                                                   \
+                throw std::runtime_error(                       \
+                    "assertion failed: (" #expr "), file "      \
+                    __FILE__ ", line " GS_TOSTRING(__LINE__)  \
+                );                                              \
+            }
+#   else
+#       define GS_ASSERT(expr) assert((expr))
+#   endif
 #else
 #   define GS_ASSERT(expr)
 #endif

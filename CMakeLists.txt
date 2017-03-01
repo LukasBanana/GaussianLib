@@ -28,8 +28,10 @@ include_directories("${PROJECT_INCLUDE_DIR}")
 
 add_library(gausslib STATIC ${FilesAll})
 set_target_properties(gausslib PROPERTIES LINKER_LANGUAGE CXX DEBUG_POSTFIX "D")
+target_compile_features(gausslib PRIVATE cxx_range_for)
 
 add_executable(test1 "${PROJECT_TEST_DIR}/test1.cpp")
 set_target_properties(test1 PROPERTIES LINKER_LANGUAGE CXX DEBUG_POSTFIX "D")
+target_compile_features(test1 PRIVATE cxx_range_for)
 
 

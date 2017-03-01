@@ -1,25 +1,48 @@
-GaussianLib - A basic linear algebra C++ library for 2D and 3D applications
-===========================================================================
+GaussianLib - Basic Linear Algebra Library for modern C++
+=========================================================
+
+Why GaussianLib?
+----------------
+
+1. **Simplicity**:
+GaussianLib has a very simple interface, consists only of header files (so no pre-compilation or the like is necessary), and has useful helper classes especially for 2D and 3D applications.
+
+2. **Flexibility**:
+GaussianLib provides a few [macros](https://github.com/LukasBanana/GaussianLib/blob/master2/include/Gauss/Config.h) to fine tune its behavior. Among others, the library provides either column- or row vectors, which makes it easier to use the library in different software environments such as *OpenGL* and *Direct3D*.
+
+3. **Efficiency**:
+GaussianLib provides optimized classes such as *AffineMatrix3* and *AffineMatrix4* for heavy use of affine matrix transformation, which is common in graphics applications.
+
+4. **Open Source**:
+GaussianLib is licensed under the terms of the *3-Clause BSD License*, so you are free to use this software in private or commercial products without any fees :-)
+
 
 License
 -------
 
 [3-Clause BSD License](https://github.com/LukasBanana/GaussianLib/blob/master/LICENSE.txt)
 
-Status
-------
 
-**Alpha**
+Getting Started:
+----------------
+
+[Getting Started with GaussianLib.pdf](https://github.com/LukasBanana/GaussianLib/blob/master2/docu/GettingStarted/Getting%20Started%20with%20GaussianLib.pdf)
+
 
 Example
 -------
 
 ```cpp
-// Optional macro to switch between column- or row major matrices:
-// #define GS_MATRIX_COLUMN_MAJOR
+// Optional macro to switch between column- or row major matrix storage layout:
+// #define GS_ROW_MAJOR_STORAGE
 
-#include <Gauss/Gauss.h>
+// Optional macro to switch between column- or row vectors:
+// #define GS_ROW_VECTORS
+
+#include <Gauss/Gauss.h>     // include gaussian lib main header
 #include <iostream>
+
+static const Gs::Real pi = Gs::Real(3.141592654);
 
 int main()
 {
@@ -27,10 +50,14 @@ int main()
     Gs::Vector4 a(1, 2, 3, 4), b(-12, 0.5f, 0, 1);
     const Gs::Vector2 c(42, 19);
     
-    // 'Swizzle operator' like functionality
-    Gs::Vector3 d = a.xyw() + b.zxy() - c.xxy();
-    d.yx() += c.zw();
+    // Simple vector access
+    c.x = a.x;
+    a.y = c[1]; // equivalent to a.y = c.y
+    a[2] += a.z // equivalent to a.z += a.z
     
+    // 'Swizzle operator' like functionality
+    Gs::Vector3 d = a.xyw()*2.0f + b.zxy() - c.xxy();
+
     // Declare 3x4 matrix A and 4x3 matrix B
     Gs::Matrix<double, 3, 4> A;
     Gs::Matrix<double, 4, 3> B;
@@ -56,7 +83,27 @@ int main()
     Gs::Matrix3<double> C = A * B;
     
     // Invert matrix C
-    C.Invert();
+    C.MakeInverse();
+    
+    // Declare affine 4x4 matrix (only stores 3x4 elements,
+    // or 4x3 elements whether GS_ROW_VECTORS is defined or not).
+    // This requires less storage and most functions (such as "Inverse")
+    // are much faster than with a common 4x4 matrix.
+    Gs::AffineMatrix4 D = Gs::AffineMatrix4::Identity();
+    
+    // Set some transformations for the affine matrix
+    D.SetPosition(Gs::Vector3(1, -2, 5));
+    D.RotateX(pi*0.5);
+    D.RotateZ(-pi*0.25);
+    D.Scale(Gs::Vector3(1, 2, 3));
+    
+    // Declare quaternions
+    Gs::Quaternion q0, q1;
+    q0 = Gs::Quaternion::EulerAngles(Gs::Vector3(pi*-0.25, pi*0.8, 0));
+    q1.SetEulerAngles(Gs::Vector3(pi*0.5, 0, 0));
+    
+    // Spherical-linear-interpolation (Slerp) with two quaternions
+    Gs::Quaternion p = Slerp(q0, q1, 0.5);
     
     // Print matrices to standard output
     std::cout << "A = " << std::endl << A << std::endl;
@@ -64,9 +111,13 @@ int main()
     std::cout << "C = " << std::endl << C << std::endl;
     
     // Print vectors to standard output
-    std::cout << "a = " << a << ", b = " << b << ", a*b = " << a*b << std::endl;
-    std::cout << "a . b = " << Dot(a, b) << "a x b = " << Cross(a, b) << std::endl;
-    std::cout << "|| a || = " << a.Length() << ", a / || a || = " << a.Normalized() << std::endl;
+    std::cout << "a = " << a << std::endl;
+    std::cout << "b = " << b << std::endl;
+    std::cout << "a*b = " << a*b << std::endl;
+    std::cout << "a . b = " << Dot(a, b) << std::endl;
+    std::cout << "a x b = " << Cross(a, b) << std::endl;
+    std::cout << "|a| = " << a.Length() << std::endl;
+    std::cout << "a / |a| = " << a.Normalized() << std::endl;
     
     return 0;
 }

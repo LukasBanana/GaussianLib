@@ -5,15 +5,20 @@
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef __GS_QUATERNION_H__
-#define __GS_QUATERNION_H__
+#ifndef GS_QUATERNION_H
+#define GS_QUATERNION_H
 
 
+#include "Decl.h"
 #include "Real.h"
 #include "Assert.h"
 #include "Algebra.h"
+#include "Tags.h"
+#include "Matrix.h"
+#include "Conversions.h"
 
 #include <cmath>
+#include <limits>
 #include <type_traits>
 
 
@@ -36,7 +41,7 @@ template <typename T> class QuaternionT
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static const std::size_t components = 4;
 
-        #ifdef GS_ENABLE_AUTO_INIT
+        #ifndef GS_DISABLE_AUTO_INIT
         QuaternionT() :
             x( T(0) ),
             y( T(0) ),
@@ -62,6 +67,17 @@ template <typename T> class QuaternionT
             z( z ),
             w( w )
         {
+        }
+
+        template <template <typename, std::size_t, std::size_t> class M, std::size_t Rows, std::size_t Cols>
+        explicit QuaternionT(const M<T, Rows, Cols>& matrix)
+        {
+            Gs::MatrixToQuaternion(*this, matrix);
+        }
+
+        QuaternionT(UninitializeTag)
+        {
+            // do nothing
         }
 
         QuaternionT<T>& operator += (const QuaternionT<T>& rhs)
@@ -122,7 +138,7 @@ template <typename T> class QuaternionT
         }
 
         /**
-        Normalizes the quaternion to the unit length of 1.
+        \brief Normalizes the quaternion to the unit length of 1.
         \see Normalized
         \see Length
         */
@@ -132,7 +148,7 @@ template <typename T> class QuaternionT
         }
 
         /**
-        Returns a normalized instance of this quaternion.
+        \brief Returns a normalized instance of this quaternion.
         \see Normalize
         */
         QuaternionT<T> Normalized() const
@@ -164,10 +180,55 @@ template <typename T> class QuaternionT
         }
 
         /**
-        Sets the quaternion to an euler rotation with the specified angles (in radian).
-        \tparam Vec Specifies the vector type. This should be Vector3 or Vector4.
+        \brief Computes a spherical linear interpolation between the two quaternions and stores the result into this quaternion.
+        \param[in] t Specifies the interpolation factor. This should be in the range [0.0, 1.0].
         */
-        template <template <typename> class Vec> void SetEulerAngles(const Vec<T>& angles)
+        void Slerp(const QuaternionT<T>& from, QuaternionT<T> to, const T& t)
+        {
+            T omega, cosom, sinom;
+            T scale0, scale1;
+
+            /* Calculate cosine */
+            cosom = Dot(from, to);
+
+            /* Adjust signs (if necessary) */
+            if (cosom < T(0))
+            {
+                cosom = -cosom;
+                to.x = -to.x;
+                to.y = -to.y;
+                to.z = -to.z;
+                to.w = -to.w;
+            }
+            
+            /* Calculate coefficients */
+            if ((T(1) - cosom) > std::numeric_limits<T>::epsilon()) 
+            {
+                /* Standard case (slerp) */
+                omega = std::acos(cosom);
+                sinom = std::sin(omega);
+                scale0 = std::sin((T(1) - t) * omega) / sinom;
+                scale1 = std::sin(t * omega) / sinom;
+            }
+            else
+            {        
+                /*
+                "from" and "to" quaternions are very close 
+                ... so we can do a linear interpolation
+                */
+                scale0 = T(1) - t;
+                scale1 = t;
+            }
+
+            /* Calculate final values */
+            x = scale0*from.x + scale1*to.x;
+            y = scale0*from.y + scale1*to.y;
+            z = scale0*from.z + scale1*to.z;
+            w = scale0*from.w + scale1*to.w;
+        }
+
+        //! Sets the quaternion to an euler rotation with the specified angles (in radian).
+        void SetEulerAngles(const Vector<T, 3>& angles)
         {
             const T cr = std::cos(angles.x/T(2));
             const T cp = std::cos(angles.y/T(2));
@@ -190,7 +251,7 @@ template <typename T> class QuaternionT
             Normalize();
         }
 
-        template <template <typename> class Vec> void GetEulerAngles(Vec<T>& angles)
+        void GetEulerAngles(Vector<T, 3>& angles) const
         {
             const T xx = x*x;
             const T yy = y*y;
@@ -200,6 +261,57 @@ template <typename T> class QuaternionT
             angles.x = std::atan2(T(2) * (y*z + x*w), -xx - yy + zz + ww);
             angles.y = std::asin(Clamp(T(2) * (y*w - x*z), T(-1), T(1)));
             angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
+        }
+
+        /**
+        \brief Sets the rotation of this quaternion by the specified euler axis.
+        \param[in] aixs Specifies the aixs. This must be normalized!
+        \param[in] angle Specifies the rotation angle (in radians).
+        */
+        void SetAngleAxis(const Vector<T, 3>& axis, const T& angle)
+        {
+            const T halfAngle   = angle / T(2);
+            const T sine        = std::sin(halfAngle);
+
+            x = sine * axis.x;
+            y = sine * axis.y;
+            z = sine * axis.z;
+            w = std::cos(halfAngle);
+        }
+
+        void GetAngleAxis(Vector<T, 3>& axis, T& angle) const
+        {
+            const T scale = std::sqrt(x*x + y*y + z*z);
+
+            if ( ( std::abs(scale) <= std::numeric_limits<T>::epsilon() ) || w > T(1) || w < T(-1) )
+            {
+                axis.x  = T(0);
+                axis.y  = T(1);
+                axis.z  = T(0);
+                angle   = T(0);
+            }
+            else
+            {
+                const T invScale = T(1) / scale;
+                axis.x  = x * invScale;
+                axis.y  = y * invScale;
+                axis.z  = z * invScale;
+                angle   = T(2) * std::acos(w);
+            }
+        }
+
+        Matrix3T<T> ToMatrix3() const
+        {
+            Matrix3T<T> result(UninitializeTag{});
+            Gs::QuaternionToMatrix(result, *this);
+            return result;
+        }
+
+        Matrix3T<T> ToMatrix3Transposed() const
+        {
+            Matrix3T<T> result(UninitializeTag{});
+            Gs::QuaternionToMatrixTransposed(result, *this);
+            return result;
         }
 
         /**
@@ -226,6 +338,22 @@ template <typename T> class QuaternionT
         const T* Ptr() const
         {
             return &x;
+        }
+
+        //! Returns a new quaternion, rotated with the specified euler angles.
+        static QuaternionT<T> EulerAngles(const Vector<T, 3>& angles)
+        {
+            QuaternionT<T> result;
+            result.SetEulerAngles(angles);
+            return result;
+        }
+
+        //! Returns a new quaternion, rotated with the specified angle axis.
+        static QuaternionT<T> AngleAxis(const Vector<T, 3>& axis, const T& angle)
+        {
+            QuaternionT<T> result;
+            result.SetAngleAxis(axis, angle);
+            return result;
         }
 
         T x, y, z, w;
@@ -263,7 +391,7 @@ template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, cons
     return result;
 }
 
-template <typename T> QuaternionT<T> operator * (const T& lhs, const Vector4T<T>& rhs)
+template <typename T> QuaternionT<T> operator * (const T& lhs, const QuaternionT<T>& rhs)
 {
     auto result = rhs;
     result *= lhs;
@@ -271,9 +399,10 @@ template <typename T> QuaternionT<T> operator * (const T& lhs, const Vector4T<T>
 }
 
 //! Rotates the specified vector 'rhs' by the quaternion 'lhs' and returns the new rotated vector.
-template <template <typename> class Vec, typename T> Vec<T> operator * (const QuaternionT<T>& lhs, const Vec<T>& rhs)
+template <typename T, std::size_t N>
+Vector<T, N> operator * (const QuaternionT<T>& lhs, const Vector<T, N>& rhs)
 {
-    Vec<T> qvec(lhs.x, lhs.y, lhs.z);
+    Vector<T, N> qvec(lhs.x, lhs.y, lhs.z);
 
     auto uv = Cross(qvec, rhs);
     auto uuv = Cross(qvec, uv);
