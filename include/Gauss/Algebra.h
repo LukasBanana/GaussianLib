@@ -204,6 +204,16 @@ T Lerp(const T& a, const T& b, const I& t)
 }
 
 /**
+\brief Clamps the input value 'x' into the range [0, 1].
+\return max{ 0, min{ x, 1 } }
+*/
+template <typename T>
+T Saturate(const T& x)
+{
+    return std::max(T(0), std::min(x, T(1)));
+}
+
+/**
 \brief Clamps the value 'x' into the range [minima, maxima].
 \return max{ minima, min{ x, maxima } }
 */
