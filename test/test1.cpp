@@ -453,6 +453,16 @@ static void rcpTest1()
 	std::cout << "Rcp(" << std::endl << A << ") = " << std::endl << Gs::Rcp(A) << std::endl;
 }
 
+static void typeTest1()
+{
+    typename ScalarType<Vector3f>::Type a;
+    typename ScalarType<Vector2T<double>>::Type b;
+    typename ScalarType<Vector<int, 5>>::Type c;
+    typename ScalarType<Matrix<int, 3, 2>>::Type d;
+    typename ScalarType<Matrix4d>::Type e;
+    typename ScalarType<AffineMatrix4f>::Type f;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;

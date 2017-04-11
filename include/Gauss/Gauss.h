@@ -35,6 +35,8 @@
 #include "TransformVector.h"
 #include "RotateVector.h"
 
+#include "ScalarType.h"
+
 
 #endif
 
