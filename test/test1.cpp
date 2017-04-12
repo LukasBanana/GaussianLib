@@ -11,6 +11,7 @@
 //#define GS_ROW_VECTORS
 
 #include <Gauss/Gauss.h>
+#include <Gauss/StdMath.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
 
@@ -21,6 +22,10 @@
 #include <cstdlib>
 #include <complex>
 
+
+#ifdef _MSC_VER
+#pragma warning (disable:4101)
+#endif
 
 using namespace Gs;
 
@@ -463,6 +468,18 @@ static void typeTest1()
     typename ScalarType<AffineMatrix4f>::Type f;
 }
 
+static void stdMathTest1()
+{
+    Vector3f a(0.5f, 1.0f, 1.5f), b(1, 2, 3);
+    Matrix2f A; A << 1, 2, 3, 4;
+
+    std::cout << "sin(" << a << ") = " << sin(a) << std::endl;
+    std::cout << "acos(" << a << ") = " << acos(a) << std::endl;
+    std::cout << "floor(" << a << ") = " << floor(a) << std::endl;
+    std::cout << "ceil(" << a << ") = " << ceil(a) << std::endl;
+    std::cout << "sin(" << std::endl << A << ") = " << std::endl << sin(A) << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -487,6 +504,7 @@ int main()
         //flipTest1();
         rotateMatrixTest1();
 		rcpTest1();
+        stdMathTest1();
     }
     catch (const std::exception& e)
     {
