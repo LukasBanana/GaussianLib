@@ -196,6 +196,7 @@ void Lerp(T& x, const T& a, const T& b, const I& t)
 template <typename T, typename I>
 T Lerp(const T& a, const T& b, const I& t)
 {
+    /* Return (b - a) * t + a */
     T x = b;
     x -= a;
     x *= t;
@@ -288,6 +289,19 @@ Matrix<T, N, M> Rcp(const Matrix<T, N, M>& mat)
 		matRcp[i] = T(1) / mat[i];
 
 	return matRcp;
+}
+
+//! Rescales the specified value 't' from the first range [lower0, upper0] into the second range [lower1, upper1].
+template <typename T, typename I>
+T Rescale(const T& t, const I& lower0, const I& upper0, const I& lower1, const I& upper1)
+{
+    /* Return (((t - lower0) / (upper0 - lower0)) * (upper1 - lower1) + lower1) */
+    T x = t;
+    x -= T(lower0);
+    x /= (upper0 - lower0);
+    x *= (upper1 - lower1);
+    x += T(lower1);
+    return x;
 }
 
 
