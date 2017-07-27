@@ -43,10 +43,10 @@ template <typename T> class QuaternionT
 
         #ifndef GS_DISABLE_AUTO_INIT
         QuaternionT() :
-            x( T(0) ),
-            y( T(0) ),
-            z( T(0) ),
-            w( T(1) )
+            x { T(0) },
+            y { T(0) },
+            z { T(0) },
+            w { T(1) }
         {
         }
         #else
@@ -54,18 +54,18 @@ template <typename T> class QuaternionT
         #endif
 
         QuaternionT(const QuaternionT<T>& rhs) :
-            x( rhs.x ),
-            y( rhs.y ),
-            z( rhs.z ),
-            w( rhs.w )
+            x { rhs.x },
+            y { rhs.y },
+            z { rhs.z },
+            w { rhs.w }
         {
         }
 
         QuaternionT(const T& x, const T& y, const T& z, const T& w) :
-            x( x ),
-            y( y ),
-            z( z ),
-            w( w )
+            x { x },
+            y { y },
+            z { z },
+            w { w }
         {
         }
 

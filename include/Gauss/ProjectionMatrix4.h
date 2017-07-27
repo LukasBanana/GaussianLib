@@ -97,23 +97,23 @@ class ProjectionMatrix4T
         ProjectionMatrix4T()
             #ifndef GS_DISABLE_AUTO_INIT
             :
-            m00( T(0) ),
-            m11( T(0) ),
-            m22( T(0) ),
-            m32( T(0) ),
-            m23( T(0) ),
-            m33( T(0) )
+            m00 { T(0) },
+            m11 { T(0) },
+            m22 { T(0) },
+            m32 { T(0) },
+            m23 { T(0) },
+            m33 { T(0) }
             #endif
         {
         }
 
         ProjectionMatrix4T(const ThisType& rhs) :
-            m00( rhs.m00 ),
-            m11( rhs.m11 ),
-            m22( rhs.m22 ),
-            m32( rhs.m32 ),
-            m23( rhs.m23 ),
-            m33( rhs.m33 )
+            m00 { rhs.m00 },
+            m11 { rhs.m11 },
+            m22 { rhs.m22 },
+            m32 { rhs.m32 },
+            m23 { rhs.m23 },
+            m33 { rhs.m33 }
         {
         }
 

@@ -23,6 +23,7 @@ namespace Gs
 {
 
 
+//! Provides the scalar type of the scalar, vector, or matrix type specified by 'T'.
 template <typename T>
 struct ScalarType
 {

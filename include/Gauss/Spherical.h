@@ -37,9 +37,9 @@ class SphericalT
         
         #ifndef GS_DISABLE_AUTO_INIT
         SphericalT() :
-            radius  ( T(0) ),
-            theta   ( T(0) ),
-            phi     ( T(0) )
+            radius { T(0) },
+            theta  { T(0) },
+            phi    { T(0) }
         {
         }
         #else
@@ -47,16 +47,16 @@ class SphericalT
         #endif
 
         SphericalT(const SphericalT<T>& rhs) :
-            radius  ( rhs.radius ),
-            theta   ( rhs.theta  ),
-            phi     ( rhs.phi    )
+            radius { rhs.radius },
+            theta  { rhs.theta  },
+            phi    { rhs.phi    }
         {
         }
 
         SphericalT(const T& radius, const T& theta, const T& phi) :
-            radius  ( radius ),
-            theta   ( theta  ),
-            phi     ( phi    )
+            radius { radius },
+            theta  { theta  },
+            phi    { phi    }
         {
         }
 
@@ -64,7 +64,7 @@ class SphericalT
         \brief Converts the specified cartesian coordinate into spherical coordinate.
         \remarks The implementation of this constructor is included in the "Appendix.h" file.
         */
-        SphericalT(const Vector<T, 3>& cartesianCoord)
+        explicit SphericalT(const Vector<T, 3>& cartesianCoord)
         {
             radius = cartesianCoord.Length();
             if (radius > T(0))

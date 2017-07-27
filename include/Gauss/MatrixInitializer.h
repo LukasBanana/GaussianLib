@@ -28,8 +28,8 @@ class MatrixInitializer
     public:
 
         MatrixInitializer(M& matrix) :
-            matrix_ ( matrix ),
-            element_( 0      )
+            matrix_  { matrix },
+            element_ { 0      }
         {
         }
 

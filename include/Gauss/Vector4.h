@@ -36,10 +36,10 @@ class Vector<T, 4>
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
-            x( T(0) ),
-            y( T(0) ),
-            z( T(0) ),
-            w( T(1) )
+            x { T(0) },
+            y { T(0) },
+            z { T(0) },
+            w { T(1) }
         {
         }
         #else
@@ -47,34 +47,34 @@ class Vector<T, 4>
         #endif
 
         Vector(const Vector<T, 4>& rhs) :
-            x( rhs.x ),
-            y( rhs.y ),
-            z( rhs.z ),
-            w( rhs.w )
+            x { rhs.x },
+            y { rhs.y },
+            z { rhs.z },
+            w { rhs.w }
         {
         }
 
         explicit Vector(const Vector<T, 3>& rhs, const T& w = T(1)) :
-            x( rhs.x ),
-            y( rhs.y ),
-            z( rhs.z ),
-            w( T(1)  )
+            x { rhs.x },
+            y { rhs.y },
+            z { rhs.z },
+            w { T(1)  }
         {
         }
 
         explicit Vector(const T& scalar) :
-            x( scalar ),
-            y( scalar ),
-            z( scalar ),
-            w( T(1)   )
+            x { scalar },
+            y { scalar },
+            z { scalar },
+            w { T(1)   }
         {
         }
 
         Vector(const T& x, const T& y, const T& z, const T& w = T(1)) :
-            x( x ),
-            y( y ),
-            z( z ),
-            w( w )
+            x { x },
+            y { y },
+            z { z },
+            w { w }
         {
         }
 

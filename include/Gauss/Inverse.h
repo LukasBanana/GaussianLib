@@ -19,7 +19,10 @@ namespace Gs
 {
 
 
-//! Computes the inverse of the specified matrix 'm'.
+/**
+\brief Computes the inverse of the specified matrix 'm'.
+\todo Not yet implemented!
+*/
 template <typename T, std::size_t N>
 bool Inverse(Matrix<T, N, N>& inv, const Matrix<T, N, N>& m)
 {

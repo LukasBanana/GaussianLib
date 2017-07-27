@@ -36,8 +36,8 @@ class Vector<T, 2>
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
-            x( T(0) ),
-            y( T(0) )
+            x { T(0) },
+            y { T(0) }
         {
         }
         #else
@@ -45,20 +45,20 @@ class Vector<T, 2>
         #endif
 
         Vector(const Vector<T, 2>& rhs) :
-            x( rhs.x ),
-            y( rhs.y )
+            x { rhs.x },
+            y { rhs.y }
         {
         }
 
         explicit Vector(const T& scalar) :
-            x( scalar ),
-            y( scalar )
+            x { scalar },
+            y { scalar }
         {
         }
 
         Vector(const T& x, const T& y) :
-            x( x ),
-            y( y )
+            x { x },
+            y { y }
         {
         }
 

@@ -37,9 +37,9 @@ class Vector<T, 3>
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
-            x( T(0) ),
-            y( T(0) ),
-            z( T(0) )
+            x { T(0) },
+            y { T(0) },
+            z { T(0) }
         {
         }
         #else
@@ -47,23 +47,23 @@ class Vector<T, 3>
         #endif
 
         Vector(const Vector<T, 3>& rhs) :
-            x( rhs.x ),
-            y( rhs.y ),
-            z( rhs.z )
+            x { rhs.x },
+            y { rhs.y },
+            z { rhs.z }
         {
         }
 
         explicit Vector(const T& scalar) :
-            x( scalar ),
-            y( scalar ),
-            z( scalar )
+            x { scalar },
+            y { scalar },
+            z { scalar }
         {
         }
 
         Vector(const T& x, const T& y, const T& z) :
-            x( x ),
-            y( y ),
-            z( z )
+            x { x },
+            y { y },
+            z { z }
         {
         }
 
@@ -71,7 +71,7 @@ class Vector<T, 3>
         \brief Converts the specified sphercial coordinate into a cartesian coordinate.
         \remarks The implementation of this constructor is included in the "Appendix.h" file.
         */
-        Vector(const SphericalT<T>& sphericalCoord)
+        explicit Vector(const SphericalT<T>& sphericalCoord)
         {
             const auto sinTheta = std::sin(sphericalCoord.theta);
             x = sphericalCoord.radius * std::cos(sphericalCoord.phi) * sinTheta;

@@ -23,7 +23,7 @@
             {                                                   \
                 throw std::runtime_error(                       \
                     "assertion failed: (" #expr "), file "      \
-                    __FILE__ ", line " GS_TOSTRING(__LINE__)  \
+                    __FILE__ ", line " GS_TOSTRING(__LINE__)    \
                 );                                              \
             }
 #   else
