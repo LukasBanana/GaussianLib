@@ -29,11 +29,11 @@ namespace Gs
 
 
 #ifdef GS_ROW_MAJOR_STORAGE
-#   define __GS_FOREACH_ROW_COL__(r, c)                                     \
+#   define GS_FOREACH_ROW_COL(r, c)                                         \
         for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)     \
         for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)
 #else
-#   define __GS_FOREACH_ROW_COL__(r, c)                                     \
+#   define GS_FOREACH_ROW_COL(r, c)                                         \
         for (std::size_t c = 0; c < AffineMatrix4T<T>::columnsSparse; ++c)  \
         for (std::size_t r = 0; r < AffineMatrix4T<T>::rowsSparse; ++r)
 #endif
@@ -245,7 +245,7 @@ class AffineMatrix4T
 
         void LoadIdentity()
         {
-            __GS_FOREACH_ROW_COL__(r, c)
+            GS_FOREACH_ROW_COL(r, c)
             {
                 (*this)(r, c) = (r == c ? T(1) : T(0));
             }
@@ -262,7 +262,7 @@ class AffineMatrix4T
         {
             TransposedType result;
 
-            __GS_FOREACH_ROW_COL__(r, c)
+            GS_FOREACH_ROW_COL(r, c)
             {
                 result(c, r) = (*this)(r, c);
             }
@@ -507,7 +507,7 @@ class AffineMatrix4T
 
 };
 
-#undef __GS_FOREACH_ROW_COL__
+#undef GS_FOREACH_ROW_COL
 
 
 /* --- Global Operators --- */

@@ -23,7 +23,7 @@ namespace Gs
 template <typename M, typename T>
 Vector2T<T> TransformVector(const M& mat, const Vector2T<T>& vec)
 {
-    __GS_ASSERT_MxN_MATRIX__("2D vector transformation by matrix", M, 2, 2);
+    GS_ASSERT_MxN_MATRIX("2D vector transformation by matrix", M, 2, 2);
     return Vector2T<T>(
         vec.x*mat.At(0, 0) + vec.y*mat.At(0, 1) + mat.At(0, 2),
         vec.x*mat.At(1, 0) + vec.y*mat.At(1, 1) + mat.At(1, 2)
@@ -33,7 +33,7 @@ Vector2T<T> TransformVector(const M& mat, const Vector2T<T>& vec)
 template <typename M, typename T>
 Vector3T<T> TransformVector(const M& mat, const Vector3T<T>& vec)
 {
-    __GS_ASSERT_MxN_MATRIX__("3D vector transformation by matrix", M, 4, 3);
+    GS_ASSERT_MxN_MATRIX("3D vector transformation by matrix", M, 4, 3);
     return Vector3T<T>(
         vec.x*mat.At(0, 0) + vec.y*mat.At(0, 1) + vec.z*mat.At(0, 2) + mat.At(0, 3),
         vec.x*mat.At(1, 0) + vec.y*mat.At(1, 1) + vec.z*mat.At(1, 2) + mat.At(1, 3),
@@ -44,7 +44,7 @@ Vector3T<T> TransformVector(const M& mat, const Vector3T<T>& vec)
 template <typename M, typename T>
 Vector4T<T> TransformVector(const M& mat, const Vector4T<T>& vec)
 {
-    __GS_ASSERT_MxN_MATRIX__("4D vector transformation by matrix", M, 4, 4);
+    GS_ASSERT_MxN_MATRIX("4D vector transformation by matrix", M, 4, 4);
     return Vector4T<T>(
         vec.x*mat.At(0, 0) + vec.y*mat.At(0, 1) + vec.z*mat.At(0, 2) + vec.w*mat.At(0, 3),
         vec.x*mat.At(1, 0) + vec.y*mat.At(1, 1) + vec.z*mat.At(1, 2) + vec.w*mat.At(1, 3),

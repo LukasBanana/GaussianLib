@@ -25,7 +25,7 @@ namespace Details
 template <class M, typename T>
 void FreeRotation(M& mat, const Vector3T<T>& axis, const T& angle)
 {
-    __GS_ASSERT_MxN_MATRIX__("free rotation", M, 3, 3);
+    GS_ASSERT_MxN_MATRIX("free rotation", M, 3, 3);
 
     /* Setup rotation values */
     const T  c  = std::cos(angle);

@@ -25,15 +25,15 @@ namespace Gs
 {
 
 
-#define __GS_ASSERT_NxN_MATRIX__ \
-    static_assert(Rows == Cols, __GS_FILE_LINE__ "function can only be used with NxN matrices")
+#define GS_ASSERT_NxN_MATRIX \
+    static_assert(Rows == Cols, GS_FILE_LINE "function can only be used with NxN matrices")
 
 #ifdef GS_ROW_MAJOR_STORAGE
-#   define __GS_FOREACH_ROW_COL__(r, c)         \
+#   define GS_FOREACH_ROW_COL(r, c)             \
         for (std::size_t r = 0; r < Rows; ++r)  \
         for (std::size_t c = 0; c < Cols; ++c)
 #else
-#   define __GS_FOREACH_ROW_COL__(r, c)         \
+#   define GS_FOREACH_ROW_COL(r, c)             \
         for (std::size_t c = 0; c < Cols; ++c)  \
         for (std::size_t r = 0; r < Rows; ++r)
 #endif
@@ -161,7 +161,7 @@ class Matrix
 
         ThisType& operator *= (const ThisType& rhs)
         {
-            __GS_ASSERT_NxN_MATRIX__;
+            GS_ASSERT_NxN_MATRIX;
             *this = (*this * rhs);
             return *this;
         }
@@ -214,8 +214,8 @@ class Matrix
 
         void LoadIdentity()
         {
-            __GS_ASSERT_NxN_MATRIX__;
-            __GS_FOREACH_ROW_COL__(r, c)
+            GS_ASSERT_NxN_MATRIX;
+            GS_FOREACH_ROW_COL(r, c)
             {
                 (*this)(r, c) = (r == c ? T(1) : T(0));
             }
@@ -232,7 +232,7 @@ class Matrix
         {
             TransposedType result;
 
-            __GS_FOREACH_ROW_COL__(r, c)
+            GS_FOREACH_ROW_COL(r, c)
             {
                 result(c, r) = (*this)(r, c);
             }
@@ -242,7 +242,7 @@ class Matrix
 
         void Transpose()
         {
-            __GS_ASSERT_NxN_MATRIX__;
+            GS_ASSERT_NxN_MATRIX;
 
             for (std::size_t i = 0; i + 1 < Cols; ++i)
             {
@@ -362,7 +362,7 @@ Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Ma
 {
     Matrix<T, Rows, Cols> result(UninitializeTag{});
 
-    __GS_FOREACH_ROW_COL__(r, c)
+    GS_FOREACH_ROW_COL(r, c)
     {
         result(r, c) = T(0);
         for (std::size_t i = 0; i < ColsRows; ++i)
@@ -383,7 +383,7 @@ typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& 
 
 /* --- Type Alias --- */
 
-#define __GS_DEF_MATRIX_TYPES_MxN__(m, n)                           \
+#define GS_DEF_MATRIX_TYPES_MxN(m, n)                               \
     template <typename T> using Matrix##m##n##T = Matrix<T, m, n>;  \
     using Matrix##m##n      = Matrix##m##n##T<Real>;                \
     using Matrix##m##n##f   = Matrix##m##n##T<float>;               \
@@ -393,10 +393,10 @@ typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& 
     using Matrix##m##n##b   = Matrix##m##n##T<char>;                \
     using Matrix##m##n##ub  = Matrix##m##n##T<unsigned char>
 
-__GS_DEF_MATRIX_TYPES_MxN__(3, 4);
-__GS_DEF_MATRIX_TYPES_MxN__(4, 3);
+GS_DEF_MATRIX_TYPES_MxN(3, 4);
+GS_DEF_MATRIX_TYPES_MxN(4, 3);
 
-#define __GS_DEF_MATRIX_TYPES_NxN__(n)                          \
+#define GS_DEF_MATRIX_TYPES_NxN(n)                              \
     template <typename T> using Matrix##n##T = Matrix<T, n, n>; \
     using Matrix##n     = Matrix##n##T<Real>;                   \
     using Matrix##n##f  = Matrix##n##T<float>;                  \
@@ -406,15 +406,15 @@ __GS_DEF_MATRIX_TYPES_MxN__(4, 3);
     using Matrix##n##b  = Matrix##n##T<char>;                   \
     using Matrix##n##ub = Matrix##n##T<unsigned char>
 
-__GS_DEF_MATRIX_TYPES_NxN__(2);
-__GS_DEF_MATRIX_TYPES_NxN__(3);
-__GS_DEF_MATRIX_TYPES_NxN__(4);
+GS_DEF_MATRIX_TYPES_NxN(2);
+GS_DEF_MATRIX_TYPES_NxN(3);
+GS_DEF_MATRIX_TYPES_NxN(4);
 
-#undef __GS_DEF_MATRIX_TYPES_MxN__
-#undef __GS_DEF_MATRIX_TYPES_NxN__
+#undef GS_DEF_MATRIX_TYPES_MxN
+#undef GS_DEF_MATRIX_TYPES_NxN
 
-#undef __GS_ASSERT_NxN_MATRIX__
-#undef __GS_FOREACH_ROW_COL__
+#undef GS_ASSERT_NxN_MATRIX
+#undef GS_FOREACH_ROW_COL
 
 
 } // /namespace Gs

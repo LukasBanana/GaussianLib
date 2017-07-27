@@ -7,23 +7,23 @@
 
 // THIS FILE MUST NOT HAVE A HEADER GUARD!
 
-__GS_SWIZZLE_REF4__(x,x,x,x)
-__GS_SWIZZLE_REF4__(x,x,x,y)
-__GS_SWIZZLE_REF4__(x,x,y,x)
-__GS_SWIZZLE_REF4__(x,x,y,y)
-__GS_SWIZZLE_REF4__(x,y,x,x)
-__GS_SWIZZLE_REF4__(x,y,x,y)
-__GS_SWIZZLE_REF4__(x,y,y,x)
-__GS_SWIZZLE_REF4__(x,y,y,y)
+GS_DEF_SWIZZLE_REF4(x,x,x,x)
+GS_DEF_SWIZZLE_REF4(x,x,x,y)
+GS_DEF_SWIZZLE_REF4(x,x,y,x)
+GS_DEF_SWIZZLE_REF4(x,x,y,y)
+GS_DEF_SWIZZLE_REF4(x,y,x,x)
+GS_DEF_SWIZZLE_REF4(x,y,x,y)
+GS_DEF_SWIZZLE_REF4(x,y,y,x)
+GS_DEF_SWIZZLE_REF4(x,y,y,y)
 
-__GS_SWIZZLE_REF4__(y,x,x,x)
-__GS_SWIZZLE_REF4__(y,x,x,y)
-__GS_SWIZZLE_REF4__(y,x,y,x)
-__GS_SWIZZLE_REF4__(y,x,y,y)
-__GS_SWIZZLE_REF4__(y,y,x,x)
-__GS_SWIZZLE_REF4__(y,y,x,y)
-__GS_SWIZZLE_REF4__(y,y,y,x)
-__GS_SWIZZLE_REF4__(y,y,y,y)
+GS_DEF_SWIZZLE_REF4(y,x,x,x)
+GS_DEF_SWIZZLE_REF4(y,x,x,y)
+GS_DEF_SWIZZLE_REF4(y,x,y,x)
+GS_DEF_SWIZZLE_REF4(y,x,y,y)
+GS_DEF_SWIZZLE_REF4(y,y,x,x)
+GS_DEF_SWIZZLE_REF4(y,y,x,y)
+GS_DEF_SWIZZLE_REF4(y,y,y,x)
+GS_DEF_SWIZZLE_REF4(y,y,y,y)
 
 
 

@@ -25,7 +25,7 @@ namespace Details
 template <class M, typename T>
 void Translate(M& m, const Vector3T<T>& v)
 {
-    __GS_ASSERT_MxN_MATRIX__("translation with column vectors", M, 3, 4);
+    GS_ASSERT_MxN_MATRIX("translation with column vectors", M, 3, 4);
     m.At(0, 3) += ( m.At(0, 0)*v.x + m.At(0, 1)*v.y + m.At(0, 2)*v.z );
     m.At(1, 3) += ( m.At(1, 0)*v.x + m.At(1, 1)*v.y + m.At(1, 2)*v.z );
     m.At(2, 3) += ( m.At(2, 0)*v.x + m.At(2, 1)*v.y + m.At(2, 2)*v.z );

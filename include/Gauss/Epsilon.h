@@ -18,8 +18,8 @@ namespace Gs
 {
 
 
-#define __GS_EPSILON_F32__ (1.0e-6f) // 0.000001f
-#define __GS_EPSILON_F64__ (1.0e-8)  // 0.00000001
+#define GS_EPSILON_F32 ( 1.0e-6f ) // 0.000001f
+#define GS_EPSILON_F64 ( 1.0e-8  ) // 0.00000001
 
 /**
 Function with a return value which is very small (~0.000001)
@@ -36,19 +36,19 @@ template <typename T>
 inline T Epsilon()
 {
     static_assert(std::is_integral<T>::value, "'Gs::Epsilon' function only allows floating-point types");
-    return T(__GS_EPSILON_F32__);
+    return T(GS_EPSILON_F32);
 }
 
 template <>
 inline float Epsilon()
 {
-    return __GS_EPSILON_F32__;
+    return GS_EPSILON_F32;
 }
 
 template <>
 inline double Epsilon()
 {
-    return __GS_EPSILON_F64__;
+    return GS_EPSILON_F64;
 }
 
 

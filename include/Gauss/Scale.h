@@ -23,7 +23,7 @@ namespace Details
 template <class M, typename T>
 void Scale3x3(M& m, const Vector3T<T>& v)
 {
-    __GS_ASSERT_MxN_MATRIX__("scale with 3D vector", M, 3, 3);
+    GS_ASSERT_MxN_MATRIX("scale with 3D vector", M, 3, 3);
 
     m.At(0, 0) *= v.x;
     m.At(1, 0) *= v.x;

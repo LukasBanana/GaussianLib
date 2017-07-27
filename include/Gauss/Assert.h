@@ -10,12 +10,10 @@
 
 
 #include "Config.h"
+#include "Macros.h"
 
 #include <cassert>
 
-
-#define GS_TOSTRING_PRIMARY(x) #x
-#define GS_TOSTRING(x) GS_TOSTRING_PRIMARY(x)
 
 #ifdef GS_ENABLE_ASSERT
 #   ifdef GS_ASSERT_EXCEPTION
