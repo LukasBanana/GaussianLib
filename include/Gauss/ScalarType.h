@@ -17,6 +17,7 @@
 #include "AffineMatrix3.h"
 #include "AffineMatrix4.h"
 #include "ProjectionMatrix4.h"
+#include "Quaternion.h"
 
 
 namespace Gs
@@ -56,6 +57,12 @@ struct ScalarType<AffineMatrix4T<T>>
 
 template <typename T>
 struct ScalarType<ProjectionMatrix4T<T>>
+{
+    using Type = T;
+};
+
+template <typename T>
+struct ScalarType<QuaternionT<T>>
 {
     using Type = T;
 };

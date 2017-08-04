@@ -21,7 +21,7 @@ namespace Gs
 
 /* --- Global Functions --- */
 
-#define GS_DECL_STDMATH_FUNC(NAME)                              \
+#define GS_DECL_STDMATH_FUNC1(NAME)                             \
     template <typename T, std::size_t N>                        \
     Vector<T, N> NAME(const Vector<T, N>& x)                    \
     {                                                           \
@@ -58,35 +58,36 @@ namespace Gs
     }
 
 
-GS_DECL_STDMATH_FUNC( exp )
-GS_DECL_STDMATH_FUNC( exp2 )
-GS_DECL_STDMATH_FUNC( log )
-GS_DECL_STDMATH_FUNC( log10 )
-GS_DECL_STDMATH_FUNC( log2 )
+GS_DECL_STDMATH_FUNC1( exp   )
+GS_DECL_STDMATH_FUNC1( exp2  )
+GS_DECL_STDMATH_FUNC1( log   )
+GS_DECL_STDMATH_FUNC1( log10 )
+GS_DECL_STDMATH_FUNC1( log2  )
 
-GS_DECL_STDMATH_FUNC2( pow )
-GS_DECL_STDMATH_FUNC( sqrt )
+GS_DECL_STDMATH_FUNC2( pow   )
+GS_DECL_STDMATH_FUNC1( sqrt  )
 
-GS_DECL_STDMATH_FUNC( sin )
-GS_DECL_STDMATH_FUNC( cos )
-GS_DECL_STDMATH_FUNC( tan )
-GS_DECL_STDMATH_FUNC( asin )
-GS_DECL_STDMATH_FUNC( acos )
-GS_DECL_STDMATH_FUNC( atan )
+GS_DECL_STDMATH_FUNC1( sin   )
+GS_DECL_STDMATH_FUNC1( cos   )
+GS_DECL_STDMATH_FUNC1( tan   )
+GS_DECL_STDMATH_FUNC1( asin  )
+GS_DECL_STDMATH_FUNC1( acos  )
+GS_DECL_STDMATH_FUNC1( atan  )
 GS_DECL_STDMATH_FUNC2( atan2 )
 
-GS_DECL_STDMATH_FUNC( sinh )
-GS_DECL_STDMATH_FUNC( cosh )
-GS_DECL_STDMATH_FUNC( tanh )
-GS_DECL_STDMATH_FUNC( asinh )
-GS_DECL_STDMATH_FUNC( acosh )
-GS_DECL_STDMATH_FUNC( atanh )
+GS_DECL_STDMATH_FUNC1( sinh  )
+GS_DECL_STDMATH_FUNC1( cosh  )
+GS_DECL_STDMATH_FUNC1( tanh  )
+GS_DECL_STDMATH_FUNC1( asinh )
+GS_DECL_STDMATH_FUNC1( acosh )
+GS_DECL_STDMATH_FUNC1( atanh )
 
-GS_DECL_STDMATH_FUNC( ceil )
-GS_DECL_STDMATH_FUNC( floor )
+GS_DECL_STDMATH_FUNC1( ceil  )
+GS_DECL_STDMATH_FUNC1( floor )
 
 
-#undef GS_DECL_STDMATH_FUNC
+#undef GS_DECL_STDMATH_FUNC1
+#undef GS_DECL_STDMATH_FUNC2
 
 
 } // /namespace Gs

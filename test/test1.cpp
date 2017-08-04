@@ -24,7 +24,7 @@
 
 
 #ifdef _MSC_VER
-#pragma warning (disable:4101)
+#pragma warning (disable:4101) // "unreferenced local variable"
 #endif
 
 using namespace Gs;
