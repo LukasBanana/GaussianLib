@@ -140,6 +140,17 @@ Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
     );
 }
 
+//! Returns the reflected vector of the incident vector for the specified surface normal.
+template <typename T, std::size_t N>
+Vector<T, N> Reflect(const Vector<T, N>& incident, const Vector<T, N>& normal)
+{
+    /* Compute reflection as: I - N x Dot(N, I) x 2 */
+    auto v = normal;
+    v *= (Dot(normal, incident) * T(-2));
+    v += incident;
+    return v;
+}
+
 //! Normalizes the specified vector to the unit length of 1.
 template <typename T, std::size_t N>
 void Normalize(Vector<T, N>& vec)
