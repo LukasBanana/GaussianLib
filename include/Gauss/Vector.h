@@ -14,6 +14,7 @@
 #include "Tags.h"
 
 #include <algorithm>
+#include <iterator>
 
 
 namespace Gs
