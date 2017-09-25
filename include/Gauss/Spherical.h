@@ -161,10 +161,10 @@ class SphericalT
 using Spherical     = SphericalT<Real>;
 using Sphericalf    = SphericalT<float>;
 using Sphericald    = SphericalT<double>;
-using Sphericali    = SphericalT<int>;
-using Sphericalui   = SphericalT<unsigned int>;
-using Sphericalb    = SphericalT<char>;
-using Sphericalub   = SphericalT<unsigned char>;
+using Sphericali    = SphericalT<std::int32_t>;
+using Sphericalui   = SphericalT<std::uint32_t>;
+using Sphericalb    = SphericalT<std::int8_t>;
+using Sphericalub   = SphericalT<std::uint8_t>;
 
 
 } // /namespace Gs

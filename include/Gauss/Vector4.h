@@ -257,10 +257,10 @@ using Vector4T = Vector<T, 4>;
 using Vector4   = Vector4T<Real>;
 using Vector4f  = Vector4T<float>;
 using Vector4d  = Vector4T<double>;
-using Vector4i  = Vector4T<int>;
-using Vector4ui = Vector4T<unsigned int>;
-using Vector4b  = Vector4T<char>;
-using Vector4ub = Vector4T<unsigned char>;
+using Vector4i  = Vector4T<std::int32_t>;
+using Vector4ui = Vector4T<std::uint32_t>;
+using Vector4b  = Vector4T<std::int8_t>;
+using Vector4ub = Vector4T<std::uint8_t>;
 
 
 } // /namespace Gs

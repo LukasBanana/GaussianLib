@@ -61,27 +61,27 @@ using double4x3 = Gs::Matrix<double, 4, 3>;
 using double4x4 = Gs::Matrix4d;
 
 using int2x2    = Gs::Matrix2i;
-using int2x3    = Gs::Matrix<int, 2, 3>;
-using int2x4    = Gs::Matrix<int, 2, 4>;
+using int2x3    = Gs::Matrix<std::int32_t, 2, 3>;
+using int2x4    = Gs::Matrix<std::int32_t, 2, 4>;
 
-using int3x2    = Gs::Matrix<int, 3, 2>;
+using int3x2    = Gs::Matrix<std::int32_t, 3, 2>;
 using int3x3    = Gs::Matrix3i;
-using int3x4    = Gs::Matrix<int, 3, 4>;
+using int3x4    = Gs::Matrix<std::int32_t, 3, 4>;
 
-using int4x2    = Gs::Matrix<int, 3, 2>;
-using int4x3    = Gs::Matrix<int, 3, 3>;
+using int4x2    = Gs::Matrix<std::int32_t, 3, 2>;
+using int4x3    = Gs::Matrix<std::int32_t, 3, 3>;
 using int4x4    = Gs::Matrix4i;
 
 using uint2x2   = Gs::Matrix2ui;
-using uint2x3   = Gs::Matrix<unsigned int, 2, 3>;
-using uint2x4   = Gs::Matrix<unsigned int, 2, 4>;
+using uint2x3   = Gs::Matrix<std::uint32_t, 2, 3>;
+using uint2x4   = Gs::Matrix<std::uint32_t, 2, 4>;
 
-using uint3x2   = Gs::Matrix<unsigned int, 3, 2>;
+using uint3x2   = Gs::Matrix<std::uint32_t, 3, 2>;
 using uint3x3   = Gs::Matrix3ui;
-using uint3x4   = Gs::Matrix<unsigned int, 3, 4>;
+using uint3x4   = Gs::Matrix<std::uint32_t, 3, 4>;
 
-using uint4x2   = Gs::Matrix<unsigned int, 4, 2>;
-using uint4x3   = Gs::Matrix<unsigned int, 4, 3>;
+using uint4x2   = Gs::Matrix<std::uint32_t, 4, 2>;
+using uint4x3   = Gs::Matrix<std::uint32_t, 4, 3>;
 using uint4x4   = Gs::Matrix4ui;
 
 using bool2x2   = Gs::Matrix<bool, 2, 2>;

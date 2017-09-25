@@ -19,6 +19,7 @@
 #include <cmath>
 #include <cstring>
 #include <algorithm>
+#include <cstdint>
 
 
 namespace Gs
@@ -388,10 +389,10 @@ typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& 
     using Matrix##m##n      = Matrix##m##n##T<Real>;                \
     using Matrix##m##n##f   = Matrix##m##n##T<float>;               \
     using Matrix##m##n##d   = Matrix##m##n##T<double>;              \
-    using Matrix##m##n##i   = Matrix##m##n##T<int>;                 \
-    using Matrix##m##n##ui  = Matrix##m##n##T<unsigned int>;        \
-    using Matrix##m##n##b   = Matrix##m##n##T<char>;                \
-    using Matrix##m##n##ub  = Matrix##m##n##T<unsigned char>
+    using Matrix##m##n##i   = Matrix##m##n##T<std::int32_t>;        \
+    using Matrix##m##n##ui  = Matrix##m##n##T<std::uint32_t>;       \
+    using Matrix##m##n##b   = Matrix##m##n##T<std::int8_t>;         \
+    using Matrix##m##n##ub  = Matrix##m##n##T<std::uint8_t>
 
 GS_DEF_MATRIX_TYPES_MxN(3, 4);
 GS_DEF_MATRIX_TYPES_MxN(4, 3);
@@ -401,10 +402,10 @@ GS_DEF_MATRIX_TYPES_MxN(4, 3);
     using Matrix##n     = Matrix##n##T<Real>;                   \
     using Matrix##n##f  = Matrix##n##T<float>;                  \
     using Matrix##n##d  = Matrix##n##T<double>;                 \
-    using Matrix##n##i  = Matrix##n##T<int>;                    \
-    using Matrix##n##ui = Matrix##n##T<unsigned int>;           \
-    using Matrix##n##b  = Matrix##n##T<char>;                   \
-    using Matrix##n##ub = Matrix##n##T<unsigned char>
+    using Matrix##n##i  = Matrix##n##T<std::int32_t>;           \
+    using Matrix##n##ui = Matrix##n##T<std::uint32_t>;          \
+    using Matrix##n##b  = Matrix##n##T<std::int8_t>;            \
+    using Matrix##n##ub = Matrix##n##T<std::uint8_t>
 
 GS_DEF_MATRIX_TYPES_NxN(2);
 GS_DEF_MATRIX_TYPES_NxN(3);

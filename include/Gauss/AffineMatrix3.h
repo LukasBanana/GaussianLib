@@ -22,6 +22,7 @@
 #include <cmath>
 #include <cstring>
 #include <algorithm>
+#include <cstdint>
 
 
 namespace Gs
@@ -562,7 +563,7 @@ typename AffineMatrix3T<T>::Initializer operator << (AffineMatrix3T<T>& matrix, 
 using AffineMatrix3     = AffineMatrix3T<Real>;
 using AffineMatrix3f    = AffineMatrix3T<float>;
 using AffineMatrix3d    = AffineMatrix3T<double>;
-using AffineMatrix3i    = AffineMatrix3T<int>;
+using AffineMatrix3i    = AffineMatrix3T<std::int32_t>;
 
 
 } // /namespace Gs

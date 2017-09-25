@@ -222,10 +222,10 @@ using Vector2T = Vector<T, 2>;
 using Vector2   = Vector2T<Real>;
 using Vector2f  = Vector2T<float>;
 using Vector2d  = Vector2T<double>;
-using Vector2i  = Vector2T<int>;
-using Vector2ui = Vector2T<unsigned int>;
-using Vector2b  = Vector2T<char>;
-using Vector2ub = Vector2T<unsigned char>;
+using Vector2i  = Vector2T<std::int32_t>;
+using Vector2ui = Vector2T<std::uint32_t>;
+using Vector2b  = Vector2T<std::int8_t>;
+using Vector2ub = Vector2T<std::uint8_t>;
 
 
 } // /namespace Gs
