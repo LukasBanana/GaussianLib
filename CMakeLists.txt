@@ -14,6 +14,24 @@ set(PROJECT_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set(PROJECT_TEST_DIR "${PROJECT_SOURCE_DIR}/test")
 
 
+# === Options ===
+
+option(GAUSSLIB_ENABLE_SSE "Enable SSE support" OFF)
+option(GAUSSLIB_ENABLE_SSE2 "Enable SSE2 support" OFF)
+
+if(GAUSSLIB_ENABLE_SSE)
+	add_definitions(-DGS_ENABLE_SSE)
+endif()
+
+if(GAUSSLIB_ENABLE_SSE2)
+	add_definitions(-DGS_ENABLE_SSE2)
+endif()
+
+if(UNIX AND (GAUSSLIB_ENABLE_SSE OR GAUSSLIB_ENABLE_SSE2))
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
+endif()
+
+
 # === Global files ===
 
 file(GLOB_RECURSE FilesAll "${PROJECT_SOURCE_DIR}/include/*.*")
