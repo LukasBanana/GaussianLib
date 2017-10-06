@@ -1,17 +1,17 @@
 /*
- * Vector4_SSE.h
+ * Vector4_SSE2.h
  * 
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef GS_VECTOR4_SSE_H
-#define GS_VECTOR4_SSE_H
+#ifndef GS_VECTOR4_SSE2_H
+#define GS_VECTOR4_SSE2_H
 
 
 #include "Vector4.h"
 
-#include <xmmintrin.h>
+#include <emmintrin.h>
 
 
 namespace Gs
@@ -20,36 +20,36 @@ namespace Gs
 
 //! Template specialization with SSE support for 4D single-precision floating-point vectors.
 template <>
-class alignas(16) Vector<float, 4>
+class alignas(32) Vector<double, 4>
 {
     
     public:
         
-        using T = float;
+        using T = double;
 
         //! Specifies the number of vector components.
         static const std::size_t components = 4;
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
-            m128 { _mm_setzero_ps() }
+            m128 { _mm_setzero_pd(), _mm_setzero_pd() }
         {
         }
         #else
         Vector() = default;
         #endif
         
-        Vector(__m128 rhs) :
-            m128 { rhs }
+        Vector(__m128d rhs0, __m128d rhs1) :
+            m128 { rhs0, rhs1 }
         {
         }
 
         Vector(const Vector<T, 4>& rhs) :
-            m128 { rhs.m128 }
+            m128 { rhs.m128[0], rhs.m128[1] }
         {
         }
 
-        explicit Vector(const Vector<T, 3>& rhs, T w = 1.0f) :
+        explicit Vector(const Vector<T, 3>& rhs, T w = 1.0) :
             x { rhs.x },
             y { rhs.y },
             z { rhs.z },
@@ -65,8 +65,8 @@ class alignas(16) Vector<float, 4>
         {
         }
 
-        Vector(const T& x, const T& y, const T& z, const T& w = 1.0f) :
-            m128 { x, y, z, w }
+        Vector(const T& x, const T& y, const T& z, const T& w = 1.0) :
+            m128 { { x, y }, { z, w } }
         {
         }
 
@@ -77,37 +77,43 @@ class alignas(16) Vector<float, 4>
 
         Vector<T, 4>& operator += (const Vector<T, 4>& rhs)
         {
-            m128 = _mm_add_ps(m128, rhs.m128);
+            m128[0] = _mm_add_pd(m128[0], rhs.m128[0]);
+            m128[1] = _mm_add_pd(m128[1], rhs.m128[1]);
             return *this;
         }
 
         Vector<T, 4>& operator -= (const Vector<T, 4>& rhs)
         {
-            m128 = _mm_sub_ps(m128, rhs.m128);
+            m128[0] = _mm_sub_pd(m128[0], rhs.m128[0]);
+            m128[1] = _mm_sub_pd(m128[1], rhs.m128[1]);
             return *this;
         }
 
         Vector<T, 4>& operator *= (const Vector<T, 4>& rhs)
         {
-            m128 = _mm_mul_ps(m128, rhs.m128);
+            m128[0] = _mm_mul_pd(m128[0], rhs.m128[0]);
+            m128[1] = _mm_mul_pd(m128[1], rhs.m128[1]);
             return *this;
         }
 
         Vector<T, 4>& operator /= (const Vector<T, 4>& rhs)
         {
-            m128 = _mm_div_ps(m128, rhs.m128);
+            m128[0] = _mm_div_pd(m128[0], rhs.m128[0]);
+            m128[1] = _mm_div_pd(m128[1], rhs.m128[1]);
             return *this;
         }
 
         Vector<T, 4>& operator *= (const T& rhs)
         {
-            m128 = _mm_mul_ps(m128, _mm_set_ps1(rhs));
+            m128[0] = _mm_mul_pd(m128[0], _mm_set1_pd(rhs));
+            m128[1] = _mm_mul_pd(m128[1], _mm_set1_pd(rhs));
             return *this;
         }
 
         Vector<T, 4>& operator /= (const T& rhs)
         {
-            m128 = _mm_div_ps(m128, _mm_set_ps1(rhs));
+            m128[0] = _mm_div_pd(m128[0], _mm_set1_pd(rhs));
+            m128[1] = _mm_div_pd(m128[1], _mm_set1_pd(rhs));
             return *this;
         }
 
@@ -224,7 +230,7 @@ class alignas(16) Vector<float, 4>
             {
                 T x, y, z, w;
             };
-            __m128 m128;
+            __m128d m128[2];
         };
 
 };

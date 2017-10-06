@@ -497,6 +497,23 @@ static void sseVector4Test1()
     std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
 }
 
+static void sseVector4Test2()
+{
+    Vector4d v0;
+    Vector4d v1(3.0, -0.5, 0.0, 1.0);
+    Vector4d v2(0.5, 1.0, 2.5, 1.0);
+
+    std::cout << "v0          = " << v0 << std::endl;
+    std::cout << "v1          = " << v1 << std::endl;
+    std::cout << "v2          = " << v2 << std::endl;
+    std::cout << "v1 + v2     = " << v1 + v2 << std::endl;
+    std::cout << "v1 * v2     = " << v1 * v2 << std::endl;
+    std::cout << "v1 * -5     = " << v1 * -5.0 << std::endl;
+    std::cout << "Dot(v1, v2) = " << Dot(v1, v2) << std::endl;
+    std::cout << "|v1|        = " << Length(v1) << std::endl;
+    std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -523,6 +540,7 @@ int main()
 		//rcpTest1();
         //stdMathTest1();
         sseVector4Test1();
+        sseVector4Test2();
     }
     catch (const std::exception& e)
     {
