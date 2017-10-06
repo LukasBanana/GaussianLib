@@ -58,7 +58,7 @@ class Vector<T, 4>
             x { rhs.x },
             y { rhs.y },
             z { rhs.z },
-            w { T(1)  }
+            w { w     }
         {
         }
 
