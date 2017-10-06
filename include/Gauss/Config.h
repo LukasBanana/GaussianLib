@@ -31,6 +31,9 @@
 //! Enables row vectors. If undefined, column vectors are used (default).
 //#define GS_ROW_VECTORS
 
+//! Enables template specializations for SSE instructions.
+//#define GS_ENABLE_SSE
+
 
 #endif
 

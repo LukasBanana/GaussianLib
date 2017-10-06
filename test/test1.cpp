@@ -480,6 +480,23 @@ static void stdMathTest1()
     std::cout << "sin(" << std::endl << A << ") = " << std::endl << sin(A) << std::endl;
 }
 
+static void sseVector4Test1()
+{
+    Vector4f v0;
+    Vector4f v1(3.0f, -0.5f, 0.0f, 1.0f);
+    Vector4f v2(0.5f, 1.0f, 2.5f, 1.0f);
+
+    std::cout << "v0          = " << v0 << std::endl;
+    std::cout << "v1          = " << v1 << std::endl;
+    std::cout << "v2          = " << v2 << std::endl;
+    std::cout << "v1 + v2     = " << v1 + v2 << std::endl;
+    std::cout << "v1 * v2     = " << v1 * v2 << std::endl;
+    std::cout << "v1 * -5     = " << v1 * -5.0f << std::endl;
+    std::cout << "Dot(v1, v2) = " << Dot(v1, v2) << std::endl;
+    std::cout << "|v1|        = " << Length(v1) << std::endl;
+    std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -502,9 +519,10 @@ int main()
         //rotateVectorTest1();
         //sortingTest1();
         //flipTest1();
-        rotateMatrixTest1();
-		rcpTest1();
-        stdMathTest1();
+        //rotateMatrixTest1();
+		//rcpTest1();
+        //stdMathTest1();
+        sseVector4Test1();
     }
     catch (const std::exception& e)
     {

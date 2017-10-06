@@ -9,6 +9,7 @@
 #define GS_GAUSS_H
 
 
+#include "Config.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -36,6 +37,11 @@
 #include "RotateVector.h"
 
 #include "ScalarType.h"
+
+#ifdef GS_ENABLE_SSE
+#include "Vector4_SSE.h"
+#include "Algebra_SSE.h"
+#endif
 
 
 #endif
