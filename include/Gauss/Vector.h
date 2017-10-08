@@ -51,6 +51,11 @@ class Vector
             std::copy(std::begin(rhs.v_), std::end(rhs.v_), v_);
         }
 
+        explicit Vector(const T& scalar)
+        {
+            std::fill(std::begin(v_), std::end(v_), scalar);
+        }
+
         Vector(UninitializeTag)
         {
             // do nothing
@@ -84,14 +89,14 @@ class Vector
             return *this;
         }
 
-        Vector<T, N>& operator *= (const T& rhs)
+        Vector<T, N>& operator *= (const T rhs)
         {
             for (std::size_t i = 0; i < N; ++i)
                 v_[i] *= rhs;
             return *this;
         }
 
-        Vector<T, N>& operator /= (const T& rhs)
+        Vector<T, N>& operator /= (const T rhs)
         {
             for (std::size_t i = 0; i < N; ++i)
                 v_[i] /= rhs;
@@ -202,6 +207,7 @@ Vector<T, N> operator * (const Vector<T, N>& lhs, const T& rhs)
     return result;
 }
 
+//! \note This implementation is equivavlent to (rhs * lhs) for optimization purposes.
 template <typename T, std::size_t N>
 Vector<T, N> operator * (const T& lhs, const Vector<T, N>& rhs)
 {
@@ -214,6 +220,14 @@ template <typename T, std::size_t N>
 Vector<T, N> operator / (const Vector<T, N>& lhs, const T& rhs)
 {
     auto result = lhs;
+    result /= rhs;
+    return result;
+}
+
+template <typename T, std::size_t N>
+Vector<T, N> operator / (const T& lhs, const Vector<T, N>& rhs)
+{
+    auto result = Vector<T, N>(lhs);
     result /= rhs;
     return result;
 }

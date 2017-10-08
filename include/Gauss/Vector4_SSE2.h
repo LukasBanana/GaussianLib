@@ -103,14 +103,14 @@ class alignas(32) Vector<double, 4>
             return *this;
         }
 
-        Vector<T, 4>& operator *= (const T& rhs)
+        Vector<T, 4>& operator *= (const T rhs)
         {
             m128[0] = _mm_mul_pd(m128[0], _mm_set1_pd(rhs));
             m128[1] = _mm_mul_pd(m128[1], _mm_set1_pd(rhs));
             return *this;
         }
 
-        Vector<T, 4>& operator /= (const T& rhs)
+        Vector<T, 4>& operator /= (const T rhs)
         {
             m128[0] = _mm_div_pd(m128[0], _mm_set1_pd(rhs));
             m128[1] = _mm_div_pd(m128[1], _mm_set1_pd(rhs));
@@ -234,6 +234,61 @@ class alignas(32) Vector<double, 4>
         };
 
 };
+
+
+/* --- Global Operators --- */
+
+template <>
+Vector<double, 4> operator + (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
+{
+    return Vector<double, 4>(_mm_add_pd(lhs.m128[0], rhs.m128[0]), _mm_add_pd(lhs.m128[1], rhs.m128[1]));
+}
+
+template <>
+Vector<double, 4> operator - (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
+{
+    return Vector<double, 4>(_mm_sub_pd(lhs.m128[0], rhs.m128[0]), _mm_sub_pd(lhs.m128[1], rhs.m128[1]));
+}
+
+template <>
+Vector<double, 4> operator * (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
+{
+    return Vector<double, 4>(_mm_mul_pd(lhs.m128[0], rhs.m128[0]), _mm_mul_pd(lhs.m128[1], rhs.m128[1]));
+}
+
+template <>
+Vector<double, 4> operator / (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
+{
+    return Vector<double, 4>(_mm_div_pd(lhs.m128[0], rhs.m128[0]), _mm_div_pd(lhs.m128[1], rhs.m128[1]));
+}
+
+template <>
+Vector<double, 4> operator * (const Vector<double, 4>& lhs, const double& rhs)
+{
+    const auto rhs128 = _mm_set1_pd(rhs);
+    return Vector<double, 4>(_mm_mul_pd(lhs.m128[0], rhs128), _mm_mul_pd(lhs.m128[1], rhs128));
+}
+
+template <>
+Vector<double, 4> operator * (const double& lhs, const Vector<double, 4>& rhs)
+{
+    const auto lhs128 = _mm_set1_pd(lhs);
+    return Vector<double, 4>(_mm_mul_pd(lhs128, rhs.m128[0]), _mm_mul_pd(lhs128, rhs.m128[1]));
+}
+
+template <>
+Vector<double, 4> operator / (const Vector<double, 4>& lhs, const double& rhs)
+{
+    const auto rhs128 = _mm_set1_pd(rhs);
+    return Vector<double, 4>(_mm_div_pd(lhs.m128[0], rhs128), _mm_div_pd(lhs.m128[1], rhs128));
+}
+
+template <>
+Vector<double, 4> operator / (const double& lhs, const Vector<double, 4>& rhs)
+{
+    const auto lhs128 = _mm_set1_pd(lhs);
+    return Vector<double, 4>(_mm_div_pd(lhs128, rhs.m128[0]), _mm_mul_pd(lhs128, rhs.m128[1]));
+}
 
 
 } // /namespace Gs

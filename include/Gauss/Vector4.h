@@ -119,7 +119,7 @@ class Vector<T, 4>
             return *this;
         }
 
-        Vector<T, 4>& operator *= (const T& rhs)
+        Vector<T, 4>& operator *= (const T rhs)
         {
             x *= rhs;
             y *= rhs;
@@ -128,7 +128,7 @@ class Vector<T, 4>
             return *this;
         }
 
-        Vector<T, 4>& operator /= (const T& rhs)
+        Vector<T, 4>& operator /= (const T rhs)
         {
             x /= rhs;
             y /= rhs;

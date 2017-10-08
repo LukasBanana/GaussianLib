@@ -514,6 +514,17 @@ static void sseVector4Test2()
     std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
 }
 
+static void vector3Test1()
+{
+    Vector3f v(2.5f, 3.4f, 9.5f);
+
+    std::cout << "v = " << v << std::endl;
+    std::cout << "1 / v = " << 1.0f / v << std::endl;
+    std::cout << "v / v.x = " << v / v.x << std::endl;
+    v /= v.x;
+    std::cout << "v /= v.x = " << v << std::endl;
+}
+
 int main()
 {
     std::cout << "GaussianLib Test 1" << std::endl;
@@ -539,8 +550,9 @@ int main()
         //rotateMatrixTest1();
 		//rcpTest1();
         //stdMathTest1();
-        sseVector4Test1();
-        sseVector4Test2();
+        vector3Test1();
+        //sseVector4Test1();
+        //sseVector4Test2();
     }
     catch (const std::exception& e)
     {

@@ -99,13 +99,13 @@ class alignas(16) Vector<float, 4>
             return *this;
         }
 
-        Vector<T, 4>& operator *= (const T& rhs)
+        Vector<T, 4>& operator *= (const T rhs)
         {
             m128 = _mm_mul_ps(m128, _mm_set_ps1(rhs));
             return *this;
         }
 
-        Vector<T, 4>& operator /= (const T& rhs)
+        Vector<T, 4>& operator /= (const T rhs)
         {
             m128 = _mm_div_ps(m128, _mm_set_ps1(rhs));
             return *this;
@@ -228,6 +228,57 @@ class alignas(16) Vector<float, 4>
         };
 
 };
+
+
+/* --- Global Operators --- */
+
+template <>
+Vector<float, 4> operator + (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
+{
+    return Vector<float, 4>(_mm_add_ps(lhs.m128, rhs.m128));
+}
+
+template <>
+Vector<float, 4> operator - (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
+{
+    return Vector<float, 4>(_mm_sub_ps(lhs.m128, rhs.m128));
+}
+
+template <>
+Vector<float, 4> operator * (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
+{
+    return Vector<float, 4>(_mm_mul_ps(lhs.m128, rhs.m128));
+}
+
+template <>
+Vector<float, 4> operator / (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
+{
+    return Vector<float, 4>(_mm_div_ps(lhs.m128, rhs.m128));
+}
+
+template <>
+Vector<float, 4> operator * (const Vector<float, 4>& lhs, const float& rhs)
+{
+    return Vector<float, 4>(_mm_mul_ps(lhs.m128, _mm_set_ps1(rhs)));
+}
+
+template <>
+Vector<float, 4> operator * (const float& lhs, const Vector<float, 4>& rhs)
+{
+    return Vector<float, 4>(_mm_mul_ps(_mm_set_ps1(lhs), rhs.m128));
+}
+
+template <>
+Vector<float, 4> operator / (const Vector<float, 4>& lhs, const float& rhs)
+{
+    return Vector<float, 4>(_mm_div_ps(lhs.m128, _mm_set_ps1(rhs)));
+}
+
+template <>
+Vector<float, 4> operator / (const float& lhs, const Vector<float, 4>& rhs)
+{
+    return Vector<float, 4>(_mm_div_ps(_mm_set_ps1(lhs), rhs.m128));
+}
 
 
 } // /namespace Gs
