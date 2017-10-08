@@ -18,7 +18,7 @@ namespace Gs
 
 /* --- Constants --- */
 
-#ifdef GS_HIGH_PRECISION_FLOAT
+#ifdef GS_REAL_DOUBLE
 
 using Real = double;
 

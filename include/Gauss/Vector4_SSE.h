@@ -49,10 +49,26 @@ class alignas(16) Vector<float, 4>
         {
         }
 
-        explicit Vector(const Vector<T, 3>& rhs, T w = 1.0f) :
-            x { rhs.x },
-            y { rhs.y },
-            z { rhs.z },
+        explicit Vector(const Vector<T, 2>& xy, const Vector<T, 2>& zw) :
+            x { xy.x },
+            y { xy.y },
+            z { zw.x },
+            w { zw.y }
+        {
+        }
+
+        explicit Vector(const Vector<T, 2>& xy, const T& z, const T& w) :
+            x { xy.x },
+            y { xy.y },
+            z { z    },
+            w { w    }
+        {
+        }
+
+        explicit Vector(const Vector<T, 3>& xyz, const T& w) :
+            x { xyz.x },
+            y { xyz.y },
+            z { xyz.z },
             w { w     }
         {
         }

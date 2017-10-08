@@ -5,11 +5,6 @@
  * See "LICENSE.txt" for license information.
  */
 
-//#define GS_ROW_MAJOR_STORAGE
-#define GS_ENABLE_SWIZZLE_OPERATOR
-#define GS_HIGH_PRECISION_FLOAT
-//#define GS_ROW_VECTORS
-
 #include <Gauss/Gauss.h>
 #include <Gauss/StdMath.h>
 #include <Gauss/HLSLTypes.h>
@@ -260,7 +255,7 @@ static void complexTest1()
 {
     using complex = std::complex<Real>;
 
-    Vector4T<complex> a(complex(0, 0), complex(0, 1), complex(4, -2));
+    Vector4T<complex> a(complex(0, 0), complex(0, 1), complex(4, -2), complex());
     Matrix4T<complex> A = Matrix4T<complex>::Identity();
 
     #ifdef GS_ROW_VECTORS
@@ -518,11 +513,17 @@ static void vector3Test1()
 {
     Vector3f v(2.5f, 3.4f, 9.5f);
 
-    std::cout << "v = " << v << std::endl;
-    std::cout << "1 / v = " << 1.0f / v << std::endl;
-    std::cout << "v / v.x = " << v / v.x << std::endl;
+    std::cout << "v                               = " << v << std::endl;
+    std::cout << "1 / v                           = " << 1.0f / v << std::endl;
+    std::cout << "v / v.x                         = " << v / v.x << std::endl;
+    
     v /= v.x;
-    std::cout << "v /= v.x = " << v << std::endl;
+    Vector2f v2D(v);
+    Vector4f v4D(v2D, v2D);
+
+    std::cout << "v /= v.x                        = " << v << std::endl;
+    std::cout << "Vector2(v)                      = " << v2D << std::endl;
+    std::cout << "Vector4(Vector2(v), Vector2(v)) = " << v4D << std::endl;
 }
 
 int main()

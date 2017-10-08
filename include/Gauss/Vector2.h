@@ -50,6 +50,18 @@ class Vector<T, 2>
         {
         }
 
+        explicit Vector(const Vector<T, 3>& rhs) :
+            x { rhs.x },
+            y { rhs.y }
+        {
+        }
+
+        explicit Vector(const Vector<T, 4>& rhs) :
+            x { rhs.x },
+            y { rhs.y }
+        {
+        }
+
         explicit Vector(const T& scalar) :
             x { scalar },
             y { scalar }
