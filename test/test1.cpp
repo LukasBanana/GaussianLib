@@ -225,6 +225,22 @@ static void quaternionTest1()
     std::cout << "Quaterion(m) = " << Quaternion(m) << std::endl;
 }
 
+static void quaternionTest2()
+{
+    Quaternion q0, q1;
+
+    q0.SetEulerAngles(Vector3(pi*0.5f, pi*0.25f, 0));
+    q1.SetEulerAngles(Vector3(pi*1.0f, 0, 0));
+    
+    std::cout << "q0       = " << q0 << std::endl;
+    std::cout << "q1       = " << q1 << std::endl;
+
+    std::cout << "q0 * q0  = " << q0*q0 << std::endl;
+
+    q0 *= q0;
+    std::cout << "q0 *= q0 = " << q0 << std::endl;
+}
+
 static void matrixVectorTest1()
 {
     Matrix4 A = Matrix4::Identity();
@@ -537,6 +553,7 @@ int main()
         //affineMatrixTest1();
         //affineMatrixTest2();
         //quaternionTest1();
+        quaternionTest2();
         //matrixVectorTest1();
         //complexTest1();
         //projectionTest1();

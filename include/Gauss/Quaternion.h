@@ -100,11 +100,7 @@ template <typename T> class QuaternionT
 
         QuaternionT<T>& operator *= (const QuaternionT<T>& rhs)
         {
-            auto lhs = *this;
-            w = (lhs.w * rhs.w) - (lhs.x * rhs.x) - (lhs.y * rhs.y) - (lhs.z * rhs.z);
-            x = (lhs.x * rhs.w) + (lhs.w * rhs.x) + (lhs.z * rhs.y) - (lhs.y * rhs.z);
-            y = (lhs.y * rhs.w) - (lhs.z * rhs.x) + (lhs.w * rhs.y) + (lhs.x * rhs.z);
-            z = (lhs.z * rhs.w) + (lhs.y * rhs.x) - (lhs.x * rhs.y) + (lhs.w * rhs.z);
+            *this = (*this * rhs);
             return *this;
         }
 
@@ -379,9 +375,13 @@ template <typename T> QuaternionT<T> operator - (const QuaternionT<T>& lhs, cons
 
 template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
 {
-    auto result = lhs;
-    result *= rhs;
-    return result;
+    return QuaternionT<T>
+    {
+        ( (lhs.x * rhs.w) + (lhs.w * rhs.x) + (lhs.z * rhs.y) - (lhs.y * rhs.z) ),
+        ( (lhs.y * rhs.w) - (lhs.z * rhs.x) + (lhs.w * rhs.y) + (lhs.x * rhs.z) ),
+        ( (lhs.z * rhs.w) + (lhs.y * rhs.x) - (lhs.x * rhs.y) + (lhs.w * rhs.z) ),
+        ( (lhs.w * rhs.w) - (lhs.x * rhs.x) - (lhs.y * rhs.y) - (lhs.z * rhs.z) )
+    };
 }
 
 template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, const T& rhs)
