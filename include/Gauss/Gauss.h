@@ -46,7 +46,6 @@
 
 #ifdef GS_ENABLE_SSE2
 #   include "Vector4_SSE2.h"
-#   include "Quaternion_SSE2.h"
 #   include "Algebra_SSE2.h"
 #endif
 
