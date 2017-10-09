@@ -318,43 +318,43 @@ T Rescale(const T& t, const I& lower0, const I& upper0, const I& lower1, const I
 
 /* --- Global Operators --- */
 
-#ifdef GS_ROW_VECTORS
-
-//! \brief Multiplies the N-dimensional vector with the NxN matrix with.
-template <typename T, std::size_t N>
-Vector<T, N> operator * (const Vector<T, N>& vec, const Matrix<T, N, N>& mat)
+/**
+\brief Multiplies the N-dimensional row-vector with the NxM matrix.
+\remarks This is equivalent to: Transpose(rhs) * lhs.
+*/
+template <typename T, std::size_t Rows, std::size_t Cols>
+Vector<T, Cols> operator * (const Vector<T, Rows>& lhs, const Matrix<T, Rows, Cols>& rhs)
 {
-    Vector<T, N> result;
+    Vector<T, Cols> result;
 
-    for (std::size_t c = 0; c < N; ++c)
+    for (std::size_t c = 0; c < Cols; ++c)
     {
         result[c] = T(0);
-        for (std::size_t r = 0; r < N; ++r)
-            result[c] += mat(r, c)*vec[r];
+        for (std::size_t r = 0; r < Rows; ++r)
+            result[c] += rhs(r, c)*lhs[r];
     }
 
     return result;
 }
 
-#else
-
-//! \brief Multiplies the NxN matrix with the N-dimensional vector.
-template <typename T, std::size_t N>
-Vector<T, N> operator * (const Matrix<T, N, N>& mat, const Vector<T, N>& vec)
+/**
+\brief Multiplies the NxM matrix with the M-dimensional column-vector.
+\remarks This is equivalent to: rhs * Transpose(lhs).
+*/
+template <typename T, std::size_t Rows, std::size_t Cols>
+Vector<T, Rows> operator * (const Matrix<T, Rows, Cols>& lhs, const Vector<T, Cols>& rhs)
 {
-    Vector<T, N> result;
+    Vector<T, Rows> result;
 
-    for (std::size_t r = 0; r < N; ++r)
+    for (std::size_t r = 0; r < Rows; ++r)
     {
         result[r] = T(0);
-        for (std::size_t c = 0; c < N; ++c)
-            result[r] += mat(r, c)*vec[c];
+        for (std::size_t c = 0; c < Cols; ++c)
+            result[r] += lhs(r, c)*rhs[c];
     }
 
     return result;
 }
-
-#endif
 
 
 } // /namespace Gs

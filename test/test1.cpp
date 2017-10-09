@@ -112,11 +112,11 @@ static void commonTest1()
     std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "A * B = " << std::endl << (A * B) << std::endl;
 
-    #ifdef GS_ROW_VECTORS
-    std::cout << "a * A = " << std::endl << (a * A) << std::endl;
-    #else
-    std::cout << "A * a = " << std::endl << (A * a) << std::endl;
-    #endif
+    std::cout << "A * a = " << (A * a) << std::endl;
+    std::cout << "a * A = " << (a * A) << std::endl;
+    std::cout << "C * b = " << (C * b) << std::endl;
+    std::cout << "b * C^T = " << (b * C.Transposed()) << std::endl;
+    std::cout << "Vector3(a) * C = " << (Vector3(a) * C) << std::endl;
 
     #endif
 
@@ -274,11 +274,7 @@ static void complexTest1()
     Vector4T<complex> a(complex(0, 0), complex(0, 1), complex(4, -2), complex());
     Matrix4T<complex> A = Matrix4T<complex>::Identity();
 
-    #ifdef GS_ROW_VECTORS
-    auto b = a * A;
-    #else
     auto b = A * a;
-    #endif
 }
 
 static void projectionTest1()
@@ -297,11 +293,7 @@ static void projectionTest1()
     std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
     std::cout << "a = " << a << std::endl;
     std::cout << "Project(R, a) = ";
-    #ifdef GS_ROW_VECTORS
-    std::cout << (a * R).xy() << std::endl;
-    #else
     std::cout << (R * a).xy() << std::endl;
-    #endif
 }
 
 static void equalsTest1()
@@ -346,11 +338,7 @@ static void vectorTest1()
 
     std::cout << "x = " << x << std::endl;
     std::cout << "A = " << std::endl << A << std::endl;
-    #ifdef GS_ROW_VECTORS
-    std::cout << "x*A = " << x*A << std::endl;
-    #else
     std::cout << "A*x = " << A*x << std::endl;
-    #endif
     std::cout << "Trace(A) = " << A.Trace() << std::endl;
 }
 
@@ -549,11 +537,11 @@ int main()
 
     try
     {
-        //commonTest1();
+        commonTest1();
         //affineMatrixTest1();
         //affineMatrixTest2();
         //quaternionTest1();
-        quaternionTest2();
+        //quaternionTest2();
         //matrixVectorTest1();
         //complexTest1();
         //projectionTest1();
@@ -568,7 +556,7 @@ int main()
         //rotateMatrixTest1();
 		//rcpTest1();
         //stdMathTest1();
-        vector3Test1();
+        //vector3Test1();
         //sseVector4Test1();
         //sseVector4Test2();
     }
