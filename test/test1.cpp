@@ -29,7 +29,7 @@ static void commonTest1()
 {
     // --- vector tests ---
 
-    const Vector4 a(1, 2, 3, 4), b(-4, 0, 2);
+    const Vector4 a(1, 2, 3, 4), b(-4, 0, 2, 1);
 
     #ifdef GS_ENABLE_SWIZZLE_OPERATOR
     Vector4 c = a.zzzw()*Real(2) + a.xyxy() - b.yxzw();

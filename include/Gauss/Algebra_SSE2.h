@@ -22,7 +22,7 @@ namespace Gs
 
 //! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
 template <>
-double Dot(const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
+inline double Dot(const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
 {
     union
     {

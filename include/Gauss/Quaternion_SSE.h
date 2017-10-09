@@ -1,72 +1,56 @@
 /*
- * Quaternion.h
+ * Quaternion_SSE.h
  * 
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
 
-#ifndef GS_QUATERNION_H
-#define GS_QUATERNION_H
+#ifndef GS_QUATERNION_SSE_H
+#define GS_QUATERNION_SSE_H
 
 
-#include "Decl.h"
-#include "Real.h"
-#include "Assert.h"
-#include "Algebra.h"
-#include "Tags.h"
-#include "Matrix.h"
-#include "Conversions.h"
+#include "Quaternion.h"
 
-#include <cmath>
-#include <limits>
-#include <type_traits>
+#include <xmmintrin.h>
 
 
 namespace Gs
 {
 
 
-/**
-Base quaternion class with components: x, y, z, and w.
-\tparam T Specifies the data type of the quaternion components.
-This should be a primitive data type such as float, double.
-*/
-template <typename T>
-class QuaternionT
+//! Template specialization with SSE support for 4D single-precision floating-point quaternions.
+template <>
+class alignas(16) QuaternionT<float>
 {
     
     public:
         
-        static_assert(std::is_floating_point<T>::value, "quaternions can only be used with floating point types");
+        using T = float;
 
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static const std::size_t components = 4;
 
         #ifndef GS_DISABLE_AUTO_INIT
         QuaternionT() :
-            x { T(0) },
-            y { T(0) },
-            z { T(0) },
-            w { T(1) }
+            m128 { _mm_setzero_ps() }
         {
         }
         #else
         QuaternionT() = default;
         #endif
 
+        QuaternionT(__m128 rhs) :
+            m128 { rhs }
+        {
+        }
+
         QuaternionT(const QuaternionT<T>& rhs) :
-            x { rhs.x },
-            y { rhs.y },
-            z { rhs.z },
-            w { rhs.w }
+            m128 { rhs.m128 }
         {
         }
 
         QuaternionT(const T& x, const T& y, const T& z, const T& w) :
-            x { x },
-            y { y },
-            z { z },
-            w { w }
+            m128 { x, y, z, w }
         {
         }
 
@@ -83,19 +67,13 @@ class QuaternionT
 
         QuaternionT<T>& operator += (const QuaternionT<T>& rhs)
         {
-            x += rhs.x;
-            y += rhs.y;
-            z += rhs.z;
-            w += rhs.w;
+            m128 = _mm_add_ps(m128, rhs.m128);
             return *this;
         }
 
         QuaternionT<T>& operator -= (const QuaternionT<T>& rhs)
         {
-            x -= rhs.x;
-            y -= rhs.y;
-            z -= rhs.z;
-            w -= rhs.w;
+            m128 = _mm_sub_ps(m128, rhs.m128);
             return *this;
         }
 
@@ -107,10 +85,7 @@ class QuaternionT
 
         QuaternionT<T>& operator *= (const T& rhs)
         {
-            x *= rhs;
-            y *= rhs;
-            z *= rhs;
-            w *= rhs;
+            m128 = _mm_mul_ps(m128, _mm_set_ps1(rhs));
             return *this;
         }
 
@@ -211,14 +186,19 @@ class QuaternionT
 
         void GetEulerAngles(Vector<T, 3>& angles) const
         {
-            const T xx = x*x;
-            const T yy = y*y;
-            const T zz = z*z;
-            const T ww = w*w;
+            union
+            {
+                struct
+                {
+                    T xx, yy, zz, ww;
+                };
+                __m128 sq;
+            };
+            sq = _mm_mul_ps(m128, m128);
 
-            angles.x = std::atan2(T(2) * (y*z + x*w), -xx - yy + zz + ww);
-            angles.y = std::asin(Clamp(T(2) * (y*w - x*z), T(-1), T(1)));
-            angles.z = std::atan2(T(2) * (x*y + z*w), xx - yy - zz + ww);
+            angles.x = std::atan2(2.0f * (y*z + x*w), -xx - yy + zz + ww);
+            angles.y = std::asin(Clamp(2.0f * (y*w - x*z), -1.0f, 1.0f));
+            angles.z = std::atan2(2.0f * (x*y + z*w), xx - yy - zz + ww);
         }
 
         /**
@@ -228,33 +208,35 @@ class QuaternionT
         */
         void SetAngleAxis(const Vector<T, 3>& axis, const T& angle)
         {
-            const T halfAngle   = angle / T(2);
+            const T halfAngle   = angle * 0.5f;
             const T sine        = std::sin(halfAngle);
 
-            x = sine * axis.x;
-            y = sine * axis.y;
-            z = sine * axis.z;
-            w = std::cos(halfAngle);
+            m128 = _mm_set_ps(
+                std::cos(halfAngle),
+                sine * axis.z,
+                sine * axis.y,
+                sine * axis.x
+            );
         }
 
         void GetAngleAxis(Vector<T, 3>& axis, T& angle) const
         {
             const T scale = std::sqrt(x*x + y*y + z*z);
 
-            if ( ( std::abs(scale) <= std::numeric_limits<T>::epsilon() ) || w > T(1) || w < T(-1) )
+            if ( ( std::abs(scale) <= std::numeric_limits<T>::epsilon() ) || w > 1.0f || w < -1.0f )
             {
-                axis.x  = T(0);
-                axis.y  = T(1);
-                axis.z  = T(0);
-                angle   = T(0);
+                axis.x  = 0.0f;
+                axis.y  = 1.0f;
+                axis.z  = 0.0f;
+                angle   = 0.0f;
             }
             else
             {
-                const T invScale = T(1) / scale;
+                const T invScale = 1.0f / scale;
                 axis.x  = x * invScale;
                 axis.y  = y * invScale;
                 axis.z  = z * invScale;
-                angle   = T(2) * std::acos(w);
+                angle   = 2.0f * std::acos(w);
             }
         }
 
@@ -315,82 +297,43 @@ class QuaternionT
             return result;
         }
 
-        T x, y, z, w;
+        union
+        {
+            struct
+            {
+                T x, y, z, w;
+            };
+            __m128 m128;
+        };
 
 };
 
 
 /* --- Global Operators --- */
 
-template <typename T>
-QuaternionT<T> operator + (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+template <>
+inline QuaternionT<float> operator + (const QuaternionT<float>& lhs, const QuaternionT<float>& rhs)
 {
-    auto result = lhs;
-    result += rhs;
-    return result;
+    return QuaternionT<float>(_mm_add_ps(lhs.m128, rhs.m128));
 }
 
-template <typename T>
-QuaternionT<T> operator - (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+template <>
+inline QuaternionT<float> operator - (const QuaternionT<float>& lhs, const QuaternionT<float>& rhs)
 {
-    auto result = lhs;
-    result -= rhs;
-    return result;
+    return QuaternionT<float>(_mm_sub_ps(lhs.m128, rhs.m128));
 }
 
-template <typename T>
-QuaternionT<T> operator * (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+template <>
+inline QuaternionT<float> operator * (const QuaternionT<float>& lhs, const float& rhs)
 {
-    return QuaternionT<T>
-    {
-        ( (lhs.x * rhs.w) + (lhs.w * rhs.x) + (lhs.z * rhs.y) - (lhs.y * rhs.z) ),
-        ( (lhs.y * rhs.w) - (lhs.z * rhs.x) + (lhs.w * rhs.y) + (lhs.x * rhs.z) ),
-        ( (lhs.z * rhs.w) + (lhs.y * rhs.x) - (lhs.x * rhs.y) + (lhs.w * rhs.z) ),
-        ( (lhs.w * rhs.w) - (lhs.x * rhs.x) - (lhs.y * rhs.y) - (lhs.z * rhs.z) )
-    };
+    return QuaternionT<float>(_mm_mul_ps(lhs.m128, _mm_set_ps1(rhs)));
 }
 
-template <typename T>
-QuaternionT<T> operator * (const QuaternionT<T>& lhs, const T& rhs)
+template <>
+inline QuaternionT<float> operator * (const float& lhs, const QuaternionT<float>& rhs)
 {
-    auto result = lhs;
-    result *= rhs;
-    return result;
+    return QuaternionT<float>(_mm_mul_ps(_mm_set_ps1(lhs), rhs.m128));
 }
-
-template <typename T>
-QuaternionT<T> operator * (const T& lhs, const QuaternionT<T>& rhs)
-{
-    auto result = rhs;
-    result *= lhs;
-    return result;
-}
-
-//! Rotates the specified vector 'rhs' by the quaternion 'lhs' and returns the new rotated vector.
-template <typename T>
-Vector<T, 3> operator * (const QuaternionT<T>& lhs, const Vector<T, 3>& rhs)
-{
-    Vector<T, 3> qvec(lhs.x, lhs.y, lhs.z);
-
-    auto uv = Cross(qvec, rhs);
-    auto uuv = Cross(qvec, uv);
-
-    uv *= (T(2) * lhs.w);
-    uuv *= T(2);
-
-    /* Result := vec + uv + uuv */
-    uv += uuv;
-    uv += rhs;
-
-    return uv;
-}
-
-
-/* --- Type Alias --- */
-
-using Quaternion = QuaternionT<Real>;
-using Quaternionf = QuaternionT<float>;
-using Quaterniond = QuaternionT<double>;
 
 
 } // /namespace Gs

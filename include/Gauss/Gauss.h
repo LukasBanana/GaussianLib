@@ -40,11 +40,13 @@
 
 #ifdef GS_ENABLE_SSE
 #   include "Vector4_SSE.h"
+#   include "Quaternion_SSE.h"
 #   include "Algebra_SSE.h"
 #endif
 
 #ifdef GS_ENABLE_SSE2
 #   include "Vector4_SSE2.h"
+#   include "Quaternion_SSE2.h"
 #   include "Algebra_SSE2.h"
 #endif
 
