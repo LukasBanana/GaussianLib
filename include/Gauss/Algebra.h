@@ -133,11 +133,12 @@ T Dot(const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
 template <typename T>
 Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
 {
-    return Vector<T, 3>(
+    return Vector<T, 3>
+    {
         lhs.y*rhs.z - rhs.y*lhs.z,
         rhs.x*lhs.z - lhs.x*rhs.z,
         lhs.x*rhs.y - rhs.x*lhs.y
-    );
+    };
 }
 
 //! Returns the reflected vector of the incident vector for the specified surface normal.
