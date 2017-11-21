@@ -212,11 +212,11 @@ static void quaternionTest1()
     std::cout << "q0 = " << q0 << std::endl;
     std::cout << "q1 = " << q1 << std::endl;
 
-    /*for (int i = 0; i <= 10; ++i)
+    for (int i = 0; i <= 10; ++i)
     {
         auto t = static_cast<Real>(i) / 10;
         std::cout << "Slerp(" << t << ") = " << Slerp(q0, q1, t) << std::endl;
-    }*/
+    }
 
     Matrix3 m = Matrix3::Identity();
     RotateFree(m, Vector3(1, 0, 1), pi*0.5f);
@@ -540,7 +540,7 @@ int main()
         commonTest1();
         //affineMatrixTest1();
         //affineMatrixTest2();
-        //quaternionTest1();
+        quaternionTest1();
         //quaternionTest2();
         //matrixVectorTest1();
         //complexTest1();

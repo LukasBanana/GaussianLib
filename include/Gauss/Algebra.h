@@ -117,7 +117,7 @@ T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
     return result;
 }
 
-//! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
+//! Returns the dot or rather scalar product between the two quaternions 'lhs' and 'rhs'.
 template <typename T>
 T Dot(const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
 {
@@ -168,7 +168,7 @@ void Normalize(Vector<T, N>& vec)
 template <typename T>
 void Normalize(QuaternionT<T>& q)
 {
-    auto len = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
+    auto len = Dot(q, q);
     if (len != T(0) && len != T(1))
     {
         len = T(1) / std::sqrt(len);
@@ -217,6 +217,16 @@ T Lerp(const T& a, const T& b, const I& t)
 }
 
 /**
+\brief Mixes the two values by their scalings.
+\return Equivalent to: v0*scale0 + v1*scale1
+*/
+template <typename T, typename I>
+T Mix(const T& v0, const T& v1, const I& scale0, const I& scale1)
+{
+    return v0*scale0 + v1*scale1;
+}
+
+/**
 \brief Clamps the input value 'x' into the range [0, 1].
 \return max{ 0, min{ x, 1 } }
 */
@@ -247,9 +257,39 @@ T Clamp(const T& x, const T& minima, const T& maxima)
 template <template <typename> class Quat, typename T>
 Quat<T> Slerp(const Quat<T>& from, const Quat<T>& to, const T& t)
 {
-    Quat<T> q;
-    q.Slerp(from, to, t);
-    return q;
+    T omega, cosom, sinom;
+    T scale0, scale1;
+
+    /* Calculate cosine */
+    cosom = Dot(from, to);
+
+    /* Adjust signs (if necessary) */
+    if (cosom < T(0))
+    {
+        cosom = -cosom;
+        scale1 = T(-1);
+    }
+    else
+        scale1 = T(1);
+
+    /* Calculate coefficients */
+    if ((T(1) - cosom) > std::numeric_limits<T>::epsilon()) 
+    {
+        /* Standard case (slerp) */
+        omega = std::acos(cosom);
+        sinom = std::sin(omega);
+        scale0 = std::sin((T(1) - t) * omega) / sinom;
+        scale1 *= std::sin(t * omega) / sinom;
+    }
+    else
+    {
+        /* 'from' and 'to' quaternions are very close, so we can do a linear interpolation */
+        scale0 = T(1) - t;
+        scale1 *= t;
+    }
+
+    /* Calculate final values */
+    return Mix(from, to, scale0, scale1);
 }
 
 /**

@@ -31,7 +31,8 @@ Base quaternion class with components: x, y, z, and w.
 \tparam T Specifies the data type of the quaternion components.
 This should be a primitive data type such as float, double.
 */
-template <typename T> class QuaternionT
+template <typename T>
+class QuaternionT
 {
     
     public:
@@ -181,46 +182,7 @@ template <typename T> class QuaternionT
         */
         void Slerp(const QuaternionT<T>& from, QuaternionT<T> to, const T& t)
         {
-            T omega, cosom, sinom;
-            T scale0, scale1;
-
-            /* Calculate cosine */
-            cosom = Dot(from, to);
-
-            /* Adjust signs (if necessary) */
-            if (cosom < T(0))
-            {
-                cosom = -cosom;
-                to.x = -to.x;
-                to.y = -to.y;
-                to.z = -to.z;
-                to.w = -to.w;
-            }
-            
-            /* Calculate coefficients */
-            if ((T(1) - cosom) > std::numeric_limits<T>::epsilon()) 
-            {
-                /* Standard case (slerp) */
-                omega = std::acos(cosom);
-                sinom = std::sin(omega);
-                scale0 = std::sin((T(1) - t) * omega) / sinom;
-                scale1 = std::sin(t * omega) / sinom;
-            }
-            else
-            {        
-                /*
-                "from" and "to" quaternions are very close 
-                ... so we can do a linear interpolation
-                */
-                scale0 = T(1) - t;
-                scale1 = t;
-            }
-
-            /* Calculate final values */
-            x = scale0*from.x + scale1*to.x;
-            y = scale0*from.y + scale1*to.y;
-            z = scale0*from.z + scale1*to.z;
-            w = scale0*from.w + scale1*to.w;
+            *this = Gs::Slerp(from, to, t);
         }
 
         //! Sets the quaternion to an euler rotation with the specified angles (in radian).
@@ -314,7 +276,8 @@ template <typename T> class QuaternionT
         Returns a type casted instance of this quaternion.
         \tparam C Specifies the static cast type.
         */
-        template <typename C> QuaternionT<C> Cast() const
+        template <typename C>
+        QuaternionT<C> Cast() const
         {
             return QuaternionT<C>(
                 static_cast<C>(x),
@@ -359,21 +322,24 @@ template <typename T> class QuaternionT
 
 /* --- Global Operators --- */
 
-template <typename T> QuaternionT<T> operator + (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+template <typename T>
+QuaternionT<T> operator + (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
 {
     auto result = lhs;
     result += rhs;
     return result;
 }
 
-template <typename T> QuaternionT<T> operator - (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+template <typename T>
+QuaternionT<T> operator - (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
 {
     auto result = lhs;
     result -= rhs;
     return result;
 }
 
-template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
+template <typename T>
+QuaternionT<T> operator * (const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
 {
     return QuaternionT<T>
     {
@@ -384,14 +350,16 @@ template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, cons
     };
 }
 
-template <typename T> QuaternionT<T> operator * (const QuaternionT<T>& lhs, const T& rhs)
+template <typename T>
+QuaternionT<T> operator * (const QuaternionT<T>& lhs, const T& rhs)
 {
     auto result = lhs;
     result *= rhs;
     return result;
 }
 
-template <typename T> QuaternionT<T> operator * (const T& lhs, const QuaternionT<T>& rhs)
+template <typename T>
+QuaternionT<T> operator * (const T& lhs, const QuaternionT<T>& rhs)
 {
     auto result = rhs;
     result *= lhs;
@@ -399,10 +367,10 @@ template <typename T> QuaternionT<T> operator * (const T& lhs, const QuaternionT
 }
 
 //! Rotates the specified vector 'rhs' by the quaternion 'lhs' and returns the new rotated vector.
-template <typename T, std::size_t N>
-Vector<T, N> operator * (const QuaternionT<T>& lhs, const Vector<T, N>& rhs)
+template <typename T>
+Vector<T, 3> operator * (const QuaternionT<T>& lhs, const Vector<T, 3>& rhs)
 {
-    Vector<T, N> qvec(lhs.x, lhs.y, lhs.z);
+    Vector<T, 3> qvec(lhs.x, lhs.y, lhs.z);
 
     auto uv = Cross(qvec, rhs);
     auto uuv = Cross(qvec, uv);
