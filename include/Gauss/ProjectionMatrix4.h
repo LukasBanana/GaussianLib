@@ -91,8 +91,18 @@ class ProjectionMatrix4T
         
         static_assert(std::is_floating_point<T>::value, "projection matrices can only be used with floating point types");
 
+        /* ----- Typenames ----- */
+
+        //! Specifies the typename of the scalar components.
+        using ScalarType        = T;
+
+        //! Typename of this matrix type.
         using ThisType          = ProjectionMatrix4T<T>;
+
+        //! Typename of the transposed of this matrix type.
         using TransposedType    = ProjectionMatrix4T<T>;
+
+        /* ----- Functions ----- */
 
         ProjectionMatrix4T()
             #ifndef GS_DISABLE_AUTO_INIT
@@ -117,7 +127,7 @@ class ProjectionMatrix4T
         {
         }
 
-        ProjectionMatrix4T(UninitializeTag)
+        explicit ProjectionMatrix4T(UninitializeTag)
         {
             // do nothing
         }

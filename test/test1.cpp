@@ -236,6 +236,7 @@ static void quaternionTest2()
     std::cout << "q1       = " << q1 << std::endl;
 
     std::cout << "q0 * q0  = " << q0*q0 << std::endl;
+    std::cout << "Dot(q0, q0)  = " << Dot(q0, q0) << std::endl;
 
     q0 *= q0;
     std::cout << "q0 *= q0 = " << q0 << std::endl;
@@ -538,27 +539,27 @@ int main()
     try
     {
         commonTest1();
-        //affineMatrixTest1();
-        //affineMatrixTest2();
+        affineMatrixTest1();
+        affineMatrixTest2();
         quaternionTest1();
-        //quaternionTest2();
-        //matrixVectorTest1();
-        //complexTest1();
-        //projectionTest1();
-        //equalsTest1();
-        //vectorTest1();
-        //epsilonTest1();
-        //sphericalTest1();
-        //crossProductTest1();
-        //rotateVectorTest1();
-        //sortingTest1();
-        //flipTest1();
-        //rotateMatrixTest1();
-		//rcpTest1();
-        //stdMathTest1();
-        //vector3Test1();
-        //sseVector4Test1();
-        //sseVector4Test2();
+        quaternionTest2();
+        matrixVectorTest1();
+        complexTest1();
+        projectionTest1();
+        equalsTest1();
+        vectorTest1();
+        epsilonTest1();
+        sphericalTest1();
+        crossProductTest1();
+        rotateVectorTest1();
+        sortingTest1();
+        flipTest1();
+        rotateMatrixTest1();
+		rcpTest1();
+        stdMathTest1();
+        vector3Test1();
+        sseVector4Test1();
+        sseVector4Test2();
     }
     catch (const std::exception& e)
     {

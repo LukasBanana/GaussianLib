@@ -39,6 +39,9 @@ class QuaternionT
         
         static_assert(std::is_floating_point<T>::value, "quaternions can only be used with floating point types");
 
+        //! Specifies the typename of the scalar components.
+        using ScalarType = T;
+
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static const std::size_t components = 4;
 
@@ -76,7 +79,7 @@ class QuaternionT
             Gs::MatrixToQuaternion(*this, matrix);
         }
 
-        QuaternionT(UninitializeTag)
+        explicit QuaternionT(UninitializeTag)
         {
             // do nothing
         }

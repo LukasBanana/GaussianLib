@@ -79,7 +79,7 @@ class SphericalT
             }
         }
 
-        SphericalT(UninitializeTag)
+        explicit SphericalT(UninitializeTag)
         {
             // do nothing
         }

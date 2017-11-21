@@ -33,6 +33,9 @@ class Vector
 {
     
     public:
+
+        //! Specifies the typename of the scalar components.
+        using ScalarType = T;
         
         //! Specifies the number of vector components.
         static const std::size_t components = N;
@@ -56,7 +59,7 @@ class Vector
             std::fill(std::begin(v_), std::end(v_), scalar);
         }
 
-        Vector(UninitializeTag)
+        explicit Vector(UninitializeTag)
         {
             // do nothing
         }

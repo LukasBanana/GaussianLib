@@ -32,6 +32,9 @@ class Vector<T, 3>
     
     public:
         
+        //! Specifies the typename of the scalar components.
+        using ScalarType = T;
+        
         //! Specifies the number of vector components.
         static const std::size_t components = 3;
 
@@ -93,7 +96,7 @@ class Vector<T, 3>
             z = sphericalCoord.radius * std::cos(sphericalCoord.theta);
         }
 
-        Vector(UninitializeTag)
+        explicit Vector(UninitializeTag)
         {
             // do nothing
         }

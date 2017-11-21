@@ -69,6 +69,8 @@ class AffineMatrix3T
     
     public:
         
+        /* ----- Static members ----- */
+
         static const std::size_t rows           = 3;
         static const std::size_t columns        = 3;
         static const std::size_t elements       = AffineMatrix3T<T>::rows*AffineMatrix3T<T>::columns;
@@ -83,9 +85,21 @@ class AffineMatrix3T
 
         static const std::size_t elementsSparse = AffineMatrix3T<T>::rowsSparse*AffineMatrix3T<T>::columnsSparse;
 
+        /* ----- Typenames ----- */
+
+        //! Specifies the typename of the scalar components.
+        using ScalarType        = T;
+
+        //! Typename of this matrix type.
         using ThisType          = AffineMatrix3T<T>;
+
+        //! Typename of the transposed of this matrix type.
         using TransposedType    = Matrix<T, AffineMatrix3T<T>::rows, AffineMatrix3T<T>::columns>;
+
+        //! Typename of the matrix initializer.
         using Initializer       = Details::MatrixInitializer<AffineMatrix3T<T>, T, AffineMatrix3T<T>::columnsSparse>;
+
+        /* ----- Functions ----- */
 
         AffineMatrix3T()
         {
@@ -123,7 +137,7 @@ class AffineMatrix3T
 
         #endif
 
-        AffineMatrix3T(UninitializeTag)
+        explicit AffineMatrix3T(UninitializeTag)
         {
             // do nothing
         }
