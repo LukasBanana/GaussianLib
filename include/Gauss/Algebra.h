@@ -59,52 +59,6 @@ T NormalDistribution(const T& x)
     return std::exp(-(x*x) / T(2)) / std::sqrt(T(2) * T(Gs::pi));
 }
 
-//! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Angle(const VectorType& lhs, const VectorType& rhs)
-{
-    return std::acos( Dot<VectorType, ScalarType>(lhs, rhs) / (Length<VectorType, ScalarType>(lhs)*Length<VectorType, ScalarType>(rhs)) );
-}
-
-//! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType AngleNorm(const VectorType& lhs, const VectorType& rhs)
-{
-    return std::acos(Dot<VectorType, ScalarType>(lhs, rhs));
-}
-
-//! Returns the squared length of the specified vector.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType LengthSq(const VectorType& vec)
-{
-    return Dot<VectorType, ScalarType>(vec, vec);
-}
-
-//! Returns the length (euclidian norm) of the specified vector.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Length(const VectorType& vec)
-{
-    return std::sqrt(LengthSq<VectorType, ScalarType>(vec));
-}
-
-//! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType DistanceSq(const VectorType& lhs, const VectorType& rhs)
-{
-    auto result = rhs;
-    result -= lhs;
-    return LengthSq<VectorType, ScalarType>(result);
-}
-
-//! Returns the distance between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Distance(const VectorType& lhs, const VectorType& rhs)
-{
-    auto result = rhs;
-    result -= lhs;
-    return Length<VectorType, ScalarType>(result);
-}
-
 //! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
 template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
 ScalarType Dot(const VectorType& lhs, const VectorType& rhs)
@@ -128,6 +82,52 @@ VectorType Cross(const VectorType& lhs, const VectorType& rhs)
         rhs.x*lhs.z - lhs.x*rhs.z,
         lhs.x*rhs.y - rhs.x*lhs.y
     };
+}
+
+//! Returns the squared length of the specified vector.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType LengthSq(const VectorType& vec)
+{
+    return Dot<VectorType, ScalarType>(vec, vec);
+}
+
+//! Returns the length (euclidian norm) of the specified vector.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Length(const VectorType& vec)
+{
+    return std::sqrt(LengthSq<VectorType, ScalarType>(vec));
+}
+
+//! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Angle(const VectorType& lhs, const VectorType& rhs)
+{
+    return std::acos( Dot<VectorType, ScalarType>(lhs, rhs) / (Length<VectorType, ScalarType>(lhs) * Length<VectorType, ScalarType>(rhs)) );
+}
+
+//! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType AngleNorm(const VectorType& lhs, const VectorType& rhs)
+{
+    return std::acos(Dot<VectorType, ScalarType>(lhs, rhs));
+}
+
+//! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType DistanceSq(const VectorType& lhs, const VectorType& rhs)
+{
+    auto result = rhs;
+    result -= lhs;
+    return LengthSq<VectorType, ScalarType>(result);
+}
+
+//! Returns the distance between the two vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Distance(const VectorType& lhs, const VectorType& rhs)
+{
+    auto result = rhs;
+    result -= lhs;
+    return Length<VectorType, ScalarType>(result);
 }
 
 //! Returns the reflected vector of the incident vector for the specified surface normal.
