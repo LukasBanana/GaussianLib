@@ -17,7 +17,7 @@
 
 #ifdef GS_ENABLE_ASSERT
 #   ifdef GS_ASSERT_EXCEPTION
-#       include <exception>
+#       include <stdexcept>
 #       define GS_ASSERT(expr)                                  \
             if (!(expr))                                        \
             {                                                   \

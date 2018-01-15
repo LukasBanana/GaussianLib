@@ -87,14 +87,37 @@ class Matrix
         
         static_assert(Rows*Cols > 0, "matrices must consist of at least 1x1 elements");
 
+        /* ----- Static members ----- */
+
+        //! Number of rows of this matrix type.
         static const std::size_t rows       = Rows;
+
+        //! Number of columns of this matrix type.
         static const std::size_t columns    = Cols;
+
+        //! Number of scalar elements of this matrix type.
         static const std::size_t elements   = Rows*Cols;
 
+        /* ----- Typenames ----- */
+
+        //! Specifies the typename of the scalar components.
+        using ScalarType        = T;
+
+        //! Typename of this matrix type.
         using ThisType          = Matrix<T, Rows, Cols>;
+
+        //! Typename of the transposed of this matrix type.
         using TransposedType    = Matrix<T, Cols, Rows>;
+
+        //! Typename of the matrix initializer.
         using Initializer       = Details::MatrixInitializer<Matrix<T, Rows, Cols>, T, Cols>;
 
+        /* ----- Functions ----- */
+
+        /**
+        \brief Default constructor.
+        \remarks If the 'GS_DISABLE_AUTO_INIT' is NOT defined, the matrix elements will be initialized. Otherwise, the matrix is in an uninitialized state.
+        */
         Matrix()
         {
             #ifndef GS_DISABLE_AUTO_INIT
@@ -102,16 +125,28 @@ class Matrix
             #endif
         }
 
+        //! Copy constructor.
         Matrix(const ThisType& rhs)
         {
             *this = rhs;
         }
 
-        Matrix(UninitializeTag)
+        /**
+        \brief Explicitly uninitialization constructor.
+        \remarks With this constructor, the matrix is always in an uninitialized state.
+        */
+        explicit Matrix(UninitializeTag)
         {
             // do nothing
         }
 
+        /**
+        \brief Returns a reference to a single matrix element at the specified location.
+        \param[in] row Specifies the zero-based row index. Must be in the range [0, Rows).
+        \param[in] col Specifies the zero-based column index. Must be in the range [0, Cols).
+        \throws std::runtime_error If the macro 'GS_ENABLE_ASSERT' and the macro 'GS_ASSERT_EXCEPTION' are defined,
+        and either the row or the column is out of range.
+        */
         T& operator () (std::size_t row, std::size_t col)
         {
             GS_ASSERT(row < Rows);
@@ -123,6 +158,13 @@ class Matrix
             #endif
         }
 
+        /**
+        \brief Returns a constant reference to a single matrix element at the specified location.
+        \param[in] row Specifies the zero-based row index. Must be in the range [0, Rows).
+        \param[in] col Specifies the zero-based column index. Must be in the range [0, Cols).
+        \throws std::runtime_error If the macro 'GS_ENABLE_ASSERT' and the macro 'GS_ASSERT_EXCEPTION' are defined,
+        and either the row or the column is out of range.
+        */
         const T& operator () (std::size_t row, std::size_t col) const
         {
             GS_ASSERT(row < Rows);
@@ -207,12 +249,14 @@ class Matrix
 
         #endif
 
+        //! Restes all matrix elements to zero.
         void Reset()
         {
             for (std::size_t i = 0; i < ThisType::elements; ++i)
                 m_[i] = T(0);
         }
 
+        //! Loads the identity for this matrix.
         void LoadIdentity()
         {
             GS_ASSERT_NxN_MATRIX;
@@ -222,6 +266,7 @@ class Matrix
             }
         }
 
+        //! Returns an identity matrix.
         static ThisType Identity()
         {
             ThisType result;
@@ -229,6 +274,7 @@ class Matrix
             return result;
         }
 
+        //! Returns a transposed copy of this matrix.
         TransposedType Transposed() const
         {
             TransposedType result;
@@ -241,6 +287,7 @@ class Matrix
             return result;
         }
 
+        //! Transposes this matrix.
         void Transpose()
         {
             GS_ASSERT_NxN_MATRIX;
@@ -257,6 +304,10 @@ class Matrix
             }
         }
 
+        /**
+        \brief Returns the determinant of this matrix.
+        \see Gs::Determinant
+        */
         T Determinant() const
         {
             return Gs::Determinant(*this);
@@ -280,14 +331,14 @@ class Matrix
 
         Matrix<T, Rows, Cols> Inverse() const
         {
-            Matrix<T, Rows, Cols> inv{ *this };
+            Matrix<T, Rows, Cols> inv { *this };
             inv.MakeInverse();
             return inv;
         }
 
         bool MakeInverse()
         {
-            Matrix<T, Rows, Cols> in{ *this };
+            Matrix<T, Rows, Cols> in { *this };
             return Gs::Inverse(*this, in);
         }
 
@@ -309,7 +360,7 @@ class Matrix
         */
         template <typename C> Matrix<C, Rows, Cols> Cast() const
         {
-            Matrix<C, Rows, Cols> result(UninitializeTag{});
+            Matrix<C, Rows, Cols> result { UninitializeTag{} };
 
             for (std::size_t i = 0; i < ThisType::elements; ++i)
                 result[i] = static_cast<C>(m_[i]);
@@ -361,7 +412,7 @@ Matrix<T, Rows, Cols> operator * (const T& lhs, const Matrix<T, Rows, Cols>& rhs
 template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
 Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)
 {
-    Matrix<T, Rows, Cols> result(UninitializeTag{});
+    Matrix<T, Rows, Cols> result { UninitializeTag{} };
 
     GS_FOREACH_ROW_COL(r, c)
     {

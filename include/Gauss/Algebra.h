@@ -59,128 +59,106 @@ T NormalDistribution(const T& x)
     return std::exp(-(x*x) / T(2)) / std::sqrt(T(2) * T(Gs::pi));
 }
 
-//! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
-template <typename T, std::size_t N>
-T Angle(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
-{
-    return std::acos( Dot(lhs, rhs) / (lhs.Length()*rhs.Length()) );
-}
-
-//! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
-template <typename T, std::size_t N>
-T AngleNorm(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
-{
-    return std::acos(Dot(lhs, rhs));
-}
-
-//! Returns the squared length of the specified vector.
-template <typename T, std::size_t N>
-T LengthSq(const Vector<T, N>& vec)
-{
-    return Dot(vec, vec);
-}
-
-//! Returns the length (euclidian norm) of the specified vector.
-template <typename T, std::size_t N>
-T Length(const Vector<T, N>& vec)
-{
-    return std::sqrt(LengthSq(vec));
-}
-
-//! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
-template <typename T, std::size_t N>
-T DistanceSq(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
-{
-    auto result = rhs;
-    result -= lhs;
-    return LengthSq(result);
-}
-
-//! Returns the distance between the two vectors 'lhs' and 'rhs'.
-template <typename T, std::size_t N>
-T Distance(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
-{
-    auto result = rhs;
-    result -= lhs;
-    return Length(result);
-}
-
 //! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
-template <typename T, std::size_t N>
-T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Dot(const VectorType& lhs, const VectorType& rhs)
 {
-    T result = T(0);
+    ScalarType result = ScalarType(0);
     
-    for (std::size_t i = 0; i < N; ++i)
-        result += lhs[i]*rhs[i];
-
-    return result;
-}
-
-//! Returns the dot or rather scalar product between the two quaternions 'lhs' and 'rhs'.
-template <typename T>
-T Dot(const QuaternionT<T>& lhs, const QuaternionT<T>& rhs)
-{
-    T result = T(0);
-    
-    for (std::size_t i = 0; i < QuaternionT<T>::components; ++i)
+    for (std::size_t i = 0; i < VectorType::components; ++i)
         result += lhs[i]*rhs[i];
 
     return result;
 }
 
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
-template <typename T>
-Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+VectorType Cross(const VectorType& lhs, const VectorType& rhs)
 {
-    return Vector<T, 3>(
+    static_assert(VectorType::components == 3, "Vector type must have exactly three components");
+    return VectorType
+    {
         lhs.y*rhs.z - rhs.y*lhs.z,
         rhs.x*lhs.z - lhs.x*rhs.z,
         lhs.x*rhs.y - rhs.x*lhs.y
-    );
+    };
+}
+
+//! Returns the squared length of the specified vector.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType LengthSq(const VectorType& vec)
+{
+    return Dot<VectorType, ScalarType>(vec, vec);
+}
+
+//! Returns the length (euclidian norm) of the specified vector.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Length(const VectorType& vec)
+{
+    return std::sqrt(LengthSq<VectorType, ScalarType>(vec));
+}
+
+//! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Angle(const VectorType& lhs, const VectorType& rhs)
+{
+    return std::acos( Dot<VectorType, ScalarType>(lhs, rhs) / (Length<VectorType, ScalarType>(lhs) * Length<VectorType, ScalarType>(rhs)) );
+}
+
+//! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType AngleNorm(const VectorType& lhs, const VectorType& rhs)
+{
+    return std::acos(Dot<VectorType, ScalarType>(lhs, rhs));
+}
+
+//! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType DistanceSq(const VectorType& lhs, const VectorType& rhs)
+{
+    auto result = rhs;
+    result -= lhs;
+    return LengthSq<VectorType, ScalarType>(result);
+}
+
+//! Returns the distance between the two vectors 'lhs' and 'rhs'.
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+ScalarType Distance(const VectorType& lhs, const VectorType& rhs)
+{
+    auto result = rhs;
+    result -= lhs;
+    return Length<VectorType, ScalarType>(result);
 }
 
 //! Returns the reflected vector of the incident vector for the specified surface normal.
-template <typename T, std::size_t N>
-Vector<T, N> Reflect(const Vector<T, N>& incident, const Vector<T, N>& normal)
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+VectorType Reflect(const VectorType& incident, const VectorType& normal)
 {
     /* Compute reflection as: I - N x Dot(N, I) x 2 */
     auto v = normal;
-    v *= (Dot(normal, incident) * T(-2));
+    v *= (Dot<VectorType, ScalarType>(normal, incident) * ScalarType(-2));
     v += incident;
     return v;
 }
 
 //! Normalizes the specified vector to the unit length of 1.
-template <typename T, std::size_t N>
-void Normalize(Vector<T, N>& vec)
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+void Normalize(VectorType& vec)
 {
-    auto len = LengthSq(vec);
-    if (len != T(0) && len != T(1))
+    auto len = LengthSq<VectorType, ScalarType>(vec);
+    if (len != ScalarType(0) && len != ScalarType(1))
     {
-        len = T(1) / std::sqrt(len);
+        len = ScalarType(1) / std::sqrt(len);
         vec *= len;
     }
 }
 
-//! Normalizes the specified vector to the unit length of 1.
-template <typename T>
-void Normalize(QuaternionT<T>& q)
-{
-    auto len = Dot(q, q);
-    if (len != T(0) && len != T(1))
-    {
-        len = T(1) / std::sqrt(len);
-        q *= len;
-    }
-}
-
 //! Resizes the specified vector to the specified length.
-template <typename T, std::size_t N>
-void Resize(Vector<T, N>& vec, const T& length)
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+void Resize(VectorType& vec, const ScalarType& length)
 {
-    auto len = LengthSq(vec);
-    if (len != T(0))
+    auto len = LengthSq<VectorType, ScalarType>(vec);
+    if (len != ScalarType(0))
     {
         len = length / std::sqrt(len);
         vec *= len;
@@ -251,40 +229,39 @@ T Clamp(const T& x, const T& minima, const T& maxima)
 
 /**
 \brief Returns the spherical linear interpolation between the two quaternions 'from' and 'to'.
-\param[in] t Specifies the interpolation factor. This should be in the range [0.0, 1.0].
 \see QuaternionT::Slerp
 */
-template <typename T>
-QuaternionT<T> Slerp(const QuaternionT<T>& from, const QuaternionT<T>& to, const T& t)
+template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+VectorType Slerp(const VectorType& from, const VectorType& to, const ScalarType& t)
 {
-    T omega, cosom, sinom;
-    T scale0, scale1;
+    ScalarType omega, cosom, sinom;
+    ScalarType scale0, scale1;
 
     /* Calculate cosine */
-    cosom = Dot(from, to);
+    cosom = Dot<VectorType, ScalarType>(from, to);
 
     /* Adjust signs (if necessary) */
-    if (cosom < T(0))
+    if (cosom < ScalarType(0))
     {
         cosom = -cosom;
-        scale1 = T(-1);
+        scale1 = ScalarType(-1);
     }
     else
-        scale1 = T(1);
+        scale1 = ScalarType(1);
 
     /* Calculate coefficients */
-    if ((T(1) - cosom) > std::numeric_limits<T>::epsilon()) 
+    if ((ScalarType(1) - cosom) > std::numeric_limits<ScalarType>::epsilon()) 
     {
         /* Standard case (slerp) */
         omega = std::acos(cosom);
         sinom = std::sin(omega);
-        scale0 = std::sin((T(1) - t) * omega) / sinom;
+        scale0 = std::sin((ScalarType(1) - t) * omega) / sinom;
         scale1 *= std::sin(t * omega) / sinom;
     }
     else
     {
         /* 'from' and 'to' quaternions are very close, so we can do a linear interpolation */
-        scale0 = T(1) - t;
+        scale0 = ScalarType(1) - t;
         scale1 *= t;
     }
 
@@ -323,7 +300,7 @@ T Rcp(const T& x)
 template <typename T, std::size_t N>
 Vector<T, N> Rcp(const Vector<T, N>& vec)
 {
-	Vector<T, N> vecRcp(UninitializeTag{});
+	Vector<T, N> vecRcp { UninitializeTag{} };
 
 	for (std::size_t i = 0; i < N; ++i)
 		vecRcp[i] = T(1) / vec[i];
@@ -335,7 +312,7 @@ Vector<T, N> Rcp(const Vector<T, N>& vec)
 template <typename T, std::size_t N, std::size_t M>
 Matrix<T, N, M> Rcp(const Matrix<T, N, M>& mat)
 {
-	Matrix<T, N, M> matRcp(UninitializeTag{});
+	Matrix<T, N, M> matRcp { UninitializeTag{} };
 
 	for (std::size_t i = 0; i < N*M; ++i)
 		matRcp[i] = T(1) / mat[i];
@@ -359,43 +336,43 @@ T Rescale(const T& t, const I& lower0, const I& upper0, const I& lower1, const I
 
 /* --- Global Operators --- */
 
-#ifdef GS_ROW_VECTORS
-
-//! \brief Multiplies the N-dimensional vector with the NxN matrix with.
-template <typename T, std::size_t N>
-Vector<T, N> operator * (const Vector<T, N>& vec, const Matrix<T, N, N>& mat)
+/**
+\brief Multiplies the N-dimensional row-vector with the NxM matrix.
+\remarks This is equivalent to: Transpose(rhs) * lhs.
+*/
+template <typename T, std::size_t Rows, std::size_t Cols>
+Vector<T, Cols> operator * (const Vector<T, Rows>& lhs, const Matrix<T, Rows, Cols>& rhs)
 {
-    Vector<T, N> result;
+    Vector<T, Cols> result;
 
-    for (std::size_t c = 0; c < N; ++c)
+    for (std::size_t c = 0; c < Cols; ++c)
     {
         result[c] = T(0);
-        for (std::size_t r = 0; r < N; ++r)
-            result[c] += mat(r, c)*vec[r];
+        for (std::size_t r = 0; r < Rows; ++r)
+            result[c] += rhs(r, c)*lhs[r];
     }
 
     return result;
 }
 
-#else
-
-//! \brief Multiplies the NxN matrix with the N-dimensional vector.
-template <typename T, std::size_t N>
-Vector<T, N> operator * (const Matrix<T, N, N>& mat, const Vector<T, N>& vec)
+/**
+\brief Multiplies the NxM matrix with the M-dimensional column-vector.
+\remarks This is equivalent to: rhs * Transpose(lhs).
+*/
+template <typename T, std::size_t Rows, std::size_t Cols>
+Vector<T, Rows> operator * (const Matrix<T, Rows, Cols>& lhs, const Vector<T, Cols>& rhs)
 {
-    Vector<T, N> result;
+    Vector<T, Rows> result;
 
-    for (std::size_t r = 0; r < N; ++r)
+    for (std::size_t r = 0; r < Rows; ++r)
     {
         result[r] = T(0);
-        for (std::size_t c = 0; c < N; ++c)
-            result[r] += mat(r, c)*vec[c];
+        for (std::size_t c = 0; c < Cols; ++c)
+            result[r] += lhs(r, c)*rhs[c];
     }
 
     return result;
 }
-
-#endif
 
 
 } // /namespace Gs

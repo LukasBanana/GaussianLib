@@ -12,7 +12,6 @@ GaussianLib provides a few [macros](https://github.com/LukasBanana/GaussianLib/b
 
 3. **Efficiency**:
 GaussianLib provides optimized classes such as *AffineMatrix3* and *AffineMatrix4* for heavy use of affine matrix transformation, which is common in graphics applications.
-Moreover, SSE and SSE2 support can optionally be enabled for certain template specializations.
 
 4. **Open Source**:
 GaussianLib is licensed under the terms of the *3-Clause BSD License*, so you are free to use this software in private or commercial products without any fees :-)

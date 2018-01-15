@@ -91,8 +91,18 @@ class ProjectionMatrix4T
         
         static_assert(std::is_floating_point<T>::value, "projection matrices can only be used with floating point types");
 
+        /* ----- Typenames ----- */
+
+        //! Specifies the typename of the scalar components.
+        using ScalarType        = T;
+
+        //! Typename of this matrix type.
         using ThisType          = ProjectionMatrix4T<T>;
+
+        //! Typename of the transposed of this matrix type.
         using TransposedType    = ProjectionMatrix4T<T>;
+
+        /* ----- Functions ----- */
 
         ProjectionMatrix4T()
             #ifndef GS_DISABLE_AUTO_INIT
@@ -117,7 +127,7 @@ class ProjectionMatrix4T
         {
         }
 
-        ProjectionMatrix4T(UninitializeTag)
+        explicit ProjectionMatrix4T(UninitializeTag)
         {
             // do nothing
         }
@@ -226,14 +236,14 @@ class ProjectionMatrix4T
 
         ProjectionMatrix4T<T> Inverse() const
         {
-            ProjectionMatrix4T<T> inv{ *this };
+            ProjectionMatrix4T<T> inv { *this };
             inv.MakeInverse();
             return inv;
         }
 
         bool MakeInverse()
         {
-            ProjectionMatrix4T<T> in{ *this };
+            ProjectionMatrix4T<T> in { *this };
             return Gs::Inverse(*this, in);
         }
 
@@ -243,7 +253,7 @@ class ProjectionMatrix4T
         */
         template <typename C> ProjectionMatrix4T<C> Cast() const
         {
-            ProjectionMatrix4T<C> result(UninitializeTag{});
+            ProjectionMatrix4T<C> result { UninitializeTag{} };
 
             result.m00 = static_cast<C>(m00);
             result.m11 = static_cast<C>(m11);
@@ -319,7 +329,7 @@ class ProjectionMatrix4T
         //! \see Perspective(ProjectionMatrix4T<T>&, const T&, const T&, const T&, const T&, int)
         static ProjectionMatrix4T<T> Perspective(const T& aspect, const T& near, const T& far, const T& fov, int flags = 0)
         {
-            ProjectionMatrix4T<T> m(UninitializeTag{});
+            ProjectionMatrix4T<T> m { UninitializeTag{} };
             Perspective(m, aspect, near, far, fov, flags);
             return m;
         }
@@ -367,7 +377,7 @@ class ProjectionMatrix4T
         //! \see Orthogonal(ProjectionMatrix4T<T>&, const T&, const T&, const T&, const T&, int
         static ProjectionMatrix4T<T> Orthogonal(const T& width, const T& height, const T& near, const T& far, int flags = 0)
         {
-            ProjectionMatrix4T<T> m(UninitializeTag{});
+            ProjectionMatrix4T<T> m { UninitializeTag{} };
             Orthogonal(m, width, height, near, far, flags);
             return m;
         }
@@ -381,7 +391,7 @@ class ProjectionMatrix4T
         \code
         // Example of the point distribution for the respective origin:
         //
-        //     LeftTop        RightTop         RightBottom      LeftBottom
+        //     LeftTop         RightTop        RightBottom      LeftBottom
         // (0,0)-----(W,0)  (W,0)-----(0,0)  (W,H)-----(0,H)  (0,H)-----(W,H)
         //   |         |      |         |      |         |      |         |
         //   |         |      |         |      |         |      |         |
@@ -426,7 +436,7 @@ class ProjectionMatrix4T
         //! \see Planar(Matrix<T, 4, 4>&, const T&, const T&, const PlanarProjectionOrigin)
         static Matrix<T, 4, 4> Planar(const T& width, const T& height, const PlanarProjectionOrigin origin = PlanarProjectionOrigin::LeftTop)
         {
-            Matrix<T, 4, 4> m(UninitializeTag{});
+            Matrix<T, 4, 4> m { UninitializeTag{} };
             Planar(m, width, height, origin);
             return m;
         }
@@ -472,7 +482,7 @@ Vector4T<T> operator * (const ProjectionMatrix4T<T>& m, const Vector4T<T>& v)
 template <typename T>
 ProjectionMatrix4T<T> operator * (const ProjectionMatrix4T<T>& lhs, const ProjectionMatrix4T<T>& rhs)
 {
-    ProjectionMatrix4T<T> result(UninitializeTag{});
+    ProjectionMatrix4T<T> result { UninitializeTag{} };
 
     #ifdef GS_ROW_VECTORS
 
@@ -514,8 +524,8 @@ void ExtractClippingPlanes4x4(const M& m, T& near, T& far, int flags = 0)
     Inverse(inv, m);
 
     /* Get near/far vectors */
-    auto nearVec = Vector4T<T>(T(0), T(0), (unitCube ? T(-1) : T(0)), T(1));
-    auto farVec = Vector4T<T>(T(0), T(0), T(1), T(1));
+    auto nearVec = Vector4T<T> { T(0), T(0), (unitCube ? T(-1) : T(0)), T(1) };
+    auto farVec = Vector4T<T> { T(0), T(0), T(1), T(1) };
 
     /* Extract near/far clipping planes */
     #ifdef GS_ROW_VECTORS

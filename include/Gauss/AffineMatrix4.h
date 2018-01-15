@@ -71,6 +71,8 @@ class AffineMatrix4T
     
     public:
         
+        /* ----- Static members ----- */
+
         static const std::size_t rows           = 4;
         static const std::size_t columns        = 4;
         static const std::size_t elements       = AffineMatrix4T<T>::rows*AffineMatrix4T<T>::columns;
@@ -85,9 +87,21 @@ class AffineMatrix4T
 
         static const std::size_t elementsSparse = AffineMatrix4T<T>::rowsSparse*AffineMatrix4T<T>::columnsSparse;
 
+        /* ----- Typenames ----- */
+
+        //! Specifies the typename of the scalar components.
+        using ScalarType        = T;
+
+        //! Typename of this matrix type.
         using ThisType          = AffineMatrix4T<T>;
+
+        //! Typename of the transposed of this matrix type.
         using TransposedType    = Matrix<T, AffineMatrix4T<T>::rows, AffineMatrix4T<T>::columns>;
+
+        //! Typename of the matrix initializer.
         using Initializer       = Details::MatrixInitializer<AffineMatrix4T<T>, T, AffineMatrix4T<T>::columnsSparse>;
+
+        /* ----- Functions ----- */
 
         AffineMatrix4T()
         {
@@ -129,7 +143,7 @@ class AffineMatrix4T
 
         #endif
 
-        AffineMatrix4T(UninitializeTag)
+        explicit AffineMatrix4T(UninitializeTag)
         {
             // do nothing
         }
@@ -494,7 +508,7 @@ class AffineMatrix4T
         */
         template <typename C> AffineMatrix4T<C> Cast() const
         {
-            AffineMatrix4T<C> result(UninitializeTag{});
+            AffineMatrix4T<C> result { UninitializeTag{} };
 
             for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
                 result[i] = static_cast<C>(m_[i]);

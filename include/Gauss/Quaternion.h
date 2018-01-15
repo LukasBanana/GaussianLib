@@ -39,6 +39,9 @@ class QuaternionT
         
         static_assert(std::is_floating_point<T>::value, "quaternions can only be used with floating point types");
 
+        //! Specifies the typename of the scalar components.
+        using ScalarType = T;
+
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static const std::size_t components = 4;
 
@@ -76,7 +79,7 @@ class QuaternionT
             Gs::MatrixToQuaternion(*this, matrix);
         }
 
-        QuaternionT(UninitializeTag)
+        explicit QuaternionT(UninitializeTag)
         {
             // do nothing
         }
@@ -173,7 +176,7 @@ class QuaternionT
         //! Returns the inverse of this quaternion.
         QuaternionT<T> Inverse() const
         {
-            return QuaternionT<T>{ -x, -y, -z, w };
+            return QuaternionT<T> { -x, -y, -z, w };
         }
 
         /**
@@ -260,14 +263,14 @@ class QuaternionT
 
         Matrix3T<T> ToMatrix3() const
         {
-            Matrix3T<T> result(UninitializeTag{});
+            Matrix3T<T> result { UninitializeTag{} };
             Gs::QuaternionToMatrix(result, *this);
             return result;
         }
 
         Matrix3T<T> ToMatrix3Transposed() const
         {
-            Matrix3T<T> result(UninitializeTag{});
+            Matrix3T<T> result { UninitializeTag{} };
             Gs::QuaternionToMatrixTransposed(result, *this);
             return result;
         }
@@ -370,7 +373,7 @@ QuaternionT<T> operator * (const T& lhs, const QuaternionT<T>& rhs)
 template <typename T>
 Vector<T, 3> operator * (const QuaternionT<T>& lhs, const Vector<T, 3>& rhs)
 {
-    Vector<T, 3> qvec(lhs.x, lhs.y, lhs.z);
+    Vector<T, 3> qvec { lhs.x, lhs.y, lhs.z };
 
     auto uv = Cross(qvec, rhs);
     auto uuv = Cross(qvec, uv);
