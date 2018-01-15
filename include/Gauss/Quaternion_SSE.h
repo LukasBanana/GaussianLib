@@ -10,6 +10,7 @@
 
 
 #include "Quaternion.h"
+#include "Vector4_SSE.h"
 
 #include <xmmintrin.h>
 
@@ -23,10 +24,10 @@ template <>
 class alignas(16) QuaternionT<float>
 {
     
-    public:
-        
         using T = float;
 
+    public:
+        
         //! Specifies the typename of the scalar components.
         using ScalarType = T;
 
@@ -35,7 +36,7 @@ class alignas(16) QuaternionT<float>
 
         #ifndef GS_DISABLE_AUTO_INIT
         QuaternionT() :
-            m128 { _mm_setzero_ps() }
+            m128 ( _mm_setzero_ps() )
         {
         }
         #else
@@ -43,17 +44,17 @@ class alignas(16) QuaternionT<float>
         #endif
 
         QuaternionT(__m128 rhs) :
-            m128 { rhs }
+            m128 ( rhs )
         {
         }
 
         QuaternionT(const QuaternionT<T>& rhs) :
-            m128 { rhs.m128 }
+            m128 ( rhs.m128 )
         {
         }
 
         QuaternionT(const T& x, const T& y, const T& z, const T& w) :
-            m128 { x, y, z, w }
+            m128 ( _mm_set_ps(w, z, y, x) )
         {
         }
 
@@ -189,19 +190,10 @@ class alignas(16) QuaternionT<float>
 
         void GetEulerAngles(Vector<T, 3>& angles) const
         {
-            union
-            {
-                struct
-                {
-                    T xx, yy, zz, ww;
-                };
-                __m128 sq;
-            };
-            sq = _mm_mul_ps(m128, m128);
-
-            angles.x = std::atan2(2.0f * (y*z + x*w), -xx - yy + zz + ww);
+            Vector<T, 4> sq { _mm_mul_ps(m128, m128) };
+            angles.x = std::atan2(2.0f * (y*z + x*w), -sq.x - sq.y + sq.z + sq.w);
             angles.y = std::asin(Clamp(2.0f * (y*w - x*z), -1.0f, 1.0f));
-            angles.z = std::atan2(2.0f * (x*y + z*w), xx - yy - zz + ww);
+            angles.z = std::atan2(2.0f * (x*y + z*w), sq.x - sq.y - sq.z + sq.w);
         }
 
         /**
@@ -302,11 +294,11 @@ class alignas(16) QuaternionT<float>
 
         union
         {
+            __m128 m128;
             struct
             {
                 T x, y, z, w;
             };
-            __m128 m128;
         };
 
 };
@@ -317,25 +309,25 @@ class alignas(16) QuaternionT<float>
 template <>
 inline QuaternionT<float> operator + (const QuaternionT<float>& lhs, const QuaternionT<float>& rhs)
 {
-    return QuaternionT<float>(_mm_add_ps(lhs.m128, rhs.m128));
+    return QuaternionT<float> { _mm_add_ps(lhs.m128, rhs.m128) };
 }
 
 template <>
 inline QuaternionT<float> operator - (const QuaternionT<float>& lhs, const QuaternionT<float>& rhs)
 {
-    return QuaternionT<float>(_mm_sub_ps(lhs.m128, rhs.m128));
+    return QuaternionT<float> { _mm_sub_ps(lhs.m128, rhs.m128) };
 }
 
 template <>
 inline QuaternionT<float> operator * (const QuaternionT<float>& lhs, const float& rhs)
 {
-    return QuaternionT<float>(_mm_mul_ps(lhs.m128, _mm_set_ps1(rhs)));
+    return QuaternionT<float> { _mm_mul_ps(lhs.m128, _mm_set_ps1(rhs)) };
 }
 
 template <>
 inline QuaternionT<float> operator * (const float& lhs, const QuaternionT<float>& rhs)
 {
-    return QuaternionT<float>(_mm_mul_ps(_mm_set_ps1(lhs), rhs.m128));
+    return QuaternionT<float> { _mm_mul_ps(_mm_set_ps1(lhs), rhs.m128) };
 }
 
 

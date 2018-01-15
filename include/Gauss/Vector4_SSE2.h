@@ -20,13 +20,13 @@ namespace Gs
 
 //! Template specialization with SSE support for 4D single-precision floating-point vectors.
 template <>
-class alignas(32) Vector<double, 4>
+class alignas(alignof(__m128[2])) Vector<double, 4>
 {
     
-    public:
-        
         using T = double;
 
+    public:
+        
         //! Specifies the typename of the scalar components.
         using ScalarType = T;
         
@@ -245,11 +245,11 @@ class alignas(32) Vector<double, 4>
         
         union
         {
+            __m128d m128[2];
             struct
             {
                 T x, y, z, w;
             };
-            __m128d m128[2];
         };
 
 };
@@ -260,53 +260,53 @@ class alignas(32) Vector<double, 4>
 template <>
 inline Vector<double, 4> operator + (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
 {
-    return Vector<double, 4>(_mm_add_pd(lhs.m128[0], rhs.m128[0]), _mm_add_pd(lhs.m128[1], rhs.m128[1]));
+    return Vector<double, 4> { _mm_add_pd(lhs.m128[0], rhs.m128[0]), _mm_add_pd(lhs.m128[1], rhs.m128[1]) };
 }
 
 template <>
 inline Vector<double, 4> operator - (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
 {
-    return Vector<double, 4>(_mm_sub_pd(lhs.m128[0], rhs.m128[0]), _mm_sub_pd(lhs.m128[1], rhs.m128[1]));
+    return Vector<double, 4> { _mm_sub_pd(lhs.m128[0], rhs.m128[0]), _mm_sub_pd(lhs.m128[1], rhs.m128[1]) };
 }
 
 template <>
 inline Vector<double, 4> operator * (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
 {
-    return Vector<double, 4>(_mm_mul_pd(lhs.m128[0], rhs.m128[0]), _mm_mul_pd(lhs.m128[1], rhs.m128[1]));
+    return Vector<double, 4> { _mm_mul_pd(lhs.m128[0], rhs.m128[0]), _mm_mul_pd(lhs.m128[1], rhs.m128[1]) };
 }
 
 template <>
 inline Vector<double, 4> operator / (const Vector<double, 4>& lhs, const Vector<double, 4>& rhs)
 {
-    return Vector<double, 4>(_mm_div_pd(lhs.m128[0], rhs.m128[0]), _mm_div_pd(lhs.m128[1], rhs.m128[1]));
+    return Vector<double, 4> { _mm_div_pd(lhs.m128[0], rhs.m128[0]), _mm_div_pd(lhs.m128[1], rhs.m128[1]) };
 }
 
 template <>
 inline Vector<double, 4> operator * (const Vector<double, 4>& lhs, const double& rhs)
 {
     const auto rhs128 = _mm_set1_pd(rhs);
-    return Vector<double, 4>(_mm_mul_pd(lhs.m128[0], rhs128), _mm_mul_pd(lhs.m128[1], rhs128));
+    return Vector<double, 4> { _mm_mul_pd(lhs.m128[0], rhs128), _mm_mul_pd(lhs.m128[1], rhs128) };
 }
 
 template <>
 inline Vector<double, 4> operator * (const double& lhs, const Vector<double, 4>& rhs)
 {
     const auto lhs128 = _mm_set1_pd(lhs);
-    return Vector<double, 4>(_mm_mul_pd(lhs128, rhs.m128[0]), _mm_mul_pd(lhs128, rhs.m128[1]));
+    return Vector<double, 4> { _mm_mul_pd(lhs128, rhs.m128[0]), _mm_mul_pd(lhs128, rhs.m128[1]) };
 }
 
 template <>
 inline Vector<double, 4> operator / (const Vector<double, 4>& lhs, const double& rhs)
 {
     const auto rhs128 = _mm_set1_pd(rhs);
-    return Vector<double, 4>(_mm_div_pd(lhs.m128[0], rhs128), _mm_div_pd(lhs.m128[1], rhs128));
+    return Vector<double, 4> { _mm_div_pd(lhs.m128[0], rhs128), _mm_div_pd(lhs.m128[1], rhs128) };
 }
 
 template <>
 inline Vector<double, 4> operator / (const double& lhs, const Vector<double, 4>& rhs)
 {
     const auto lhs128 = _mm_set1_pd(lhs);
-    return Vector<double, 4>(_mm_div_pd(lhs128, rhs.m128[0]), _mm_mul_pd(lhs128, rhs.m128[1]));
+    return Vector<double, 4> { _mm_div_pd(lhs128, rhs.m128[0]), _mm_mul_pd(lhs128, rhs.m128[1]) };
 }
 
 

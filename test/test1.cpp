@@ -490,7 +490,7 @@ void sseVector4Test1()
     std::cout << "v1 * v2     = " << v1 * v2 << std::endl;
     std::cout << "v1 * -5     = " << v1 * -5.0f << std::endl;
     std::cout << "Dot(v1, v2) = " << Dot(v1, v2) << std::endl;
-    std::cout << "|v1|        = " << Length(v1) << std::endl;
+    std::cout << "|v1|        = " << v1.Length() << std::endl;
     std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
 }
 
@@ -507,7 +507,7 @@ void sseVector4Test2()
     std::cout << "v1 * v2     = " << v1 * v2 << std::endl;
     std::cout << "v1 * -5     = " << v1 * -5.0 << std::endl;
     std::cout << "Dot(v1, v2) = " << Dot(v1, v2) << std::endl;
-    std::cout << "|v1|        = " << Length(v1) << std::endl;
+    std::cout << "|v1|        = " << v1.Length() << std::endl;
     std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
 }
 

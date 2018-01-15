@@ -20,13 +20,13 @@ namespace Gs
 
 //! Template specialization with SSE support for 4D single-precision floating-point vectors.
 template <>
-class alignas(16) Vector<float, 4>
+class alignas(alignof(__m128)) Vector<float, 4>
 {
     
-    public:
-        
         using T = float;
 
+    public:
+        
         //! Specifies the typename of the scalar components.
         using ScalarType = T;
         
@@ -35,7 +35,7 @@ class alignas(16) Vector<float, 4>
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
-            m128 { _mm_setzero_ps() }
+            m128 ( _mm_setzero_ps() )
         {
         }
         #else
@@ -43,49 +43,37 @@ class alignas(16) Vector<float, 4>
         #endif
         
         Vector(__m128 rhs) :
-            m128 { rhs }
+            m128 ( rhs )
         {
         }
 
         Vector(const Vector<T, 4>& rhs) :
-            m128 { rhs.m128 }
+            m128 ( rhs.m128 )
         {
         }
 
         explicit Vector(const Vector<T, 2>& xy, const Vector<T, 2>& zw) :
-            x { xy.x },
-            y { xy.y },
-            z { zw.x },
-            w { zw.y }
+            m128 ( _mm_set_ps(zw.y, zw.x, xy.y, xy.y) )
         {
         }
 
         explicit Vector(const Vector<T, 2>& xy, const T& z, const T& w) :
-            x { xy.x },
-            y { xy.y },
-            z { z    },
-            w { w    }
+            m128 ( _mm_set_ps(w, z, xy.y, xy.y) )
         {
         }
 
         explicit Vector(const Vector<T, 3>& xyz, const T& w) :
-            x { xyz.x },
-            y { xyz.y },
-            z { xyz.z },
-            w { w     }
+            m128 ( _mm_set_ps(w, xyz.z, xyz.y, xyz.x) )
         {
         }
 
         explicit Vector(const T& scalar) :
-            x { scalar },
-            y { scalar },
-            z { scalar },
-            w { scalar }
+            m128 ( _mm_set1_ps(scalar) )
         {
         }
 
         Vector(const T& x, const T& y, const T& z, const T& w) :
-            m128 { x, y, z, w }
+            m128 ( _mm_set_ps(w, z, y, x) )
         {
         }
 
@@ -239,11 +227,11 @@ class alignas(16) Vector<float, 4>
         
         union
         {
+            __m128 m128;
             struct
             {
                 T x, y, z, w;
             };
-            __m128 m128;
         };
 
 };
@@ -254,49 +242,49 @@ class alignas(16) Vector<float, 4>
 template <>
 inline Vector<float, 4> operator + (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
 {
-    return Vector<float, 4>(_mm_add_ps(lhs.m128, rhs.m128));
+    return Vector<float, 4> { _mm_add_ps(lhs.m128, rhs.m128) };
 }
 
 template <>
 inline Vector<float, 4> operator - (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
 {
-    return Vector<float, 4>(_mm_sub_ps(lhs.m128, rhs.m128));
+    return Vector<float, 4> { _mm_sub_ps(lhs.m128, rhs.m128) };
 }
 
 template <>
 inline Vector<float, 4> operator * (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
 {
-    return Vector<float, 4>(_mm_mul_ps(lhs.m128, rhs.m128));
+    return Vector<float, 4> { _mm_mul_ps(lhs.m128, rhs.m128) };
 }
 
 template <>
 inline Vector<float, 4> operator / (const Vector<float, 4>& lhs, const Vector<float, 4>& rhs)
 {
-    return Vector<float, 4>(_mm_div_ps(lhs.m128, rhs.m128));
+    return Vector<float, 4> { _mm_div_ps(lhs.m128, rhs.m128) };
 }
 
 template <>
 inline Vector<float, 4> operator * (const Vector<float, 4>& lhs, const float& rhs)
 {
-    return Vector<float, 4>(_mm_mul_ps(lhs.m128, _mm_set_ps1(rhs)));
+    return Vector<float, 4> { _mm_mul_ps(lhs.m128, _mm_set_ps1(rhs)) };
 }
 
 template <>
 inline Vector<float, 4> operator * (const float& lhs, const Vector<float, 4>& rhs)
 {
-    return Vector<float, 4>(_mm_mul_ps(_mm_set_ps1(lhs), rhs.m128));
+    return Vector<float, 4> { _mm_mul_ps(_mm_set_ps1(lhs), rhs.m128) };
 }
 
 template <>
 inline Vector<float, 4> operator / (const Vector<float, 4>& lhs, const float& rhs)
 {
-    return Vector<float, 4>(_mm_div_ps(lhs.m128, _mm_set_ps1(rhs)));
+    return Vector<float, 4> { _mm_div_ps(lhs.m128, _mm_set_ps1(rhs)) };
 }
 
 template <>
 inline Vector<float, 4> operator / (const float& lhs, const Vector<float, 4>& rhs)
 {
-    return Vector<float, 4>(_mm_div_ps(_mm_set_ps1(lhs), rhs.m128));
+    return Vector<float, 4> { _mm_div_ps(_mm_set_ps1(lhs), rhs.m128) };
 }
 
 
