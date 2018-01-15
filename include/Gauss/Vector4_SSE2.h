@@ -53,34 +53,22 @@ class alignas(alignof(__m128[2])) Vector<double, 4>
         }
 
         explicit Vector(const Vector<T, 2>& xy, const Vector<T, 2>& zw) :
-            x { xy.x },
-            y { xy.y },
-            z { zw.x },
-            w { zw.y }
+            m128 { _mm_set_pd(xy.y, xy.x), _mm_set_pd(zw.y, zw.x) }
         {
         }
 
         explicit Vector(const Vector<T, 2>& xy, const T& z, const T& w) :
-            x { xy.x },
-            y { xy.y },
-            z { z    },
-            w { w    }
+            m128 { _mm_set_pd(xy.y, xy.x), _mm_set_pd(w, z) }
         {
         }
 
         explicit Vector(const Vector<T, 3>& xyz, const T& w) :
-            x { xyz.x },
-            y { xyz.y },
-            z { xyz.z },
-            w { w     }
+            m128 { _mm_set_pd(xyz.y, xyz.x), _mm_set_pd(w, xyz.z) }
         {
         }
 
         explicit Vector(const T& scalar) :
-            x { scalar },
-            y { scalar },
-            z { scalar },
-            w { scalar }
+            m128 { _mm_set1_pd(scalar), _mm_set1_pd(scalar) }
         {
         }
 

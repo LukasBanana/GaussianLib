@@ -43,6 +43,7 @@ class alignas(alignof(__m128)) Vector<float, 4>
         #endif
         
         Vector(__m128 rhs) :
+            // non-braced-initiualizer for GCC-compatibility, due to unspecified active union member
             m128 ( rhs )
         {
         }
@@ -68,7 +69,7 @@ class alignas(alignof(__m128)) Vector<float, 4>
         }
 
         explicit Vector(const T& scalar) :
-            m128 ( _mm_set1_ps(scalar) )
+            m128 ( _mm_set_ps1(scalar) )
         {
         }
 
