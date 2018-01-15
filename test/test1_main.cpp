@@ -18,7 +18,7 @@ int main()
 
     try
     {
-        commonTest1();
+        /*commonTest1();
         affineMatrixTest1();
         affineMatrixTest2();
         quaternionTest1();
@@ -37,7 +37,7 @@ int main()
         rotateMatrixTest1();
 		rcpTest1();
         stdMathTest1();
-        vector3Test1();
+        vector3Test1();*/
         sseVector4Test1();
         sseVector4Test2();
     }

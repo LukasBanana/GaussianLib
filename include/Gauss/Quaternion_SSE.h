@@ -27,6 +27,9 @@ class alignas(16) QuaternionT<float>
         
         using T = float;
 
+        //! Specifies the typename of the scalar components.
+        using ScalarType = T;
+
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static const std::size_t components = 4;
 
