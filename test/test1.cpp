@@ -13,6 +13,14 @@
 #include <vector>
 #include <cstdlib>
 #include <complex>
+#include <ctime>
+
+#ifdef _WIN32
+#   define NOMINMAX
+#   include <Windows.h>
+#   undef near
+#   undef far
+#endif
 
 
 #ifdef _MSC_VER
@@ -20,6 +28,24 @@
 #endif
 
 using namespace Gs;
+
+
+#ifdef _WIN32
+
+Timer::Timer()
+{
+    QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&startTime_));
+}
+
+Timer::~Timer()
+{
+    __int64 endTime, frequency;
+    QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&endTime));
+    QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&frequency));
+    printf("%0.1f ms\n", static_cast<float>(endTime - startTime_) / static_cast<float>(frequency) * 1000.0f);
+}
+
+#endif
 
 
 void commonTest1()
@@ -526,5 +552,77 @@ void vector3Test1()
     std::cout << "v /= v.x                        = " << v << std::endl;
     std::cout << "Vector2(v)                      = " << v2D << std::endl;
     std::cout << "Vector4(Vector2(v), Vector2(v)) = " << v4D << std::endl;
+}
+
+
+// Quick simple RNG based on Xorhash
+class RandomNumberGenerator
+{
+
+    private:
+
+        std::uint32_t state_ = 0;
+
+    public:
+
+        RandomNumberGenerator()
+        {
+            seed(47);
+        }
+
+        void seed(std::uint32_t seed)
+        {
+            // Thomas Wang's integer hash, as reported by Bob Jenkins
+            seed = (seed ^ 61) ^ (seed >> 16);
+            seed *= 9;
+            seed = seed ^ (seed >> 4);
+            seed *= 0x27d4eb2d;
+            seed = seed ^ (seed >> 15);
+            state_ = seed;
+        }
+
+        std::uint32_t randUInt()
+        {
+            // Xorshift algorithm from George Marsaglia's paper
+            state_ ^= (state_ << 13);
+            state_ ^= (state_ >> 17);
+            state_ ^= (state_ << 5);
+            return state_;
+        }
+
+        std::int32_t randInt()
+        {
+            return static_cast<std::int32_t>(randUInt());
+        }
+
+        float randFloat()
+        {
+            return static_cast<float>(randUInt()) * (1.0f / 4294967296.0f);
+        }
+
+        float randFloat(float min, float max)
+        {
+            return min + (min - max)*randFloat();
+        }
+
+};
+
+void performanceTest1()
+{
+    #ifdef _WIN32
+
+    std::cout << "performance test:" << std::endl;
+
+    RandomNumberGenerator rng;
+    rng.seed(static_cast<std::uint32_t>(time(0)));
+
+    for (int i = 0; i < 10; ++i)
+        std::cout << "random number: " << rng.randFloat() << std::endl;
+
+    #else
+
+    std::cout << "performance test only available on Win32" << std::endl;
+
+    #endif
 }
 

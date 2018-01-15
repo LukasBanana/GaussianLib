@@ -78,6 +78,7 @@ int main()
         sseVector4Test1_2();
         sseVector4Test2();
         sseVector4Test2_2();
+        performanceTest1();
     }
     catch (const std::exception& e)
     {

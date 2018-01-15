@@ -13,6 +13,20 @@
 #include <Gauss/StdMath.h>
 #include <Gauss/HLSLTypes.h>
 #include <Gauss/GLSLTypes.h>
+#include <cstdint>
+
+
+#ifdef _WIN32
+
+class Timer
+{
+    __int64 startTime_;
+public:
+    Timer();
+    ~Timer();
+};
+
+#endif
 
 
 void commonTest1();
@@ -38,6 +52,7 @@ void stdMathTest1();
 void sseVector4Test1();
 void sseVector4Test2();
 void vector3Test1();
+void performanceTest1();
 
 
 #endif
