@@ -48,10 +48,16 @@ class alignas(alignof(__m128)) Vector<float, 4>
         {
         }
 
-        Vector(const Vector<T, 4>& rhs) :
+        /*Vector(const Vector<T, 4>& rhs) :
             m128 ( rhs.m128 )
         {
         }
+
+        Vector(Vector<T, 4>&& rhs) :
+            m128 ( rhs.m128 )
+        {
+        }*/
+        Vector(const Vector<T, 4>&) = default;
 
         explicit Vector(const Vector<T, 2>& xy, const Vector<T, 2>& zw) :
             m128 ( _mm_set_ps(zw.y, zw.x, xy.y, xy.y) )
@@ -82,6 +88,18 @@ class alignas(alignof(__m128)) Vector<float, 4>
         {
             // do nothing
         }
+
+        /*Vector<T, 4>& operator = (const Vector<T, 4>& rhs)
+        {
+            m128 = rhs.m128;
+            return *this;
+        }
+
+        Vector<T, 4>& operator = (Vector<T, 4>&& rhs)
+        {
+            m128 = rhs.m128;
+            return *this;
+        }*/
 
         Vector<T, 4>& operator += (const Vector<T, 4>& rhs)
         {

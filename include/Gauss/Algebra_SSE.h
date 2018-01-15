@@ -25,15 +25,11 @@ namespace Details
 
 inline float DotProductM128f(__m128 lhs, __m128 rhs)
 {
-    union
-    {
-        float  f[4];
-        __m128 v;
-    };
+    __m128 v;
     v = _mm_mul_ps(lhs, rhs);
     v = _mm_hadd_ps(v, v);
     v = _mm_hadd_ps(v, v);
-    return f[0];
+    return _mm_cvtss_f32(v);
 }
 
 
