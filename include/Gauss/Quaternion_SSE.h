@@ -48,16 +48,10 @@ class alignas(alignof(__m128)) QuaternionT<float>
         {
         }
 
-        /*QuaternionT(const QuaternionT<T>& rhs) :
+        QuaternionT(const QuaternionT<T>& rhs) :
             m128 ( rhs.m128 )
         {
         }
-
-        QuaternionT(QuaternionT<T>&& rhs) :
-            m128 ( rhs.m128 )
-        {
-        }*/
-        QuaternionT(const QuaternionT<T>&) = default;
 
         QuaternionT(const T& x, const T& y, const T& z, const T& w) :
             m128 ( _mm_set_ps(w, z, y, x) )
@@ -70,22 +64,10 @@ class alignas(alignof(__m128)) QuaternionT<float>
             Gs::MatrixToQuaternion(*this, matrix);
         }
 
-        QuaternionT(UninitializeTag)
+        explicit QuaternionT(UninitializeTag)
         {
             // do nothing
         }
-
-        /*QuaternionT<T>& operator = (const QuaternionT<T>& rhs)
-        {
-            m128 = rhs.m128;
-            return *this;
-        }
-
-        QuaternionT<T>& operator = (QuaternionT<T>&& rhs)
-        {
-            m128 = rhs.m128;
-            return *this;
-        }*/
 
         QuaternionT<T>& operator += (const QuaternionT<T>& rhs)
         {

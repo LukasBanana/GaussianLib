@@ -47,16 +47,10 @@ class alignas(alignof(__m128d[2])) Vector<double, 4>
         {
         }
 
-        /*Vector(const Vector<T, 4>& rhs) :
+        Vector(const Vector<T, 4>& rhs) :
             m128 { rhs.m128[0], rhs.m128[1] }
         {
         }
-
-        Vector(Vector<T, 4>&& rhs) :
-            m128 { rhs.m128[0], rhs.m128[1] }
-        {
-        }*/
-        Vector(const Vector<T, 4>&) = default;
 
         explicit Vector(const Vector<T, 2>& xy, const Vector<T, 2>& zw) :
             m128 { _mm_set_pd(xy.y, xy.x), _mm_set_pd(zw.y, zw.x) }
@@ -83,24 +77,10 @@ class alignas(alignof(__m128d[2])) Vector<double, 4>
         {
         }
 
-        Vector(UninitializeTag)
+        explicit Vector(UninitializeTag)
         {
             // do nothing
         }
-
-        /*Vector<T, 4>& operator = (const Vector<T, 4>& rhs)
-        {
-            m128[0] = rhs.m128[0];
-            m128[1] = rhs.m128[1];
-            return *this;
-        }
-
-        Vector<T, 4>& operator = (Vector<T, 4>&& rhs)
-        {
-            m128[0] = rhs.m128[0];
-            m128[1] = rhs.m128[1];
-            return *this;
-        }*/
 
         Vector<T, 4>& operator += (const Vector<T, 4>& rhs)
         {

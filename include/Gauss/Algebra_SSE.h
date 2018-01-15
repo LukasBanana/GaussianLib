@@ -33,7 +33,6 @@ inline float DotProductM128f(__m128 lhs, __m128 rhs)
 }
 
 
-
 } // /namespace Details
 
 
