@@ -331,14 +331,14 @@ class Matrix
 
         Matrix<T, Rows, Cols> Inverse() const
         {
-            Matrix<T, Rows, Cols> inv{ *this };
+            Matrix<T, Rows, Cols> inv { *this };
             inv.MakeInverse();
             return inv;
         }
 
         bool MakeInverse()
         {
-            Matrix<T, Rows, Cols> in{ *this };
+            Matrix<T, Rows, Cols> in { *this };
             return Gs::Inverse(*this, in);
         }
 
@@ -360,7 +360,7 @@ class Matrix
         */
         template <typename C> Matrix<C, Rows, Cols> Cast() const
         {
-            Matrix<C, Rows, Cols> result(UninitializeTag{});
+            Matrix<C, Rows, Cols> result { UninitializeTag{} };
 
             for (std::size_t i = 0; i < ThisType::elements; ++i)
                 result[i] = static_cast<C>(m_[i]);
@@ -412,7 +412,7 @@ Matrix<T, Rows, Cols> operator * (const T& lhs, const Matrix<T, Rows, Cols>& rhs
 template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
 Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)
 {
-    Matrix<T, Rows, Cols> result(UninitializeTag{});
+    Matrix<T, Rows, Cols> result { UninitializeTag{} };
 
     GS_FOREACH_ROW_COL(r, c)
     {

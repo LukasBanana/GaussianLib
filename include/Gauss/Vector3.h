@@ -151,7 +151,7 @@ class Vector<T, 3>
 
         Vector<T, 3> operator - () const
         {
-            return Vector<T, 3>(-x, -y, -z);
+            return Vector<T, 3> { -x, -y, -z };
         }
 
         /**

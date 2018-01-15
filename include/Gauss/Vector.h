@@ -141,7 +141,7 @@ class Vector
         template <typename C>
         Vector<C, N> Cast() const
         {
-            Vector<C, N> result(UninitializeTag{});
+            Vector<C, N> result { UninitializeTag{} };
 
             for (std::size_t i = 0; i < N; ++i)
                 result[i] = static_cast<C>(v_[i]);
@@ -230,7 +230,7 @@ Vector<T, N> operator / (const Vector<T, N>& lhs, const T& rhs)
 template <typename T, std::size_t N>
 Vector<T, N> operator / (const T& lhs, const Vector<T, N>& rhs)
 {
-    auto result = Vector<T, N>(lhs);
+    auto result = Vector<T, N> { lhs };
     result /= rhs;
     return result;
 }

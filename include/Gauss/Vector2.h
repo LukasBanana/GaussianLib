@@ -126,7 +126,7 @@ class Vector<T, 2>
 
         Vector<T, 2> operator - () const
         {
-            return Vector<T, 2>(-x, -y);
+            return Vector<T, 2> { -x, -y };
         }
 
         /**

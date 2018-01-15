@@ -508,7 +508,7 @@ class AffineMatrix4T
         */
         template <typename C> AffineMatrix4T<C> Cast() const
         {
-            AffineMatrix4T<C> result(UninitializeTag{});
+            AffineMatrix4T<C> result { UninitializeTag{} };
 
             for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
                 result[i] = static_cast<C>(m_[i]);

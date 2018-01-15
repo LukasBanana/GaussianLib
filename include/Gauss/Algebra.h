@@ -300,7 +300,7 @@ T Rcp(const T& x)
 template <typename T, std::size_t N>
 Vector<T, N> Rcp(const Vector<T, N>& vec)
 {
-	Vector<T, N> vecRcp(UninitializeTag{});
+	Vector<T, N> vecRcp { UninitializeTag{} };
 
 	for (std::size_t i = 0; i < N; ++i)
 		vecRcp[i] = T(1) / vec[i];
@@ -312,7 +312,7 @@ Vector<T, N> Rcp(const Vector<T, N>& vec)
 template <typename T, std::size_t N, std::size_t M>
 Matrix<T, N, M> Rcp(const Matrix<T, N, M>& mat)
 {
-	Matrix<T, N, M> matRcp(UninitializeTag{});
+	Matrix<T, N, M> matRcp { UninitializeTag{} };
 
 	for (std::size_t i = 0; i < N*M; ++i)
 		matRcp[i] = T(1) / mat[i];

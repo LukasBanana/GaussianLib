@@ -63,7 +63,7 @@ file(GLOB_RECURSE FilesAll "${PROJECT_SOURCE_DIR}/include/*.*")
 
 # === Include directories ===
 
-include_directories("${PROJECT_INCLUDE_DIR}")
+include_directories(${PROJECT_INCLUDE_DIR})
 
 
 # === Binaries ===
@@ -72,7 +72,15 @@ add_library(gausslib STATIC ${FilesAll})
 set_target_properties(gausslib PROPERTIES LINKER_LANGUAGE CXX DEBUG_POSTFIX "D")
 target_compile_features(gausslib PRIVATE cxx_range_for)
 
-add_executable(test1 "${PROJECT_TEST_DIR}/test1.cpp")
+set(
+	FilesTest1
+	${PROJECT_TEST_DIR}/test1.h
+	${PROJECT_TEST_DIR}/test1.cpp
+	${PROJECT_TEST_DIR}/test1_main.cpp
+)
+
+add_executable(test1 ${FilesTest1})
+#target_link_libraries(test1 gausslib)
 set_target_properties(test1 PROPERTIES LINKER_LANGUAGE CXX DEBUG_POSTFIX "D")
 target_compile_features(test1 PRIVATE cxx_range_for)
 

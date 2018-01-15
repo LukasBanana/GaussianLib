@@ -26,7 +26,7 @@ namespace Details
 template <template <typename> class M, typename T>
 M<T> MulAffineMatrices(const M<T>& lhs, const M<T>& rhs)
 {
-    M<T> result(UninitializeTag{});
+    M<T> result { UninitializeTag{} };
 
     #ifdef GS_ROW_VECTORS
 

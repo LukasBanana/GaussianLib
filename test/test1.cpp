@@ -5,10 +5,7 @@
  * See "LICENSE.txt" for license information.
  */
 
-#include <Gauss/Gauss.h>
-#include <Gauss/StdMath.h>
-#include <Gauss/HLSLTypes.h>
-#include <Gauss/GLSLTypes.h>
+#include "test1.h"
 
 #include <iostream>
 #include <sstream>
@@ -25,7 +22,7 @@
 using namespace Gs;
 
 
-static void commonTest1()
+void commonTest1()
 {
     // --- vector tests ---
 
@@ -58,7 +55,7 @@ static void commonTest1()
          0, 1, 0, 0,
          0, 0, 0, 1;
 
-    Matrix<Real, 3, 4> C(UninitializeTag{});
+    Matrix<Real, 3, 4> C { UninitializeTag{} };
     C << 1, 0, 0, 12,
          0, 1, 0, -4,
          0, 0, 1, 5;
@@ -145,7 +142,7 @@ static void commonTest1()
     #endif
 }
 
-static void affineMatrixTest1()
+void affineMatrixTest1()
 {
     Matrix4 A;
     A << 1, 0, -2, 6,
@@ -179,7 +176,7 @@ static void affineMatrixTest1()
     std::cout << std::endl << "5 * I3 = " << std::endl << Real(5) * Matrix3::Identity() << std::endl;
 }
 
-static void affineMatrixTest2()
+void affineMatrixTest2()
 {
     AffineMatrix3 A;
 
@@ -202,7 +199,7 @@ static void affineMatrixTest2()
     std::cout << "B*B^-1 = " << std::endl << B*B.Inverse() << std::endl;
 }
 
-static void quaternionTest1()
+void quaternionTest1()
 {
     Quaternion q0, q1;
 
@@ -225,7 +222,7 @@ static void quaternionTest1()
     std::cout << "Quaterion(m) = " << Quaternion(m) << std::endl;
 }
 
-static void quaternionTest2()
+void quaternionTest2()
 {
     Quaternion q0, q1;
 
@@ -242,7 +239,7 @@ static void quaternionTest2()
     std::cout << "q0 *= q0 = " << q0 << std::endl;
 }
 
-static void matrixVectorTest1()
+void matrixVectorTest1()
 {
     Matrix4 A = Matrix4::Identity();
     AffineMatrix4 B = AffineMatrix4::Identity();
@@ -268,7 +265,7 @@ static void matrixVectorTest1()
     std::cout << "b = " << b << std::endl;
 }
 
-static void complexTest1()
+void complexTest1()
 {
     using complex = std::complex<Real>;
 
@@ -278,7 +275,7 @@ static void complexTest1()
     auto b = A * a;
 }
 
-static void projectionTest1()
+void projectionTest1()
 {
     const Real w = 800, h = 600, near = 1.0f, far = 100.0f, fov = 74.0f*pi/180.0f;
 
@@ -297,7 +294,7 @@ static void projectionTest1()
     std::cout << (R * a).xy() << std::endl;
 }
 
-static void equalsTest1()
+void equalsTest1()
 {
     Vector3 a(1, 2, 3), b(4, 5, 6), c(1, 2, 3);
     Real x = 1, y = 2, z = 1;
@@ -319,7 +316,7 @@ static void equalsTest1()
     std::cout << "x equals z ? " << YesNo(Equals(x, z)) << std::endl;
 }
 
-static void vectorTest1()
+void vectorTest1()
 {
     auto x = Vector<Real, 10>();
     auto A = Matrix<Real, 10, 10>::Identity();
@@ -343,7 +340,7 @@ static void vectorTest1()
     std::cout << "Trace(A) = " << A.Trace() << std::endl;
 }
 
-static void epsilonTest1()
+void epsilonTest1()
 {
     auto eps1 = Epsilon<float>();
     auto eps2 = Epsilon<double>();
@@ -355,7 +352,7 @@ static void epsilonTest1()
     std::cout << "pi = " << pi << std::endl;
 }
 
-static void sphericalTest1()
+void sphericalTest1()
 {
     auto ShowCoords = [](const Vector3& v)
     {
@@ -371,7 +368,7 @@ static void sphericalTest1()
     ShowCoords({ -3948, 4933, -239382 });
 }
 
-static void crossProductTest1()
+void crossProductTest1()
 {
     Vector3 a(1, 0, 0);
     Vector3 b(0, 1, 0);
@@ -382,7 +379,7 @@ static void crossProductTest1()
     std::cout << "Cross(a, b) = " << Cross(a, b).Normalized() << std::endl;
 }
 
-static void rotateVectorTest1()
+void rotateVectorTest1()
 {
     Vector3 vec(1, 2, 3);
     Vector3 axis(0, 1, 0);
@@ -393,7 +390,7 @@ static void rotateVectorTest1()
     std::cout << "vec = " << vec << ", axis = " << axis << ", angle = " << angle << ", x = " << x << std::endl;
 }
 
-static void sortingTest1()
+void sortingTest1()
 {
     Vector3 a(1, 2, 3);
     Vector3 b(2, 3, 4);
@@ -408,7 +405,7 @@ static void sortingTest1()
     std::cout << "A = " << std::endl << A << "B = " << std::endl << B << "A < B: " << Compare(A, B) << std::endl;
 }
 
-static void flipTest1()
+void flipTest1()
 {
     Matrix4 A;
     A <<  1,  2,  3,  4,
@@ -435,7 +432,7 @@ static void flipTest1()
     std::cout << "B = " << std::endl << B << std::endl;
 }
 
-static void rotateMatrixTest1()
+void rotateMatrixTest1()
 {
     AffineMatrix4 A;
     A << 1, 0, 0,   7,
@@ -447,7 +444,7 @@ static void rotateMatrixTest1()
     std::cout << "A = " << std::endl << A << std::endl;
 }
 
-static void rcpTest1()
+void rcpTest1()
 {
 	const Real x = Gs::pi;
 	const Vector3 v(1, 2, 3);
@@ -458,7 +455,7 @@ static void rcpTest1()
 	std::cout << "Rcp(" << std::endl << A << ") = " << std::endl << Gs::Rcp(A) << std::endl;
 }
 
-static void typeTest1()
+void typeTest1()
 {
     typename ScalarType<Vector3f>::Type a;
     typename ScalarType<Vector2T<double>>::Type b;
@@ -468,7 +465,7 @@ static void typeTest1()
     typename ScalarType<AffineMatrix4f>::Type f;
 }
 
-static void stdMathTest1()
+void stdMathTest1()
 {
     Vector3f a(0.5f, 1.0f, 1.5f), b(1, 2, 3);
     Matrix2f A; A << 1, 2, 3, 4;
@@ -480,7 +477,7 @@ static void stdMathTest1()
     std::cout << "sin(" << std::endl << A << ") = " << std::endl << sin(A) << std::endl;
 }
 
-static void sseVector4Test1()
+void sseVector4Test1()
 {
     Vector4f v0;
     Vector4f v1(3.0f, -0.5f, 0.0f, 1.0f);
@@ -497,7 +494,7 @@ static void sseVector4Test1()
     std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
 }
 
-static void sseVector4Test2()
+void sseVector4Test2()
 {
     Vector4d v0;
     Vector4d v1(3.0, -0.5, 0.0, 1.0);
@@ -514,7 +511,7 @@ static void sseVector4Test2()
     std::cout << "v1 / |v1|   = " << v1.Normalized() << std::endl;
 }
 
-static void vector3Test1()
+void vector3Test1()
 {
     Vector3f v(2.5f, 3.4f, 9.5f);
 
@@ -529,47 +526,5 @@ static void vector3Test1()
     std::cout << "v /= v.x                        = " << v << std::endl;
     std::cout << "Vector2(v)                      = " << v2D << std::endl;
     std::cout << "Vector4(Vector2(v), Vector2(v)) = " << v4D << std::endl;
-}
-
-int main()
-{
-    std::cout << "GaussianLib Test 1" << std::endl;
-    std::cout << "==================" << std::endl;
-
-    try
-    {
-        commonTest1();
-        affineMatrixTest1();
-        affineMatrixTest2();
-        quaternionTest1();
-        quaternionTest2();
-        matrixVectorTest1();
-        complexTest1();
-        projectionTest1();
-        equalsTest1();
-        vectorTest1();
-        epsilonTest1();
-        sphericalTest1();
-        crossProductTest1();
-        rotateVectorTest1();
-        sortingTest1();
-        flipTest1();
-        rotateMatrixTest1();
-		rcpTest1();
-        stdMathTest1();
-        vector3Test1();
-        sseVector4Test1();
-        sseVector4Test2();
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-
-    #ifdef _WIN32
-    system("pause");
-    #endif
-
-    return 0;
 }
 
