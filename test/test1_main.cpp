@@ -19,7 +19,7 @@ int main()
     try
     {
         commonTest1();
-        /*affineMatrixTest1();
+        affineMatrixTest1();
         affineMatrixTest2();
         quaternionTest1();
         quaternionTest2();
@@ -39,7 +39,7 @@ int main()
         stdMathTest1();
         vector3Test1();
         sseVector4Test1();
-        sseVector4Test2();*/
+        sseVector4Test2();
         matrixInitializerTest1();
     }
     catch (const std::exception& e)
