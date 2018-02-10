@@ -38,6 +38,7 @@ void stdMathTest1();
 void sseVector4Test1();
 void sseVector4Test2();
 void vector3Test1();
+void matrixInitializerTest1();
 
 
 #endif

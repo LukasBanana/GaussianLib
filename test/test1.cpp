@@ -48,23 +48,23 @@ void commonTest1()
 
     Matrix4 A = Matrix4::Identity(), B = Matrix4::Identity();
 
-    A << 1, -5, 0, 12.5f,
-         0,  1, 6, -7.8f;
-    B << 1, 0, 0, 0,
-         0, 0, 1, 0,
-         0, 1, 0, 0,
-         0, 0, 0, 1;
+    A = { 1, -5, 0, 12.5f,
+          0,  1, 6, -7.8f };
+    B = { 1, 0, 0, 0,
+          0, 0, 1, 0,
+          0, 1, 0, 0,
+          0, 0, 0, 1 };
 
     Matrix<Real, 3, 4> C { UninitializeTag{} };
-    C << 1, 0, 0, 12,
-         0, 1, 0, -4,
-         0, 0, 1, 5;
+    C = { 1, 0, 0, 12,
+          0, 1, 0, -4,
+          0, 0, 1, 5 };
     
     Matrix<Real, 4, 1> D;
-    D << 4,
-         2,
-         0,
-         1;
+    D = { 4,
+          2,
+          0,
+          1 };
 
     auto E = C * D;
 
@@ -76,11 +76,12 @@ void commonTest1()
 
     // --- affine matrix tests ---
 
-    AffineMatrix4 As(
+    AffineMatrix4 As
+    {
         1, 0, 0, 4,
         0, 1, 0, -2,
         0, 0, 1, 5
-    );
+    };
     AffineMatrix4 Bs(
         1, 0, 0, 6,
         0, 0, 1, 0,
@@ -144,16 +145,20 @@ void commonTest1()
 
 void affineMatrixTest1()
 {
-    Matrix4 A;
-    A << 1, 0, -2, 6,
-         0, 8, 0, -4,
-         0, 1, 2, 0,
-         0, 0, 0, 1;
+    Matrix4 A
+    {
+        1, 0, -2, 6,
+        0, 8, 0, -4,
+        0, 1, 2, 0,
+        0, 0, 0, 1
+    };
 
-    AffineMatrix4 B;
-    B << 1, 0, -2, 6,
-         0, 8, 0, -4,
-         0, 1, 2, 0;
+    AffineMatrix4 B
+    {
+        1, 0, -2, 6,
+        0, 8, 0, -4,
+        0, 1, 2, 0
+    };
 
     auto A2 = A;
     RotateFree(A2, Vector3(1, 1, 1).Normalized(), pi*0.5f);
@@ -178,15 +183,18 @@ void affineMatrixTest1()
 
 void affineMatrixTest2()
 {
-    AffineMatrix3 A;
-
-    A << 1, 0, -2,
-         0, 8, 3;
+    AffineMatrix3 A
+    {
+        1, 0, -2,
+        0, 8, 3
+    };
     
-    AffineMatrix4 B;
-    B << 1, 7, 9, -6,
-         2, -4, 0, 1,
-         3, 1, 6, -2;
+    AffineMatrix4 B
+    {
+        1, 7, 9, -6,
+        2, -4, 0, 1,
+        3, 1, 6, -2
+    };
 
     std::cout << "AffineMatrix3:" << std::endl;
     std::cout << "A = " << std::endl << A << std::endl;
@@ -407,23 +415,27 @@ void sortingTest1()
 
 void flipTest1()
 {
-    Matrix4 A;
-    A <<  1,  2,  3,  4,
-          5,  6,  7,  8,
-          9, 10, 11, 12,
-         13, 14, 15, 16;
+    Matrix4 A
+    {
+         1,  2,  3,  4,
+         5,  6,  7,  8,
+         9, 10, 11, 12,
+        13, 14, 15, 16
+    };
 
-    AffineMatrix4 B;
+    AffineMatrix4 B
+    {
     #ifdef GS_ROW_VECTORS
-    B <<  1,  2,  3,
-          4,  5,  6, 
-          7,  8,  9,
-         10, 11, 12;
+         1,  2,  3,
+         4,  5,  6, 
+         7,  8,  9,
+        10, 11, 12
     #else
-    B <<  1,  2,  3,  4,
-          5,  6,  7,  8,
-          9, 10, 11, 12;
+        1,  2,  3,  4,
+        5,  6,  7,  8,
+        9, 10, 11, 12
     #endif
+    };
 
     Gs::FlipAxis(A, 1);
     Gs::FlipAxis(B, 1);
@@ -434,10 +446,12 @@ void flipTest1()
 
 void rotateMatrixTest1()
 {
-    AffineMatrix4 A;
-    A << 1, 0, 0,   7,
-         0, 1, 0,   3,
-         0, 0, 1, -12;
+    AffineMatrix4 A
+    {
+        1, 0, 0,   7,
+        0, 1, 0,   3,
+        0, 0, 1, -12
+    };
 
     A.RotateX(45*Gs::pi/180);
 
@@ -468,7 +482,7 @@ void typeTest1()
 void stdMathTest1()
 {
     Vector3f a(0.5f, 1.0f, 1.5f), b(1, 2, 3);
-    Matrix2f A; A << 1, 2, 3, 4;
+    Matrix2f A { 1, 2, 3, 4 };
 
     std::cout << "sin(" << a << ") = " << sin(a) << std::endl;
     std::cout << "acos(" << a << ") = " << acos(a) << std::endl;
@@ -526,5 +540,17 @@ void vector3Test1()
     std::cout << "v /= v.x                        = " << v << std::endl;
     std::cout << "Vector2(v)                      = " << v2D << std::endl;
     std::cout << "Vector4(Vector2(v), Vector2(v)) = " << v4D << std::endl;
+}
+
+void matrixInitializerTest1()
+{
+    Matrix3f A
+    {
+        0.0f, 1.0f, 0.0f,
+        2.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 3.0f
+    };
+
+    std::cout << "A = " << std::endl << A << std::endl;
 }
 

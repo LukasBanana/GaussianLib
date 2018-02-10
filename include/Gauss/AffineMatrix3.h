@@ -23,6 +23,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cstdint>
+#include <initializer_list>
 
 
 namespace Gs
@@ -96,9 +97,6 @@ class AffineMatrix3T
         //! Typename of the transposed of this matrix type.
         using TransposedType    = Matrix<T, AffineMatrix3T<T>::rows, AffineMatrix3T<T>::columns>;
 
-        //! Typename of the matrix initializer.
-        using Initializer       = Details::MatrixInitializer<AffineMatrix3T<T>, T, AffineMatrix3T<T>::columnsSparse>;
-
         /* ----- Functions ----- */
 
         AffineMatrix3T()
@@ -136,6 +134,16 @@ class AffineMatrix3T
         }
 
         #endif
+
+        //! Initializes this matrix with the specified values (row by row, and column by column, implicit must NOT be included).
+        AffineMatrix3T(const std::initializer_list<T>& values)
+        {
+            std::size_t i = 0, n = values.size();
+            for (auto it = values.begin(); i < n; ++i, ++it)
+                (*this)(i / columnsSparse, i % columnsSparse) = *it;
+            for (; i < elementsSparse; ++i)
+                (*this)(i / columnsSparse, i % columnsSparse) = T(0);
+        }
 
         explicit AffineMatrix3T(UninitializeTag)
         {
@@ -561,14 +569,6 @@ template <typename T>
 AffineMatrix3T<T> operator * (const AffineMatrix3T<T>& lhs, const AffineMatrix3T<T>& rhs)
 {
     return Details::MulAffineMatrices(lhs, rhs);
-}
-
-template <typename T, typename I>
-typename AffineMatrix3T<T>::Initializer operator << (AffineMatrix3T<T>& matrix, const I& firstValue)
-{
-    typename AffineMatrix3T<T>::Initializer initializer(matrix);
-    initializer , static_cast<T>(firstValue);
-    return initializer;
 }
 
 

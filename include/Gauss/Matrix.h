@@ -20,6 +20,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cstdint>
+#include <initializer_list>
 
 
 namespace Gs
@@ -109,9 +110,6 @@ class Matrix
         //! Typename of the transposed of this matrix type.
         using TransposedType    = Matrix<T, Cols, Rows>;
 
-        //! Typename of the matrix initializer.
-        using Initializer       = Details::MatrixInitializer<Matrix<T, Rows, Cols>, T, Cols>;
-
         /* ----- Functions ----- */
 
         /**
@@ -129,6 +127,16 @@ class Matrix
         Matrix(const ThisType& rhs)
         {
             *this = rhs;
+        }
+
+        //! Initializes this matrix with the specified values (row by row, and column by column).
+        Matrix(const std::initializer_list<T>& values)
+        {
+            std::size_t i = 0, n = values.size();
+            for (auto it = values.begin(); i < n; ++i, ++it)
+                (*this)(i / columns, i % columns) = *it;
+            for (; i < elements; ++i)
+                (*this)(i / columns, i % columns) = T(0);
         }
 
         /**
@@ -422,14 +430,6 @@ Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Ma
     }
 
     return result;
-}
-
-template <typename T, typename I, std::size_t Rows, std::size_t Cols>
-typename Matrix<T, Rows, Cols>::Initializer operator << (Matrix<T, Rows, Cols>& matrix, const I& firstValue)
-{
-    typename Matrix<T, Rows, Cols>::Initializer initializer(matrix);
-    initializer , static_cast<T>(firstValue);
-    return initializer;
 }
 
 

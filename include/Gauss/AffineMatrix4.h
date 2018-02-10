@@ -23,6 +23,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cstdint>
+#include <initializer_list>
 
 
 namespace Gs
@@ -98,9 +99,6 @@ class AffineMatrix4T
         //! Typename of the transposed of this matrix type.
         using TransposedType    = Matrix<T, AffineMatrix4T<T>::rows, AffineMatrix4T<T>::columns>;
 
-        //! Typename of the matrix initializer.
-        using Initializer       = Details::MatrixInitializer<AffineMatrix4T<T>, T, AffineMatrix4T<T>::columnsSparse>;
-
         /* ----- Functions ----- */
 
         AffineMatrix4T()
@@ -142,6 +140,16 @@ class AffineMatrix4T
         }
 
         #endif
+
+        //! Initializes this matrix with the specified values (row by row, and column by column, implicit must NOT be included).
+        AffineMatrix4T(const std::initializer_list<T>& values)
+        {
+            std::size_t i = 0, n = values.size();
+            for (auto it = values.begin(); i < n; ++i, ++it)
+                (*this)(i / columnsSparse, i % columnsSparse) = *it;
+            for (; i < elementsSparse; ++i)
+                (*this)(i / columnsSparse, i % columnsSparse) = T(0);
+        }
 
         explicit AffineMatrix4T(UninitializeTag)
         {
@@ -563,14 +571,6 @@ template <typename T>
 AffineMatrix4T<T> operator * (const AffineMatrix4T<T>& lhs, const AffineMatrix4T<T>& rhs)
 {
     return Details::MulAffineMatrices(lhs, rhs);
-}
-
-template <typename T, typename I>
-typename AffineMatrix4T<T>::Initializer operator << (AffineMatrix4T<T>& matrix, const I& firstValue)
-{
-    typename AffineMatrix4T<T>::Initializer initializer(matrix);
-    initializer , static_cast<T>(firstValue);
-    return initializer;
 }
 
 
