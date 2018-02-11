@@ -15,6 +15,7 @@
 #include "Inverse.h"
 #include "Decl.h"
 #include "Real.h"
+#include "Tags.h"
 
 #include <cmath>
 #include <cstddef>
