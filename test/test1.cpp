@@ -59,7 +59,7 @@ void commonTest1()
     C = { 1, 0, 0, 12,
           0, 1, 0, -4,
           0, 0, 1, 5 };
-    
+
     Matrix<Real, 4, 1> D;
     D = { 4,
           2,
@@ -125,7 +125,7 @@ void commonTest1()
     std::cout << "Determinant(m2x2) = " << m2x2.Determinant() << std::endl;
 
     #endif
-    
+
     #if 0
 
     std::cout << "A = " << std::endl << A << std::endl;
@@ -188,7 +188,7 @@ void affineMatrixTest2()
         1, 0, -2,
         0, 8, 3
     };
-    
+
     AffineMatrix4 B
     {
         1, 7, 9, -6,
@@ -213,7 +213,7 @@ void quaternionTest1()
 
     q0.SetEulerAngles(Vector3(pi*0.5f, 0, 0));
     q1.SetEulerAngles(Vector3(pi*1.0f, 0, 0));
-    
+
     std::cout << "q0 = " << q0 << std::endl;
     std::cout << "q1 = " << q1 << std::endl;
 
@@ -236,7 +236,7 @@ void quaternionTest2()
 
     q0.SetEulerAngles(Vector3(pi*0.5f, pi*0.25f, 0));
     q1.SetEulerAngles(Vector3(pi*1.0f, 0, 0));
-    
+
     std::cout << "q0       = " << q0 << std::endl;
     std::cout << "q1       = " << q1 << std::endl;
 
@@ -328,7 +328,7 @@ void vectorTest1()
 {
     auto x = Vector<Real, 10>();
     auto A = Matrix<Real, 10, 10>::Identity();
-    
+
     x[0] = 12;
     x[1] = 5;
     x[2] = 3;
@@ -532,7 +532,7 @@ void vector3Test1()
     std::cout << "v                               = " << v << std::endl;
     std::cout << "1 / v                           = " << 1.0f / v << std::endl;
     std::cout << "v / v.x                         = " << v / v.x << std::endl;
-    
+
     v /= v.x;
     Vector2f v2D(v);
     Vector4f v4D(v2D, v2D);

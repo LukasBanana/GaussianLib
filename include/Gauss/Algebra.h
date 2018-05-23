@@ -65,7 +65,7 @@ template <typename VectorType, typename ScalarType = typename VectorType::Scalar
 ScalarType Dot(const VectorType& lhs, const VectorType& rhs)
 {
     ScalarType result = ScalarType(0);
-    
+
     for (std::size_t i = 0; i < VectorType::components; ++i)
         result += lhs[i]*rhs[i];
 
@@ -73,7 +73,7 @@ ScalarType Dot(const VectorType& lhs, const VectorType& rhs)
 }
 
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
+template <typename VectorType>
 VectorType Cross(const VectorType& lhs, const VectorType& rhs)
 {
     static_assert(VectorType::components == 3, "Vector type must have exactly three components");
