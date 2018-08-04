@@ -25,7 +25,7 @@
 //! Enables the inverse matrix operator, i.e. allows "A^-1" expressions as shortcut for "A.Inverse()".
 //#define GS_ENABLE_INVERSE_OPERATOR
 
-//! Disables automatic data initialization. If undefined, automatic initialization is enabled (default). 
+//! Disables automatic data initialization. If undefined, automatic initialization is enabled (default).
 //#define GS_DISABLE_AUTO_INIT
 
 //! Enables row-major storage. If undefined, column-major storage is used (default).

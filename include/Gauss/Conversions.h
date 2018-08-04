@@ -34,7 +34,7 @@ void MatrixToQuaternion(Q<T>& out, const M& in)
 
     /* Only get the trace of the 3x3 upper left matrix */
     const T trace = in.At(0, 0) + in.At(1, 1) + in.At(2, 2) + T(1);
-    
+
     if (trace > T(0))
     {
         const T s = T(2) * std::sqrt(trace);

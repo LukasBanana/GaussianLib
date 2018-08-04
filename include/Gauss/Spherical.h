@@ -32,9 +32,9 @@ i.e. pointing towards the Z coordinate.
 template <typename T>
 class SphericalT
 {
-    
+
     public:
-        
+
         #ifndef GS_DISABLE_AUTO_INIT
         SphericalT() :
             radius { T(0) },

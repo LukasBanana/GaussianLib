@@ -251,7 +251,7 @@ VectorType Slerp(const VectorType& from, const VectorType& to, const ScalarType&
         scale1 = ScalarType(1);
 
     /* Calculate coefficients */
-    if ((ScalarType(1) - cosom) > std::numeric_limits<ScalarType>::epsilon()) 
+    if ((ScalarType(1) - cosom) > std::numeric_limits<ScalarType>::epsilon())
     {
         /* Standard case (slerp) */
         omega = std::acos(cosom);

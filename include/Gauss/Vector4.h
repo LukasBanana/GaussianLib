@@ -28,12 +28,12 @@ This should be a primitive data type such as float, double, int etc.
 template <typename T>
 class Vector<T, 4>
 {
-    
+
     public:
-        
+
         //! Specifies the typename of the scalar components.
         using ScalarType = T;
-        
+
         //! Specifies the number of vector components.
         static const std::size_t components = 4;
 
@@ -262,7 +262,7 @@ class Vector<T, 4>
         #   include "SwizzleVec4Op3.h"
         #   include "SwizzleVec4Op4.h"
         #endif
-        
+
         T x, y, z, w;
 
 };

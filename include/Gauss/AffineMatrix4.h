@@ -69,9 +69,9 @@ Here is an example, how an affine 4x4 matrix is laid-out with column- and row ve
 template <typename T>
 class AffineMatrix4T
 {
-    
+
     public:
-        
+
         /* ----- Static members ----- */
 
         static const std::size_t rows           = 4;
@@ -422,17 +422,17 @@ class AffineMatrix4T
         {
             const T c = std::cos(angle);
             const T s = std::sin(angle);
-            
+
             /* Temporaries */
             const T m01 = At(0, 1);
             const T m11 = At(1, 1);
             const T m21 = At(2, 1);
-            
+
             /* Rotation */
             At(0, 1) = At(0, 1)*c + At(0, 2)*s;
             At(1, 1) = At(1, 1)*c + At(1, 2)*s;
             At(2, 1) = At(2, 1)*c + At(2, 2)*s;
-            
+
             At(0, 2) = At(0, 2)*c - m01*s;
             At(1, 2) = At(1, 2)*c - m11*s;
             At(2, 2) = At(2, 2)*c - m21*s;
@@ -443,17 +443,17 @@ class AffineMatrix4T
         {
             const T c = std::cos(angle);
             const T s = std::sin(angle);
-            
+
             /* Temporaries */
             const T m00 = At(0, 0);
             const T m10 = At(1, 0);
             const T m20 = At(2, 0);
-            
+
             /* Rotation */
             At(0, 0) = At(0, 0)*c - At(0, 2)*s;
             At(1, 0) = At(1, 0)*c - At(1, 2)*s;
             At(2, 0) = At(2, 0)*c - At(2, 2)*s;
-            
+
             At(0, 2) = m00*s - At(0, 2)*c;
             At(1, 2) = m10*s - At(1, 2)*c;
             At(2, 2) = m20*s - At(2, 2)*c;
@@ -464,17 +464,17 @@ class AffineMatrix4T
         {
             const T c = std::cos(angle);
             const T s = std::sin(angle);
-            
+
             /* Temporaries */
             const T m00 = At(0, 0);
             const T m10 = At(1, 0);
             const T m20 = At(2, 0);
-            
+
             /* Rotation */
             At(0, 0) = At(0, 0)*c + At(0, 1)*s;
             At(1, 0) = At(1, 0)*c + At(1, 1)*s;
             At(2, 0) = At(2, 0)*c + At(2, 1)*s;
-            
+
             At(0, 1) = At(0, 1)*c - m00*s;
             At(1, 1) = At(1, 1)*c - m10*s;
             At(2, 1) = At(2, 1)*c - m20*s;
@@ -525,7 +525,7 @@ class AffineMatrix4T
         }
 
     private:
-        
+
         T m_[ThisType::elementsSparse];
 
 };

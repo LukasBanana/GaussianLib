@@ -34,9 +34,9 @@ This should be a primitive data type such as float, double.
 template <typename T>
 class QuaternionT
 {
-    
+
     public:
-        
+
         static_assert(std::is_floating_point<T>::value, "quaternions can only be used with floating point types");
 
         //! Specifies the typename of the scalar components.

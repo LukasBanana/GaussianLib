@@ -83,9 +83,9 @@ This function is used for easier support between row- and column vectors.
 template <typename T, std::size_t Rows, std::size_t Cols>
 class Matrix
 {
-    
+
     public:
-        
+
         static_assert(Rows*Cols > 0, "matrices must consist of at least 1x1 elements");
 
         /* ----- Static members ----- */
@@ -328,7 +328,7 @@ class Matrix
         T Trace() const
         {
             static_assert(Rows == Cols, "traces can only be computed for squared matrices");
-            
+
             T trace = T(0);
 
             for (std::size_t i = 0; i < Rows; ++i)
@@ -377,7 +377,7 @@ class Matrix
         }
 
     private:
-        
+
         T m_[ThisType::elements];
 
 };

@@ -86,9 +86,9 @@ Sparse 4x4 projection matrix.
 template <typename T>
 class ProjectionMatrix4T
 {
-    
+
     public:
-        
+
         static_assert(std::is_floating_point<T>::value, "projection matrices can only be used with floating point types");
 
         /* ----- Typenames ----- */
@@ -192,7 +192,7 @@ class ProjectionMatrix4T
             p /= p.w;
             return p;
         }
-        
+
         Vector4T<T> Unproject(const Vector4T<T>& v)
         {
             #ifdef GS_ROW_VECTORS
@@ -299,7 +299,7 @@ class ProjectionMatrix4T
             m.m11 = h;
 
             m.m22 = (unitCube ? (far + near)/(far - near) : far/(far - near));
-            
+
             #ifdef GS_ROW_VECTORS
             m.m23 = T(1);
             #else
@@ -445,7 +445,7 @@ class ProjectionMatrix4T
         T     m11;
         T         m22, m32;
         T         m23, m33;
-        
+
 };
 
 
@@ -518,7 +518,7 @@ void ExtractClippingPlanes4x4(const M& m, T& near, T& far, int flags = 0)
 {
     bool rightHanded    = (( flags & ProjectionFlags::RightHanded ) != 0);
     bool unitCube       = (( flags & ProjectionFlags::UnitCube    ) != 0);
-    
+
     /* Get inverse projection matrix */
     auto inv = m;
     Inverse(inv, m);

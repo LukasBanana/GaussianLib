@@ -28,12 +28,12 @@ This should be a primitive data type such as float, double, int etc.
 template <typename T>
 class Vector<T, 2>
 {
-    
+
     public:
-        
+
         //! Specifies the typename of the scalar components.
         using ScalarType = T;
-        
+
         //! Specifies the number of vector components.
         static const std::size_t components = 2;
 

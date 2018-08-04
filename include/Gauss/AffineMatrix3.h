@@ -67,9 +67,9 @@ Here is an example, how an affine 3x3 matrix is laid-out with column- and row ve
 template <typename T>
 class AffineMatrix3T
 {
-    
+
     public:
-        
+
         /* ----- Static members ----- */
 
         static const std::size_t rows           = 3;
@@ -523,7 +523,7 @@ class AffineMatrix3T
         }
 
     private:
-        
+
         T m_[ThisType::elementsSparse];
 
 };

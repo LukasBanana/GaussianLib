@@ -87,7 +87,7 @@ std::ostream& ShiftAffineMatrixOStream(std::ostream& stream, const M& mat)
 
     /* Write implicit row */
     stream << '\\';
-    
+
     for (std::size_t c = 0; c < M::columnsSparse; ++c)
     {
         stream << std::string(lengths[c], ' ');
@@ -147,7 +147,7 @@ std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& ma
     for (std::size_t r = 0; r < Rows; ++r)
     {
         stream << (r == 0 ? '/' : r + 1 == Rows ? '\\' : '|');
-        
+
         for (std::size_t c = 0; c < Cols; ++c)
         {
             stream << std::string(lengths[c] + 1u - Details::Length(mat(r, c)), ' ');

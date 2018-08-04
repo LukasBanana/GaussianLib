@@ -25,7 +25,7 @@ static const std::size_t columns;
 \endcode
 \tparam T Specifies the data type. Can be any type that supports negation (i.e. x = -x).
 \param[in,out] mat Specifies the matrix whose axis is to be flipped.
-\param[in] axis Specifies the zero-based axis index. This value must be 
+\param[in] axis Specifies the zero-based axis index. This value must be in the half open range <code>[0 .. M::rows)</code>.
 \remarks This is an example how such an axis flip can also be expressed:
 \code
 Gs::Matrix4 m;
