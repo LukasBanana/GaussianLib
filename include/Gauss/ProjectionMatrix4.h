@@ -269,14 +269,14 @@ class ProjectionMatrix4T
         Generates a perspective projection.
         \param[out] m Specifies the resulting projection matrix.
         \param[in] aspect Specifies the aspect ratio. This is commonly width/height (e.g. 1920/1080).
-        \param[in] near Specifies the distance of the near clipping plane. This is must be in the range (0, far). Common values are in the range [0.1, 1].
-        \param[in] far Specifies the distance of the far clipping plane. This is must be in the range (near, +inf). Common values are in the range [10, 1000].
+        \param[in] nearPlane Specifies the distance of the near clipping plane. This is must be in the range (0, far). Common values are in the range [0.1, 1].
+        \param[in] farPlane Specifies the distance of the far clipping plane. This is must be in the range (near, +inf). Common values are in the range [10, 1000].
         \param[in] fov Specifies the field-of-view (FOV) angle (in radians). This must be in the range (0, 180). Common values are in the range [45, 90].
         \param[in] flags Optional bit mask with projection generation flags (see ProjectionFlags).
         By default 0, which generates a left-handed projection matrix where the Z values are projected to the range [0, 1].
         \see ProjectionFlags
         */
-        static void Perspective(ProjectionMatrix4T<T>& m, const T& aspect, const T& near, const T& far, const T& fov, int flags = 0)
+        static void Perspective(ProjectionMatrix4T<T>& m, const T& aspect, const T& nearPlane, const T& farPlane, const T& fov, int flags = 0)
         {
             T w, h;
 
@@ -298,7 +298,7 @@ class ProjectionMatrix4T
             m.m00 = w;
             m.m11 = h;
 
-            m.m22 = (unitCube ? (far + near)/(far - near) : far/(far - near));
+            m.m22 = (unitCube ? (farPlane + nearPlane)/(farPlane - nearPlane) : farPlane/(farPlane - nearPlane));
 
             #ifdef GS_ROW_VECTORS
             m.m23 = T(1);
@@ -311,7 +311,7 @@ class ProjectionMatrix4T
             #else
             m.m23 =
             #endif
-            (unitCube ? -(T(2)*far*near)/(far - near) : -(far*near)/(far - near));
+            (unitCube ? -(T(2)*farPlane*nearPlane)/(farPlane - nearPlane) : -(farPlane*nearPlane)/(farPlane - nearPlane));
 
             m.m33 = T(0);
 
@@ -327,10 +327,10 @@ class ProjectionMatrix4T
         }
 
         //! \see Perspective(ProjectionMatrix4T<T>&, const T&, const T&, const T&, const T&, int)
-        static ProjectionMatrix4T<T> Perspective(const T& aspect, const T& near, const T& far, const T& fov, int flags = 0)
+        static ProjectionMatrix4T<T> Perspective(const T& aspect, const T& nearPlane, const T& farPlane, const T& fov, int flags = 0)
         {
             ProjectionMatrix4T<T> m { UninitializeTag{} };
-            Perspective(m, aspect, near, far, fov, flags);
+            Perspective(m, aspect, nearPlane, farPlane, fov, flags);
             return m;
         }
 
@@ -339,13 +339,13 @@ class ProjectionMatrix4T
         \param[out] m Specifies the resulting projection matrix.
         \param[in] width Specifies the view width.
         \param[in] height Specifies the view height.
-        \param[in] near Specifies the distance of the near clipping plane. This is must be in the range (0, far). Common values are in the range [0.1, 1].
-        \param[in] far Specifies the distance of the far clipping plane. This is must be in the range (near, +inf). Common values are in the range [10, 1000].
+        \param[in] nearPlane Specifies the distance of the near clipping plane. This is must be in the range (0, far). Common values are in the range [0.1, 1].
+        \param[in] farPlane Specifies the distance of the far clipping plane. This is must be in the range (near, +inf). Common values are in the range [10, 1000].
         \param[in] flags Optional bit mask with projection generation flags (see ProjectionFlags).
         By default 0, which generates a left-handed projection matrix where the Z values are projected to the range [0, 1].
         \see ProjectionFlags
         */
-        static void Orthogonal(ProjectionMatrix4T<T>& m, const T& width, const T& height, const T& near, const T& far, int flags = 0)
+        static void Orthogonal(ProjectionMatrix4T<T>& m, const T& width, const T& height, const T& nearPlane, const T& farPlane, int flags = 0)
         {
             bool rightHanded    = (( flags & ProjectionFlags::RightHanded ) != 0);
             bool unitCube       = (( flags & ProjectionFlags::UnitCube    ) != 0);
@@ -353,7 +353,7 @@ class ProjectionMatrix4T
             m.m00 = T(2)/width;
             m.m11 = T(2)/height;
 
-            m.m22 = (unitCube ? T(2)/(far - near) : T(1)/(far - near));
+            m.m22 = (unitCube ? T(2)/(farPlane - nearPlane) : T(1)/(farPlane - nearPlane));
 
             #ifdef GS_ROW_VECTORS
             m.m23 = T(0);
@@ -366,7 +366,7 @@ class ProjectionMatrix4T
             #else
             m.m23 =
             #endif
-            (unitCube ? -(far + near)/(far - near) : -near/(far - near));
+            (unitCube ? -(farPlane + nearPlane)/(farPlane - nearPlane) : -nearPlane/(farPlane - nearPlane));
 
             m.m33 = T(1);
 
@@ -375,10 +375,10 @@ class ProjectionMatrix4T
         }
 
         //! \see Orthogonal(ProjectionMatrix4T<T>&, const T&, const T&, const T&, const T&, int
-        static ProjectionMatrix4T<T> Orthogonal(const T& width, const T& height, const T& near, const T& far, int flags = 0)
+        static ProjectionMatrix4T<T> Orthogonal(const T& width, const T& height, const T& nearPlane, const T& farPlane, int flags = 0)
         {
             ProjectionMatrix4T<T> m { UninitializeTag{} };
-            Orthogonal(m, width, height, near, far, flags);
+            Orthogonal(m, width, height, nearPlane, farPlane, flags);
             return m;
         }
 
@@ -514,7 +514,7 @@ namespace Details
 {
 
 template <class M, typename T>
-void ExtractClippingPlanes4x4(const M& m, T& near, T& far, int flags = 0)
+void ExtractClippingPlanes4x4(const M& m, T& nearPlane, T& farPlane, int flags = 0)
 {
     bool rightHanded    = (( flags & ProjectionFlags::RightHanded ) != 0);
     bool unitCube       = (( flags & ProjectionFlags::UnitCube    ) != 0);
@@ -536,28 +536,28 @@ void ExtractClippingPlanes4x4(const M& m, T& near, T& far, int flags = 0)
     farVec = inv * farVec;
     #endif
 
-    near = nearVec.z / nearVec.w;
-    far = farVec.z / farVec.w;
+    nearPlane = nearVec.z / nearVec.w;
+    farPlane = farVec.z / farVec.w;
 
     if (rightHanded)
     {
-        near = -near;
-        far = -far;
+        nearPlane = -nearPlane;
+        farPlane = -farPlane;
     }
 }
 
 } // /namespace Details
 
 template <typename T>
-void ExtractClippingPlanes(const Matrix<T, 4, 4>& m, T& near, T& far, int flags = 0)
+void ExtractClippingPlanes(const Matrix<T, 4, 4>& m, T& nearPlane, T& farPlane, int flags = 0)
 {
-    Details::ExtractClippingPlanes4x4(m, near, far, flags);
+    Details::ExtractClippingPlanes4x4(m, nearPlane, farPlane, flags);
 }
 
 template <typename T>
-void ExtractClippingPlanes(const ProjectionMatrix4T<T>& m, T& near, T& far, int flags = 0)
+void ExtractClippingPlanes(const ProjectionMatrix4T<T>& m, T& nearPlane, T& farPlane, int flags = 0)
 {
-    Details::ExtractClippingPlanes4x4(m, near, far, flags);
+    Details::ExtractClippingPlanes4x4(m, nearPlane, farPlane, flags);
 }
 
 

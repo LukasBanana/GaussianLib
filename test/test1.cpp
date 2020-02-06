@@ -285,10 +285,10 @@ void complexTest1()
 
 void projectionTest1()
 {
-    const Real w = 800, h = 600, near = 1.0f, far = 100.0f, fov = 74.0f*pi/180.0f;
+    const Real w = 800, h = 600, nearPlane = 1.0f, farPlane = 100.0f, fov = 74.0f*pi/180.0f;
 
-    auto P = ProjectionMatrix4::Perspective(w/h, near, far, fov);
-    auto Q = ProjectionMatrix4::Orthogonal(w, h, near, far);
+    auto P = ProjectionMatrix4::Perspective(w/h, nearPlane, farPlane, fov);
+    auto Q = ProjectionMatrix4::Orthogonal(w, h, nearPlane, farPlane);
     auto R = ProjectionMatrix4::Planar(w, h);
 
     Vector4 a(50, 0, 0, 1);
