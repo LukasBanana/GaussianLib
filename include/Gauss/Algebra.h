@@ -211,7 +211,8 @@ T Mix(const T& v0, const T& v1, const I& scale0, const I& scale1)
 template <typename T>
 T Saturate(const T& x)
 {
-    return std::max(T(0), std::min(x, T(1)));
+    /* Wrap std::max and std::min into brackets to break macro expansion from Windows.h, so no NOMINMAX macro definition is required */
+    return (std::max)(T(0), (std::min)(x, T(1)));
 }
 
 /**

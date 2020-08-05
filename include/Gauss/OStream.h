@@ -48,7 +48,7 @@ std::ostream& ShiftAffineMatrixOStream(std::ostream& stream, const M& mat)
     {
         lengths[c] = 0;
         for (std::size_t r = 0; r < M::rowsSparse; ++r)
-            lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
+            lengths[c] = (std::max)(lengths[c], Details::Length(mat(r, c)));
     }
 
     #ifdef GS_ROW_VECTORS
@@ -140,7 +140,7 @@ std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& ma
     {
         lengths[c] = 0;
         for (std::size_t r = 0; r < Matrix<T, Rows, Cols>::rows; ++r)
-            lengths[c] = std::max(lengths[c], Details::Length(mat(r, c)));
+            lengths[c] = (std::max)(lengths[c], Details::Length(mat(r, c)));
     }
 
     /* Write each row */
