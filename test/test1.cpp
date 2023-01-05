@@ -165,8 +165,10 @@ void affineMatrixTest1()
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
+    #ifdef GS_ENABLE_INVERSE_OPERATOR
     std::cout << "Inv(A) = " << std::endl << (A^-1) << std::endl;
     std::cout << "A*Inv(A) = " << std::endl << A*(A^-1) << std::endl;
+    #endif
     std::cout << "B = " << std::endl << B << std::endl;
     std::cout << "B^T = " << std::endl << B.Transposed() << std::endl;
     std::cout << "Inv(B) = " << std::endl << B.Inverse() << std::endl;
@@ -298,8 +300,10 @@ void projectionTest1()
     std::cout << "Planar      Projection R = " << std::endl << R << std::endl;
     std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
     std::cout << "a = " << a << std::endl;
+    #ifdef GS_ENABLE_SWIZZLE_OPERATOR
     std::cout << "Project(R, a) = ";
     std::cout << (R * a).xy() << std::endl;
+    #endif
 }
 
 void equalsTest1()
