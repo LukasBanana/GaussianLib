@@ -1,8 +1,11 @@
 
 # === CMake lists for the GaussianLib - (20/07/2015) ===
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.19)
 project(GaussianLib)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 # === Build path ===
@@ -68,9 +71,7 @@ include_directories(${PROJECT_INCLUDE_DIR})
 
 # === Binaries ===
 
-add_library(gausslib STATIC ${FilesAll})
-set_target_properties(gausslib PROPERTIES LINKER_LANGUAGE CXX DEBUG_POSTFIX "D")
-target_compile_features(gausslib PRIVATE cxx_range_for)
+add_library(gausslib INTERFACE ${FilesAll})
 
 set(
 	FilesTest1
@@ -80,8 +81,4 @@ set(
 )
 
 add_executable(test1 ${FilesTest1})
-#target_link_libraries(test1 gausslib)
-set_target_properties(test1 PROPERTIES LINKER_LANGUAGE CXX DEBUG_POSTFIX "D")
-target_compile_features(test1 PRIVATE cxx_range_for)
-
 
