@@ -1,6 +1,6 @@
 /*
  * Scale.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,7 +9,7 @@
 #define GS_SCALE_H
 
 
-#include "Decl.h"
+#include <Gauss/Decl.h>
 
 
 namespace Gs

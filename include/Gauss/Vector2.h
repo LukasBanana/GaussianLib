@@ -1,6 +1,6 @@
 /*
  * Vector2.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,9 +9,9 @@
 #define GS_VECTOR2_H
 
 
-#include "Vector.h"
-#include "Algebra.h"
-#include "Swizzle.h"
+#include <Gauss/Vector.h>
+#include <Gauss/Algebra.h>
+#include <Gauss/Swizzle.h>
 
 #include <cmath>
 
@@ -219,9 +219,9 @@ class Vector<T, 2>
         }
 
         #ifdef GS_ENABLE_SWIZZLE_OPERATOR
-        #   include "SwizzleVec2Op2.h"
-        #   include "SwizzleVec2Op3.h"
-        #   include "SwizzleVec2Op4.h"
+        #   include <Gauss/SwizzleVec2Op2.h>
+        #   include <Gauss/SwizzleVec2Op3.h>
+        #   include <Gauss/SwizzleVec2Op4.h>
         #endif
 
         T x, y;

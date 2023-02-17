@@ -1,6 +1,6 @@
 /*
  * AffineMatrix.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,7 +9,7 @@
 #define GS_AFFINE_MATRIX_H
 
 
-#include "Tags.h"
+#include <Gauss/Tags.h>
 
 #include <cmath>
 #include <cstring>

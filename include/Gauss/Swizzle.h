@@ -1,6 +1,6 @@
 /*
  * Swizzle.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,8 +9,8 @@
 #define GS_SWIZZLE_H
 
 
-#include "Decl.h"
-#include "Config.h"
+#include <Gauss/Decl.h>
+#include <Gauss/Config.h>
 
 
 #define GS_DEF_SWIZZLE_REF2(v0, v1)     \

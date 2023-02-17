@@ -1,6 +1,6 @@
 /*
  * Equals.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,9 +9,9 @@
 #define GS_EQUALS_H
 
 
-#include "Real.h"
-#include "Epsilon.h"
-#include "Decl.h"
+#include <Gauss/Real.h>
+#include <Gauss/Epsilon.h>
+#include <Gauss/Decl.h>
 
 #include <cmath>
 

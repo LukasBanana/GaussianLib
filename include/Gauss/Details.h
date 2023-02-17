@@ -9,7 +9,7 @@
 #define GS_DETAILS_H
 
 
-#include "Decl.h"
+#include <Gauss/Decl.h>
 
 #include <vector>
 

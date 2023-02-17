@@ -1,6 +1,6 @@
 /*
  * ProjectionMatrix4.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,12 +9,12 @@
 #define GS_PROJECTION_MATRIX4_H
 
 
-#include "Decl.h"
-#include "Details.h"
-#include "Determinant.h"
-#include "Inverse.h"
-#include "Matrix.h"
-#include "Vector4.h"
+#include <Gauss/Decl.h>
+#include <Gauss/Details.h>
+#include <Gauss/Determinant.h>
+#include <Gauss/Inverse.h>
+#include <Gauss/Matrix.h>
+#include <Gauss/Vector4.h>
 
 
 namespace Gs

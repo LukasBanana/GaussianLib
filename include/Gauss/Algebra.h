@@ -1,6 +1,6 @@
 /*
  * Algebra.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,13 +9,13 @@
 #define GS_ALGEBRA_H
 
 
-#include "Macros.h"
-#include "Details.h"
-#include "Determinant.h"
-#include "Inverse.h"
-#include "Decl.h"
-#include "Real.h"
-#include "Tags.h"
+#include <Gauss/Macros.h>
+#include <Gauss/Details.h>
+#include <Gauss/Determinant.h>
+#include <Gauss/Inverse.h>
+#include <Gauss/Decl.h>
+#include <Gauss/Real.h>
+#include <Gauss/Tags.h>
 
 #include <cmath>
 #include <cstddef>

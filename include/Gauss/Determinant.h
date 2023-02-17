@@ -1,6 +1,6 @@
 /*
  * Determinant.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,7 +9,7 @@
 #define GS_DETERMINANT_H
 
 
-#include "Details.h"
+#include <Gauss/Details.h>
 
 
 namespace Gs

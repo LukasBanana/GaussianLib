@@ -1,6 +1,6 @@
 /*
  * MatrixInitializer.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,7 +9,7 @@
 #define GS_MATRIX_INITIALIZER_H
 
 
-#include "Decl.h"
+#include <Gauss/Decl.h>
 
 
 namespace Gs

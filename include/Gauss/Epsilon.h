@@ -1,6 +1,6 @@
 /*
  * Epsilon.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,7 +9,7 @@
 #define GS_EPSILON_H
 
 
-#include "Real.h"
+#include <Gauss/Real.h>
 
 #include <type_traits>
 

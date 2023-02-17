@@ -1,6 +1,6 @@
 /*
  * Inverse.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,10 +9,10 @@
 #define GS_INVERSE_H
 
 
-#include "Decl.h"
-#include "Details.h"
-#include "Determinant.h"
-#include "Assert.h"
+#include <Gauss/Decl.h>
+#include <Gauss/Details.h>
+#include <Gauss/Determinant.h>
+#include <Gauss/Assert.h>
 
 
 namespace Gs

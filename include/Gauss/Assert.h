@@ -1,6 +1,6 @@
 /*
  * Assert.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,8 +9,8 @@
 #define GS_ASSERT_H
 
 
-#include "Config.h"
-#include "Macros.h"
+#include <Gauss/Config.h>
+#include <Gauss/Macros.h>
 
 #include <cassert>
 

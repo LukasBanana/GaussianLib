@@ -1,6 +1,6 @@
 /*
  * AffineMatrix4.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,15 +9,15 @@
 #define GS_AFFINE_MATRIX4_H
 
 
-#include "Real.h"
-#include "Assert.h"
-#include "Macros.h"
-#include "Matrix.h"
-#include "Tags.h"
-#include "AffineMatrix.h"
-#include "MatrixInitializer.h"
-#include "Vector3.h"
-#include "Vector4.h"
+#include <Gauss/Real.h>
+#include <Gauss/Assert.h>
+#include <Gauss/Macros.h>
+#include <Gauss/Matrix.h>
+#include <Gauss/Tags.h>
+#include <Gauss/AffineMatrix.h>
+#include <Gauss/MatrixInitializer.h>
+#include <Gauss/Vector3.h>
+#include <Gauss/Vector4.h>
 
 #include <cmath>
 #include <cstring>

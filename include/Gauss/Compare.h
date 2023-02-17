@@ -1,6 +1,6 @@
 /*
  * Compare.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,11 +9,11 @@
 #define GS_COMPARE_H
 
 
-#include "Real.h"
-#include "Epsilon.h"
-#include "Vector.h"
-#include "Quaternion.h"
-#include "Matrix.h"
+#include <Gauss/Real.h>
+#include <Gauss/Epsilon.h>
+#include <Gauss/Vector.h>
+#include <Gauss/Quaternion.h>
+#include <Gauss/Matrix.h>
 
 
 namespace Gs

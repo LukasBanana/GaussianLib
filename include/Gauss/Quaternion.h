@@ -1,6 +1,6 @@
 /*
  * Quaternion.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,13 +9,13 @@
 #define GS_QUATERNION_H
 
 
-#include "Decl.h"
-#include "Real.h"
-#include "Assert.h"
-#include "Algebra.h"
-#include "Tags.h"
-#include "Matrix.h"
-#include "Conversions.h"
+#include <Gauss/Decl.h>
+#include <Gauss/Real.h>
+#include <Gauss/Assert.h>
+#include <Gauss/Algebra.h>
+#include <Gauss/Tags.h>
+#include <Gauss/Matrix.h>
+#include <Gauss/Conversions.h>
 
 #include <cmath>
 #include <limits>

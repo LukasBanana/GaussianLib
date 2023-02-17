@@ -1,6 +1,6 @@
 /*
  * Gauss.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,34 +9,34 @@
 #define GS_GAUSS_H
 
 
-#include "Config.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Quaternion.h"
-#include "Matrix.h"
-#include "AffineMatrix3.h"
-#include "AffineMatrix4.h"
-#include "ProjectionMatrix4.h"
-#include "Spherical.h"
+#include <Gauss/Config.h>
+#include <Gauss/Vector2.h>
+#include <Gauss/Vector3.h>
+#include <Gauss/Vector4.h>
+#include <Gauss/Quaternion.h>
+#include <Gauss/Matrix.h>
+#include <Gauss/AffineMatrix3.h>
+#include <Gauss/AffineMatrix4.h>
+#include <Gauss/ProjectionMatrix4.h>
+#include <Gauss/Spherical.h>
 
-#include "Algebra.h"
-#include "OStream.h"
-#include "Epsilon.h"
+#include <Gauss/Algebra.h>
+#include <Gauss/OStream.h>
+#include <Gauss/Epsilon.h>
 
-#include "Equals.h"
-#include "Determinant.h"
-#include "Inverse.h"
-#include "Translate.h"
-#include "Scale.h"
-#include "Rotate.h"
-#include "Compare.h"
-#include "Flip.h"
+#include <Gauss/Equals.h>
+#include <Gauss/Determinant.h>
+#include <Gauss/Inverse.h>
+#include <Gauss/Translate.h>
+#include <Gauss/Scale.h>
+#include <Gauss/Rotate.h>
+#include <Gauss/Compare.h>
+#include <Gauss/Flip.h>
 
-#include "TransformVector.h"
-#include "RotateVector.h"
+#include <Gauss/TransformVector.h>
+#include <Gauss/RotateVector.h>
 
-#include "ScalarType.h"
+#include <Gauss/ScalarType.h>
 
 
 #endif

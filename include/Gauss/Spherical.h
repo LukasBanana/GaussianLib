@@ -1,6 +1,6 @@
 /*
  * Spherical.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,9 +9,9 @@
 #define GS_SPHERICAL_H
 
 
-#include "Decl.h"
-#include "Real.h"
-#include "Tags.h"
+#include <Gauss/Decl.h>
+#include <Gauss/Real.h>
+#include <Gauss/Tags.h>
 
 #include <cmath>
 

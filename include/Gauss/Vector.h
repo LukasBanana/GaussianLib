@@ -1,6 +1,6 @@
 /*
  * Vector.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,9 +9,9 @@
 #define GS_VECTOR_H
 
 
-#include "Real.h"
-#include "Assert.h"
-#include "Tags.h"
+#include <Gauss/Real.h>
+#include <Gauss/Assert.h>
+#include <Gauss/Tags.h>
 
 #include <algorithm>
 #include <iterator>

@@ -1,6 +1,6 @@
 /*
  * Macros.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,7 +9,7 @@
 #define GS_MACROS_H
 
 
-#include "Config.h"
+#include <Gauss/Config.h>
 
 
 #define GS_TOSTRING_PRIMARY(x)  #x

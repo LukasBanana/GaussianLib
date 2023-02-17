@@ -1,6 +1,6 @@
 /*
  * StdMath.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,8 +9,9 @@
 #define GS_STDMATH_H
 
 
-#include "Vector.h"
-#include "Matrix.h"
+#include <Gauss/Vector.h>
+#include <Gauss/Matrix.h>
+
 #include <cmath>
 #include <functional>
 

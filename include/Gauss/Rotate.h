@@ -1,6 +1,6 @@
 /*
  * Rotate.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,9 +9,9 @@
 #define GS_ROTATE_H
 
 
-#include "Decl.h"
-#include "Macros.h"
-#include "Vector3.h"
+#include <Gauss/Decl.h>
+#include <Gauss/Macros.h>
+#include <Gauss/Vector3.h>
 
 
 namespace Gs

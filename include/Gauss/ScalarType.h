@@ -1,6 +1,6 @@
 /*
  * Typename.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,15 +9,15 @@
 #define GS_TYPENAME_H
 
 
-#include "Vector.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix.h"
-#include "AffineMatrix3.h"
-#include "AffineMatrix4.h"
-#include "ProjectionMatrix4.h"
-#include "Quaternion.h"
+#include <Gauss/Vector.h>
+#include <Gauss/Vector2.h>
+#include <Gauss/Vector3.h>
+#include <Gauss/Vector4.h>
+#include <Gauss/Matrix.h>
+#include <Gauss/AffineMatrix3.h>
+#include <Gauss/AffineMatrix4.h>
+#include <Gauss/ProjectionMatrix4.h>
+#include <Gauss/Quaternion.h>
 
 
 namespace Gs

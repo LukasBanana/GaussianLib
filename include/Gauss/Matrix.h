@@ -1,6 +1,6 @@
 /*
  * Matrix.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,12 +9,12 @@
 #define GS_MATRIX_H
 
 
-#include "Real.h"
-#include "Assert.h"
-#include "Macros.h"
-#include "Tags.h"
-#include "Rotate.h"
-#include "MatrixInitializer.h"
+#include <Gauss/Real.h>
+#include <Gauss/Assert.h>
+#include <Gauss/Macros.h>
+#include <Gauss/Tags.h>
+#include <Gauss/Rotate.h>
+#include <Gauss/MatrixInitializer.h>
 
 #include <cmath>
 #include <cstring>

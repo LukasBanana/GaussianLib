@@ -66,12 +66,13 @@ file(GLOB_RECURSE FilesAll "${PROJECT_SOURCE_DIR}/include/*.*")
 
 # === Include directories ===
 
-include_directories(${PROJECT_INCLUDE_DIR})
+#include_directories(${PROJECT_INCLUDE_DIR})
 
 
 # === Binaries ===
 
 add_library(gausslib INTERFACE ${FilesAll})
+target_include_directories(gausslib INTERFACE ${PROJECT_INCLUDE_DIR})
 
 set(
 	FilesTest1
@@ -81,4 +82,5 @@ set(
 )
 
 add_executable(test1 ${FilesTest1})
+target_link_libraries(test1 PRIVATE gausslib)
 

@@ -1,6 +1,6 @@
 /*
  * Real.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -28,7 +28,7 @@ using Real = float;
 
 #endif
 
-static const Real pi = Real(3.14159265358979323846);
+static constexpr Real pi = Real(3.14159265358979323846);
 
 //! Converts radian to degree.
 template <typename T>

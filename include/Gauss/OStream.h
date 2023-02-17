@@ -1,6 +1,6 @@
 /*
  * OStream.h
- * 
+ *
  * This file is part of the "GaussianLib" project (Copyright (c) 2015 by Lukas Hermanns)
  * See "LICENSE.txt" for license information.
  */
@@ -9,9 +9,9 @@
 #define GS_OSTREAM_H
 
 
-#include "Decl.h"
+#include <Gauss/Decl.h>
 
-#include <iostream>
+#include <ostream>
 #include <algorithm>
 #include <array>
 #include <string>
