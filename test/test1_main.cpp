@@ -41,6 +41,7 @@ int main()
         sseVector4Test1();
         sseVector4Test2();
         matrixInitializerTest1();
+        matrixRotateTest1();
     }
     catch (const std::exception& e)
     {

@@ -558,3 +558,12 @@ void matrixInitializerTest1()
     std::cout << "A = " << std::endl << A << std::endl;
 }
 
+void matrixRotateTest1()
+{
+    AffineMatrix4f A;
+
+    RotateFree(A, Vector3f{ 1, 0, 0 }, Deg2Rad(90.0f), Vector3f{ 1, 1, 1 });
+
+    std::cout << "RotateFree(Identity, (1|0|0), 90, (1|1|1)) = " << std::endl << A << std::endl;
+}
+

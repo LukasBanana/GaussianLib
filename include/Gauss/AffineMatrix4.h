@@ -18,6 +18,7 @@
 #include <Gauss/MatrixInitializer.h>
 #include <Gauss/Vector3.h>
 #include <Gauss/Vector4.h>
+#include <Gauss/Rotate.h>
 
 #include <cmath>
 #include <cstring>
@@ -420,64 +421,19 @@ class AffineMatrix4T
         //! Rotates the matrix at the X-axis with the specified angle (in radians).
         void RotateX(const T& angle)
         {
-            const T c = std::cos(angle);
-            const T s = std::sin(angle);
-
-            /* Temporaries */
-            const T m01 = At(0, 1);
-            const T m11 = At(1, 1);
-            const T m21 = At(2, 1);
-
-            /* Rotation */
-            At(0, 1) = m01*c + At(0, 2)*s;
-            At(1, 1) = m11*c + At(1, 2)*s;
-            At(2, 1) = m21*c + At(2, 2)*s;
-
-            At(0, 2) = At(0, 2)*c - m01*s;
-            At(1, 2) = At(1, 2)*c - m11*s;
-            At(2, 2) = At(2, 2)*c - m21*s;
+            Gs::RotateX(*this, angle);
         }
 
         //! Rotates the matrix at the Y-axis with the specified angle (in radians).
         void RotateY(const T& angle)
         {
-            const T c = std::cos(angle);
-            const T s = std::sin(angle);
-
-            /* Temporaries */
-            const T m00 = At(0, 0);
-            const T m10 = At(1, 0);
-            const T m20 = At(2, 0);
-
-            /* Rotation */
-            At(0, 0) = m00*c + At(0, 2)*s;
-            At(1, 0) = m10*c + At(1, 2)*s;
-            At(2, 0) = m20*c + At(2, 2)*s;
-
-            At(0, 2) = At(0, 2)*c - m00*s;
-            At(1, 2) = At(1, 2)*c - m10*s;
-            At(2, 2) = At(2, 2)*c - m20*s;
+            Gs::RotateY(*this, angle);
         }
 
         //! Rotates the matrix at the Z-axis with the specified angle (in radians).
         void RotateZ(const T& angle)
         {
-            const T c = std::cos(angle);
-            const T s = std::sin(angle);
-
-            /* Temporaries */
-            const T m00 = At(0, 0);
-            const T m10 = At(1, 0);
-            const T m20 = At(2, 0);
-
-            /* Rotation */
-            At(0, 0) = m00*c + At(0, 1)*s;
-            At(1, 0) = m10*c + At(1, 1)*s;
-            At(2, 0) = m20*c + At(2, 1)*s;
-
-            At(0, 1) = At(0, 1)*c - m00*s;
-            At(1, 1) = At(1, 1)*c - m10*s;
-            At(2, 1) = At(2, 1)*c - m20*s;
+            Gs::RotateZ(*this, angle);
         }
 
         void ToMatrix4(Matrix<T, 4, 4>& m) const
