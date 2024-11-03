@@ -429,9 +429,9 @@ class AffineMatrix4T
             const T m21 = At(2, 1);
 
             /* Rotation */
-            At(0, 1) = At(0, 1)*c + At(0, 2)*s;
-            At(1, 1) = At(1, 1)*c + At(1, 2)*s;
-            At(2, 1) = At(2, 1)*c + At(2, 2)*s;
+            At(0, 1) = m01*c + At(0, 2)*s;
+            At(1, 1) = m11*c + At(1, 2)*s;
+            At(2, 1) = m21*c + At(2, 2)*s;
 
             At(0, 2) = At(0, 2)*c - m01*s;
             At(1, 2) = At(1, 2)*c - m11*s;
@@ -450,13 +450,13 @@ class AffineMatrix4T
             const T m20 = At(2, 0);
 
             /* Rotation */
-            At(0, 0) = At(0, 0)*c - At(0, 2)*s;
-            At(1, 0) = At(1, 0)*c - At(1, 2)*s;
-            At(2, 0) = At(2, 0)*c - At(2, 2)*s;
+            At(0, 0) = m00*c + At(0, 2)*s;
+            At(1, 0) = m10*c + At(1, 2)*s;
+            At(2, 0) = m20*c + At(2, 2)*s;
 
-            At(0, 2) = m00*s - At(0, 2)*c;
-            At(1, 2) = m10*s - At(1, 2)*c;
-            At(2, 2) = m20*s - At(2, 2)*c;
+            At(0, 2) = At(0, 2)*c - m00*s;
+            At(1, 2) = At(1, 2)*c - m10*s;
+            At(2, 2) = At(2, 2)*c - m20*s;
         }
 
         //! Rotates the matrix at the Z-axis with the specified angle (in radians).
@@ -471,9 +471,9 @@ class AffineMatrix4T
             const T m20 = At(2, 0);
 
             /* Rotation */
-            At(0, 0) = At(0, 0)*c + At(0, 1)*s;
-            At(1, 0) = At(1, 0)*c + At(1, 1)*s;
-            At(2, 0) = At(2, 0)*c + At(2, 1)*s;
+            At(0, 0) = m00*c + At(0, 1)*s;
+            At(1, 0) = m10*c + At(1, 1)*s;
+            At(2, 0) = m20*c + At(2, 1)*s;
 
             At(0, 1) = At(0, 1)*c - m00*s;
             At(1, 1) = At(1, 1)*c - m10*s;
