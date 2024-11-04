@@ -64,11 +64,6 @@ endif()
 file(GLOB_RECURSE FilesAll "${PROJECT_SOURCE_DIR}/include/*.*")
 
 
-# === Include directories ===
-
-#include_directories(${PROJECT_INCLUDE_DIR})
-
-
 # === Binaries ===
 
 add_library(gausslib INTERFACE ${FilesAll})

@@ -32,6 +32,8 @@
 #include <Gauss/Rotate.h>
 #include <Gauss/Compare.h>
 #include <Gauss/Flip.h>
+#include <Gauss/LookAt.h>
+#include <Gauss/Projection.h>
 
 #include <Gauss/TransformVector.h>
 #include <Gauss/RotateVector.h>
