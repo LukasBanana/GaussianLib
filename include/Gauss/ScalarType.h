@@ -9,15 +9,8 @@
 #define GS_TYPENAME_H
 
 
-#include <Gauss/Vector.h>
-#include <Gauss/Vector2.h>
-#include <Gauss/Vector3.h>
-#include <Gauss/Vector4.h>
-#include <Gauss/Matrix.h>
-#include <Gauss/AffineMatrix3.h>
-#include <Gauss/AffineMatrix4.h>
-#include <Gauss/ProjectionMatrix4.h>
-#include <Gauss/Quaternion.h>
+#include <Gauss/Decl.h>
+#include <cstddef>
 
 
 namespace Gs
@@ -26,45 +19,65 @@ namespace Gs
 
 //! Provides the scalar type of the scalar, vector, or matrix type specified by 'T'.
 template <typename T>
-struct ScalarType
+struct VectorType
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = T::elements;
 };
 
 template <typename T, std::size_t N>
-struct ScalarType<Vector<T, N>>
+struct VectorType< T[N] >
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = N;
+};
+
+template <typename T, std::size_t N>
+struct VectorType< Vector<T, N> >
+{
+    using ScalarType = T;
+    static constexpr std::size_t elements = N;
 };
 
 template <typename T, std::size_t Rows, std::size_t Cols>
-struct ScalarType<Matrix<T, Rows, Cols>>
+struct VectorType< Matrix<T, Rows, Cols> >
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = Matrix<T, Rows, Cols>::elements;
 };
 
 template <typename T>
-struct ScalarType<AffineMatrix3T<T>>
+struct VectorType<AffineMatrix3T<T>>
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = AffineMatrix3T<T>::elements;
 };
 
 template <typename T>
-struct ScalarType<AffineMatrix4T<T>>
+struct VectorType< AffineMatrix4T<T> >
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = AffineMatrix4T<T>::elements;
 };
 
 template <typename T>
-struct ScalarType<ProjectionMatrix4T<T>>
+struct VectorType< ProjectionMatrix4T<T> >
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = ProjectionMatrix4T<T>::elements;
 };
 
 template <typename T>
-struct ScalarType<QuaternionT<T>>
+struct VectorType< QuaternionT<T> >
 {
-    using Type = T;
+    using ScalarType = T;
+    static constexpr std::size_t elements = QuaternionT<T>::components;
+};
+
+template <typename T>
+struct ScalarType
+{
+    using Type = typename VectorType<T>::ScalarType;
 };
 
 

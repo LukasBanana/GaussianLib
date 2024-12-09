@@ -91,13 +91,13 @@ class Matrix
         /* ----- Static members ----- */
 
         //! Number of rows of this matrix type.
-        static const std::size_t rows       = Rows;
+        static constexpr std::size_t rows       = Rows;
 
         //! Number of columns of this matrix type.
-        static const std::size_t columns    = Cols;
+        static constexpr std::size_t columns    = Cols;
 
         //! Number of scalar elements of this matrix type.
-        static const std::size_t elements   = Rows*Cols;
+        static constexpr std::size_t elements   = Rows*Cols;
 
         /* ----- Typenames ----- */
 
@@ -368,7 +368,7 @@ class Matrix
         */
         template <typename C> Matrix<C, Rows, Cols> Cast() const
         {
-            Matrix<C, Rows, Cols> result { UninitializeTag{} };
+            Matrix<C, Rows, Cols> result{ UninitializeTag{} };
 
             for (std::size_t i = 0; i < ThisType::elements; ++i)
                 result[i] = static_cast<C>(m_[i]);
@@ -420,7 +420,7 @@ Matrix<T, Rows, Cols> operator * (const T& lhs, const Matrix<T, Rows, Cols>& rhs
 template <typename T, std::size_t Rows, std::size_t ColsRows, std::size_t Cols>
 Matrix<T, Rows, Cols> operator * (const Matrix<T, Rows, ColsRows>& lhs, const Matrix<T, ColsRows, Cols>& rhs)
 {
-    Matrix<T, Rows, Cols> result { UninitializeTag{} };
+    Matrix<T, Rows, Cols> result{ UninitializeTag{} };
 
     GS_FOREACH_ROW_COL(r, c)
     {

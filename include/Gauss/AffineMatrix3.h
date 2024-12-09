@@ -72,19 +72,19 @@ class AffineMatrix3T
 
         /* ----- Static members ----- */
 
-        static const std::size_t rows           = 3;
-        static const std::size_t columns        = 3;
-        static const std::size_t elements       = AffineMatrix3T<T>::rows*AffineMatrix3T<T>::columns;
+        static constexpr std::size_t rows           = 3;
+        static constexpr std::size_t columns        = 3;
+        static constexpr std::size_t elements       = AffineMatrix3T<T>::rows*AffineMatrix3T<T>::columns;
 
         #ifdef GS_ROW_VECTORS
-        static const std::size_t rowsSparse     = 3;
-        static const std::size_t columnsSparse  = 2;
+        static constexpr std::size_t rowsSparse     = 3;
+        static constexpr std::size_t columnsSparse  = 2;
         #else
-        static const std::size_t rowsSparse     = 2;
-        static const std::size_t columnsSparse  = 3;
+        static constexpr std::size_t rowsSparse     = 2;
+        static constexpr std::size_t columnsSparse  = 3;
         #endif
 
-        static const std::size_t elementsSparse = AffineMatrix3T<T>::rowsSparse*AffineMatrix3T<T>::columnsSparse;
+        static constexpr std::size_t elementsSparse = AffineMatrix3T<T>::rowsSparse*AffineMatrix3T<T>::columnsSparse;
 
         /* ----- Typenames ----- */
 
@@ -514,7 +514,7 @@ class AffineMatrix3T
         */
         template <typename C> AffineMatrix3T<C> Cast() const
         {
-            AffineMatrix3T<C> result { UninitializeTag{} };
+            AffineMatrix3T<C> result{ UninitializeTag{} };
 
             for (std::size_t i = 0; i < ThisType::elementsSparse; ++i)
                 result[i] = static_cast<C>(m_[i]);

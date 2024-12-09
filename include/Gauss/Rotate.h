@@ -60,8 +60,8 @@ void FreeRotation(M& mat, const Vector3T<T>& axis, const T& angle)
 \tparam M Specifies the matrix type. This should be Matrix3, Matrix4, or AffineMatrix4.
 This type must implement the following interface:
 \code
-static const std::size_t rows;    // >= 3
-static const std::size_t columns; // >= 3
+static constexpr std::size_t rows;    // >= 3
+static constexpr std::size_t columns; // >= 3
 \endcode
 \tparam T Specifies the data type. This should should be float or double.
 \param[in,out] mat Specifies the matrix which is to be rotated.

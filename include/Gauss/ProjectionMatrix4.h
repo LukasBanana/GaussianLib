@@ -253,7 +253,7 @@ class ProjectionMatrix4T
         */
         template <typename C> ProjectionMatrix4T<C> Cast() const
         {
-            ProjectionMatrix4T<C> result { UninitializeTag{} };
+            ProjectionMatrix4T<C> result{ UninitializeTag{} };
 
             result.m00 = static_cast<C>(m00);
             result.m11 = static_cast<C>(m11);
@@ -329,7 +329,7 @@ class ProjectionMatrix4T
         //! \see Perspective(ProjectionMatrix4T<T>&, const T&, const T&, const T&, const T&, int)
         static ProjectionMatrix4T<T> Perspective(const T& aspect, const T& nearPlane, const T& farPlane, const T& fov, int flags = 0)
         {
-            ProjectionMatrix4T<T> m { UninitializeTag{} };
+            ProjectionMatrix4T<T> m{ UninitializeTag{} };
             Perspective(m, aspect, nearPlane, farPlane, fov, flags);
             return m;
         }
@@ -377,7 +377,7 @@ class ProjectionMatrix4T
         //! \see Orthogonal(ProjectionMatrix4T<T>&, const T&, const T&, const T&, const T&, int
         static ProjectionMatrix4T<T> Orthogonal(const T& width, const T& height, const T& nearPlane, const T& farPlane, int flags = 0)
         {
-            ProjectionMatrix4T<T> m { UninitializeTag{} };
+            ProjectionMatrix4T<T> m{ UninitializeTag{} };
             Orthogonal(m, width, height, nearPlane, farPlane, flags);
             return m;
         }
@@ -436,7 +436,7 @@ class ProjectionMatrix4T
         //! \see Planar(Matrix<T, 4, 4>&, const T&, const T&, const PlanarProjectionOrigin)
         static Matrix<T, 4, 4> Planar(const T& width, const T& height, const PlanarProjectionOrigin origin = PlanarProjectionOrigin::LeftTop)
         {
-            Matrix<T, 4, 4> m { UninitializeTag{} };
+            Matrix<T, 4, 4> m{ UninitializeTag{} };
             Planar(m, width, height, origin);
             return m;
         }
@@ -482,7 +482,7 @@ Vector4T<T> operator * (const ProjectionMatrix4T<T>& m, const Vector4T<T>& v)
 template <typename T>
 ProjectionMatrix4T<T> operator * (const ProjectionMatrix4T<T>& lhs, const ProjectionMatrix4T<T>& rhs)
 {
-    ProjectionMatrix4T<T> result { UninitializeTag{} };
+    ProjectionMatrix4T<T> result{ UninitializeTag{} };
 
     #ifdef GS_ROW_VECTORS
 

@@ -43,7 +43,7 @@ class QuaternionT
         using ScalarType = T;
 
         //! Specifies the number of quaternion components. This is just for the internal template interface.
-        static const std::size_t components = 4;
+        static constexpr std::size_t components = 4;
 
         #ifndef GS_DISABLE_AUTO_INIT
         QuaternionT() :
@@ -144,7 +144,7 @@ class QuaternionT
         */
         void Normalize()
         {
-            Gs::Normalize(*this);
+            *this = Gs::Normalize(*this);
         }
 
         /**
@@ -153,9 +153,7 @@ class QuaternionT
         */
         QuaternionT<T> Normalized() const
         {
-            auto quat = *this;
-            quat.Normalize();
-            return quat;
+            return Gs::Normalize(*this);
         }
 
         //! Sets this quaternion to the identity quaternion (x = y = z = 0, w = 1).
@@ -263,14 +261,14 @@ class QuaternionT
 
         Matrix3T<T> ToMatrix3() const
         {
-            Matrix3T<T> result { UninitializeTag{} };
+            Matrix3T<T> result{ UninitializeTag{} };
             Gs::QuaternionToMatrix(result, *this);
             return result;
         }
 
         Matrix3T<T> ToMatrix3Transposed() const
         {
-            Matrix3T<T> result { UninitializeTag{} };
+            Matrix3T<T> result{ UninitializeTag{} };
             Gs::QuaternionToMatrixTransposed(result, *this);
             return result;
         }

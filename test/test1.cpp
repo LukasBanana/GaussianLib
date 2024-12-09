@@ -55,7 +55,7 @@ void commonTest1()
           0, 1, 0, 0,
           0, 0, 0, 1 };
 
-    Matrix<Real, 3, 4> C { UninitializeTag{} };
+    Matrix<Real, 3, 4> C{ UninitializeTag{} };
     C = { 1, 0, 0, 12,
           0, 1, 0, -4,
           0, 0, 1, 5 };
@@ -565,5 +565,20 @@ void matrixRotateTest1()
     RotateFree(A, Vector3f{ 1, 0, 0 }, Deg2Rad(90.0f), Vector3f{ 1, 1, 1 });
 
     std::cout << "RotateFree(Identity, (1|0|0), 90, (1|1|1)) = " << std::endl << A << std::endl;
+}
+
+void customVectorTypeTest1()
+{
+    float a[3] = { 1, 2, 3 };
+    float b[3] = { 4, 5, 6 };
+    float c[3] = {};
+
+    float AdotB = Gs::Dot(a, b);
+    Gs::Cross(c, a, b);
+
+    std::cout << "|a| = " << Gs::Length(a) << std::endl;
+    std::cout << "|b| = " << Gs::Length(b) << std::endl;
+    std::cout << "a dot b = " << AdotB << std::endl;
+    std::cout << "a cross b = ( " << c[0] << " | " << c[1] << " | " << c[2] << " )" << std::endl;
 }
 

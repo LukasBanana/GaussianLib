@@ -26,7 +26,7 @@ namespace Gs
     template <typename T, std::size_t N>                        \
     Vector<T, N> NAME(const Vector<T, N>& x)                    \
     {                                                           \
-        Vector<T, N> y { UninitializeTag{} };                   \
+        Vector<T, N> y{ UninitializeTag{} };                    \
         for (std::size_t i = 0; i < N; ++i)                     \
             y[i] = std::NAME(x[i]);                             \
         return y;                                               \
@@ -34,7 +34,7 @@ namespace Gs
     template <typename T, std::size_t Rows, std::size_t Cols>   \
     Matrix<T, Rows, Cols> NAME(const Matrix<T, Rows, Cols>& x)  \
     {                                                           \
-        Matrix<T, Rows, Cols> y { UninitializeTag{} };          \
+        Matrix<T, Rows, Cols> y{ UninitializeTag{} };           \
         for (std::size_t i = 0; i < Rows*Cols; ++i)             \
             y[i] = std::NAME(x[i]);                             \
         return y;                                               \
@@ -44,7 +44,7 @@ namespace Gs
     template <typename T, std::size_t N>                                                            \
     Vector<T, N> NAME(const Vector<T, N>& x1, const Vector<T, N>& x2)                               \
     {                                                                                               \
-        Vector<T, N> y { UninitializeTag{} };                                                       \
+        Vector<T, N> y{ UninitializeTag{} };                                                        \
         for (std::size_t i = 0; i < N; ++i)                                                         \
             y[i] = std::NAME(x1[i], x2[i]);                                                         \
         return y;                                                                                   \
@@ -52,7 +52,7 @@ namespace Gs
     template <typename T, std::size_t Rows, std::size_t Cols>                                       \
     Matrix<T, Rows, Cols> NAME(const Matrix<T, Rows, Cols>& x1, const Matrix<T, Rows, Cols>& x2)    \
     {                                                                                               \
-        Matrix<T, Rows, Cols> y { UninitializeTag{} };                                              \
+        Matrix<T, Rows, Cols> y{ UninitializeTag{} };                                               \
         for (std::size_t i = 0; i < Rows*Cols; ++i)                                                 \
             y[i] = std::NAME(x1[i], x2[i]);                                                         \
         return y;                                                                                   \

@@ -40,6 +40,7 @@ void sseVector4Test2();
 void vector3Test1();
 void matrixInitializerTest1();
 void matrixRotateTest1();
+void customVectorTypeTest1();
 
 
 #endif

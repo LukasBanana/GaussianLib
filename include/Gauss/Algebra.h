@@ -16,6 +16,7 @@
 #include <Gauss/Decl.h>
 #include <Gauss/Real.h>
 #include <Gauss/Tags.h>
+#include <Gauss/ScalarType.h>
 
 #include <cmath>
 #include <cstddef>
@@ -33,6 +34,7 @@ namespace Gs
 
 //! Returns the value of 1 + 2 + ... + n = n*(n+1)/2.
 template <typename T>
+GS_NODISCARD
 T GaussianSum(T n)
 {
     static_assert(std::is_integral<T>::value, "GaussianSum function only allows integral types");
@@ -41,6 +43,7 @@ T GaussianSum(T n)
 
 //! Returns the value of 1^2 + 2^2 + ... + n^2 = n*(n+1)*(2n+1)/6.
 template <typename T>
+GS_NODISCARD
 T GaussianSumSq(T n)
 {
     static_assert(std::is_integral<T>::value, "GaussianSumSq function only allows integral types");
@@ -49,6 +52,7 @@ T GaussianSumSq(T n)
 
 //! Computes a normal (gaussian) distribution value for the specified (1-dimensional) position x with the specified mean and variance.
 template <typename T>
+GS_NODISCARD
 T NormalDistribution(const T& x, const T& mean, const T& variance)
 {
     return std::exp(-(x - mean)*(x - mean) / (variance + variance)) / std::sqrt(T(2) * T(Gs::pi) * variance);
@@ -56,115 +60,155 @@ T NormalDistribution(const T& x, const T& mean, const T& variance)
 
 //! Computes a normal (gaussian) distribution value for the specified (1-dimensional) position x with the specified mean and variance.
 template <typename T>
+GS_NODISCARD
 T NormalDistribution(const T& x)
 {
     return std::exp(-(x*x) / T(2)) / std::sqrt(T(2) * T(Gs::pi));
 }
 
 //! Returns the dot or rather scalar product between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Dot(const VectorType& lhs, const VectorType& rhs)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar Dot(const TVector& lhs, const TVector& rhs)
 {
-    ScalarType result = ScalarType(0);
+    TScalar result = TScalar(0);
 
-    for (std::size_t i = 0; i < VectorType::components; ++i)
+    for (std::size_t i = 0; i < VectorType<TVector>::elements; ++i)
         result += lhs[i]*rhs[i];
 
     return result;
 }
 
 //! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType>
-VectorType Cross(const VectorType& lhs, const VectorType& rhs)
+template <typename TVector>
+void Cross(TVector& result, const TVector& lhs, const TVector& rhs)
 {
-    static_assert(VectorType::components == 3, "Vector type must have exactly three components");
-    return VectorType
-    {
-        lhs.y*rhs.z - rhs.y*lhs.z,
-        rhs.x*lhs.z - lhs.x*rhs.z,
-        lhs.x*rhs.y - rhs.x*lhs.y
-    };
+    static_assert(VectorType<TVector>::elements == 3, "Vector type must have exactly three components");
+    result[0] = lhs[1]*rhs[2] - rhs[1]*lhs[2];
+    result[1] = rhs[0]*lhs[2] - lhs[0]*rhs[2];
+    result[2] = lhs[0]*rhs[1] - rhs[0]*lhs[1];
+}
+
+//! Returns the cross or rather vector product between the two vectors 'lhs' and 'rhs'.
+template <typename TVector>
+GS_NODISCARD
+TVector Cross(const TVector& lhs, const TVector& rhs)
+{
+    TVector result{ UninitializeTag{} };
+    Cross<TVector>(result, lhs, rhs);
+    return result;
 }
 
 //! Returns the squared length of the specified vector.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType LengthSq(const VectorType& vec)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar LengthSq(const TVector& vec)
 {
-    return Dot<VectorType, ScalarType>(vec, vec);
+    return Dot<TVector, TScalar>(vec, vec);
 }
 
 //! Returns the length (euclidian norm) of the specified vector.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Length(const VectorType& vec)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar Length(const TVector& vec)
 {
-    return std::sqrt(LengthSq<VectorType, ScalarType>(vec));
+    return std::sqrt(LengthSq<TVector, TScalar>(vec));
 }
 
 //! Returns the angle (in radians) between the two (normalized or unnormalized) vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Angle(const VectorType& lhs, const VectorType& rhs)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar Angle(const TVector& lhs, const TVector& rhs)
 {
-    return std::acos( Dot<VectorType, ScalarType>(lhs, rhs) / (Length<VectorType, ScalarType>(lhs) * Length<VectorType, ScalarType>(rhs)) );
+    return std::acos( Dot<TVector, TScalar>(lhs, rhs) / (Length<TVector, TScalar>(lhs) * Length<TVector, TScalar>(rhs)) );
 }
 
 //! Returns the angle (in radians) between the two normalized vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType AngleNorm(const VectorType& lhs, const VectorType& rhs)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar AngleNorm(const TVector& lhs, const TVector& rhs)
 {
-    return std::acos(Dot<VectorType, ScalarType>(lhs, rhs));
+    return std::acos(Dot<VectorType, TScalar>(lhs, rhs));
 }
 
 //! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType DistanceSq(const VectorType& lhs, const VectorType& rhs)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar DistanceSq(const TVector& lhs, const TVector& rhs)
 {
-    auto result = rhs;
+    TVector result = rhs;
     result -= lhs;
-    return LengthSq<VectorType, ScalarType>(result);
+    return LengthSq<VectorType, TScalar>(result);
 }
 
 //! Returns the distance between the two vectors 'lhs' and 'rhs'.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-ScalarType Distance(const VectorType& lhs, const VectorType& rhs)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TScalar Distance(const TVector& lhs, const TVector& rhs)
 {
-    auto result = rhs;
+    TVector result = rhs;
     result -= lhs;
-    return Length<VectorType, ScalarType>(result);
+    return Length<TVector, TScalar>(result);
 }
 
 //! Returns the reflected vector of the incident vector for the specified surface normal.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-VectorType Reflect(const VectorType& incident, const VectorType& normal)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TVector Reflect(const TVector& incident, const TVector& normal)
 {
     /* Compute reflection as: I - N x Dot(N, I) x 2 */
-    auto v = normal;
-    v *= (Dot<VectorType, ScalarType>(normal, incident) * ScalarType(-2));
+    TVector v = normal;
+    v *= (Dot<TVector, TScalar>(normal, incident) * TScalar(-2));
     v += incident;
     return v;
 }
 
 //! Normalizes the specified vector to the unit length of 1.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-void Normalize(VectorType& vec)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+void Normalize(TVector& outVec, const TVector& inVec)
 {
-    auto len = LengthSq<VectorType, ScalarType>(vec);
-    if (len != ScalarType(0) && len != ScalarType(1))
+    TScalar len = LengthSq<TVector, TScalar>(inVec);
+    if (len != TScalar(0) && len != TScalar(1))
     {
-        len = ScalarType(1) / std::sqrt(len);
-        vec *= len;
+        len = TScalar(1) / std::sqrt(len);
+        outVec = inVec * len;
     }
+    else
+        outVec = inVec;
+}
+
+//! Normalizes the specified vector to the unit length of 1.
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TVector Normalize(const TVector& vec)
+{
+    TVector result{ UninitializeTag{} };
+    Normalize<TVector, TScalar>(result, vec);
+    return result;
 }
 
 //! Resizes the specified vector to the specified length.
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-void Resize(VectorType& vec, const ScalarType& length)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+void Resize(TVector& outVec, const TVector& inVec, const TScalar& length)
 {
-    auto len = LengthSq<VectorType, ScalarType>(vec);
-    if (len != ScalarType(0))
+    TScalar len = LengthSq<TVector, TScalar>(inVec);
+    if (len != TScalar(0))
     {
         len = length / std::sqrt(len);
-        vec *= len;
+        outVec = inVec * len;
     }
+    else
+        outVec = inVec;
+}
+
+//! Resizes the specified vector to the specified length.
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+GS_NODISCARD
+TVector Resize(const TVector& vec, const TScalar& length)
+{
+    TVector result{ UninitializeTag{} };
+    Resize<TVector, TScalar>(result, vec, length);
+    return result;
 }
 
 /**
@@ -212,8 +256,7 @@ T Mix(const T& v0, const T& v1, const I& scale0, const I& scale1)
 template <typename T>
 T Saturate(const T& x)
 {
-    /* Wrap std::max and std::min into brackets to break macro expansion from Windows.h, so no NOMINMAX macro definition is required */
-    return (std::max)(T(0), (std::min)(x, T(1)));
+    return std::max<T>(T(0), std::min<T>(x, T(1)));
 }
 
 /**
@@ -234,37 +277,37 @@ T Clamp(const T& x, const T& minima, const T& maxima)
 \brief Returns the spherical linear interpolation between the two quaternions 'from' and 'to'.
 \see QuaternionT::Slerp
 */
-template <typename VectorType, typename ScalarType = typename VectorType::ScalarType>
-VectorType Slerp(const VectorType& from, const VectorType& to, const ScalarType& t)
+template <typename TVector, typename TScalar = typename VectorType<TVector>::ScalarType>
+TVector Slerp(const TVector& from, const TVector& to, const TScalar& t)
 {
-    ScalarType omega, cosom, sinom;
-    ScalarType scale0, scale1;
+    TScalar omega, cosom, sinom;
+    TScalar scale0, scale1;
 
     /* Calculate cosine */
-    cosom = Dot<VectorType, ScalarType>(from, to);
+    cosom = Dot<TVector, TScalar>(from, to);
 
     /* Adjust signs (if necessary) */
-    if (cosom < ScalarType(0))
+    if (cosom < TScalar(0))
     {
         cosom = -cosom;
-        scale1 = ScalarType(-1);
+        scale1 = TScalar(-1);
     }
     else
-        scale1 = ScalarType(1);
+        scale1 = TScalar(1);
 
     /* Calculate coefficients */
-    if ((ScalarType(1) - cosom) > std::numeric_limits<ScalarType>::epsilon())
+    if ((TScalar(1) - cosom) > std::numeric_limits<TScalar>::epsilon())
     {
         /* Standard case (slerp) */
         omega = std::acos(cosom);
         sinom = std::sin(omega);
-        scale0 = std::sin((ScalarType(1) - t) * omega) / sinom;
+        scale0 = std::sin((TScalar(1) - t) * omega) / sinom;
         scale1 *= std::sin(t * omega) / sinom;
     }
     else
     {
         /* 'from' and 'to' quaternions are very close, so we can do a linear interpolation */
-        scale0 = ScalarType(1) - t;
+        scale0 = TScalar(1) - t;
         scale1 *= t;
     }
 
@@ -303,7 +346,7 @@ T Rcp(const T& x)
 template <typename T, std::size_t N>
 Vector<T, N> Rcp(const Vector<T, N>& vec)
 {
-	Vector<T, N> vecRcp { UninitializeTag{} };
+	Vector<T, N> vecRcp{ UninitializeTag{} };
 
 	for (std::size_t i = 0; i < N; ++i)
 		vecRcp[i] = T(1) / vec[i];
@@ -315,7 +358,7 @@ Vector<T, N> Rcp(const Vector<T, N>& vec)
 template <typename T, std::size_t N, std::size_t M>
 Matrix<T, N, M> Rcp(const Matrix<T, N, M>& mat)
 {
-	Matrix<T, N, M> matRcp { UninitializeTag{} };
+	Matrix<T, N, M> matRcp{ UninitializeTag{} };
 
 	for (std::size_t i = 0; i < N*M; ++i)
 		matRcp[i] = T(1) / mat[i];

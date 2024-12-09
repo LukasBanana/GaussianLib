@@ -38,7 +38,7 @@ class Vector
         using ScalarType = T;
 
         //! Specifies the number of vector components.
-        static const std::size_t components = N;
+        static constexpr std::size_t components = N;
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector()
@@ -141,7 +141,7 @@ class Vector
         template <typename C>
         Vector<C, N> Cast() const
         {
-            Vector<C, N> result { UninitializeTag{} };
+            Vector<C, N> result{ UninitializeTag{} };
 
             for (std::size_t i = 0; i < N; ++i)
                 result[i] = static_cast<C>(v_[i]);

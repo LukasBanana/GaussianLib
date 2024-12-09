@@ -35,7 +35,7 @@ class Vector<T, 4>
         using ScalarType = T;
 
         //! Specifies the number of vector components.
-        static const std::size_t components = 4;
+        static constexpr std::size_t components = 4;
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
@@ -200,7 +200,7 @@ class Vector<T, 4>
         */
         void Normalize()
         {
-            Gs::Normalize(*this);
+            *this = Gs::Normalize(*this);
         }
 
         /**
@@ -209,9 +209,7 @@ class Vector<T, 4>
         */
         Vector<T, 4> Normalized() const
         {
-            auto vec = *this;
-            vec.Normalize();
-            return vec;
+            return Gs::Normalize(*this);
         }
 
         /**

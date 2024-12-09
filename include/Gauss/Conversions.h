@@ -71,7 +71,7 @@ void MatrixToQuaternion(Q<T>& out, const M& in)
         }
     }
 
-    Normalize(out);
+    out = Normalize(out);
 }
 
 template <class M, template <typename> class Q, typename T>

@@ -21,7 +21,7 @@ namespace Gs
 \tparam M Specifies the matrix type. This should be Matrix<N, N>, AffineMatrix3, or AffineMatrix4.
 This type must implement the following interface:
 \code
-static const std::size_t columns;
+static constexpr std::size_t columns;
 \endcode
 \tparam T Specifies the data type. Can be any type that supports negation (i.e. x = -x).
 \param[in,out] mat Specifies the matrix whose axis is to be flipped.

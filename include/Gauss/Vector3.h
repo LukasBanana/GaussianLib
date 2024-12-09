@@ -36,7 +36,7 @@ class Vector<T, 3>
         using ScalarType = T;
 
         //! Specifies the number of vector components.
-        static const std::size_t components = 3;
+        static constexpr std::size_t components = 3;
 
         #ifndef GS_DISABLE_AUTO_INIT
         Vector() :
@@ -151,7 +151,7 @@ class Vector<T, 3>
 
         Vector<T, 3> operator - () const
         {
-            return Vector<T, 3> { -x, -y, -z };
+            return Vector<T, 3>{ -x, -y, -z };
         }
 
         /**
@@ -193,7 +193,7 @@ class Vector<T, 3>
         */
         void Normalize()
         {
-            Gs::Normalize(*this);
+            *this = Gs::Normalize(*this);
         }
 
         /**
@@ -202,9 +202,7 @@ class Vector<T, 3>
         */
         Vector<T, 3> Normalized() const
         {
-            auto vec = *this;
-            vec.Normalize();
-            return vec;
+            return Gs::Normalize(*this);
         }
 
         /**
