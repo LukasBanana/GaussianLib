@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <initializer_list>
+#include <type_traits>
 
 
 namespace Gs
@@ -30,7 +31,7 @@ namespace Gs
 #define GS_ASSERT_NxN_MATRIX \
     static_assert(Rows == Cols, GS_FILE_LINE "function can only be used with NxN matrices")
 
-#ifdef GS_ROW_MAJOR_STORAGE
+#if GS_ROW_MAJOR_STORAGE
 #   define GS_FOREACH_ROW_COL(r, c)             \
         for (std::size_t r = 0; r < Rows; ++r)  \
         for (std::size_t c = 0; c < Cols; ++c)
@@ -44,9 +45,9 @@ namespace Gs
 \brief Base matrix class.
 \tparam T Specifies the data type of the matrix components.
 This should be a primitive data type such as float, double, int etc.
-\remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
+\remarks The macro \c GS_ROW_MAJOR_STORAGE can be defined as non-zero, to use row-major storage layout.
 By default column-major storage layout is used.
-The macro GS_ROW_VECTORS can be defined, to use row vectors. By default column vectors are used.
+The macro \c GS_ROW_VECTORS can be defined as non-zero, to use row vectors. By default column vectors are used.
 Here is an example, how a 4x4 matrix is laid-out with column- and row vectors:
 \code
 // 4x4 matrix with column vectors:
@@ -118,7 +119,7 @@ class Matrix
         */
         Matrix()
         {
-            #ifndef GS_DISABLE_AUTO_INIT
+            #if !GS_DISABLE_AUTO_INIT
             Details::MatrixDefaultInitializer<T, Rows, Cols>::Initialize(*this);
             #endif
         }
@@ -159,7 +160,7 @@ class Matrix
         {
             GS_ASSERT(row < Rows);
             GS_ASSERT(col < Cols);
-            #ifdef GS_ROW_MAJOR_STORAGE
+            #if GS_ROW_MAJOR_STORAGE
             return m_[row*Cols + col];
             #else
             return m_[col*Rows + row];
@@ -177,7 +178,7 @@ class Matrix
         {
             GS_ASSERT(row < Rows);
             GS_ASSERT(col < Cols);
-            #ifdef GS_ROW_MAJOR_STORAGE
+            #if GS_ROW_MAJOR_STORAGE
             return m_[row*Cols + col];
             #else
             return m_[col*Rows + row];
@@ -231,7 +232,7 @@ class Matrix
             return *this;
         }
 
-        #ifdef GS_ROW_VECTORS
+        #if GS_ROW_VECTORS
 
         T& At(std::size_t col, std::size_t row)
         {
@@ -467,6 +468,14 @@ GS_DEF_MATRIX_TYPES_NxN(4);
 
 #undef GS_ASSERT_NxN_MATRIX
 #undef GS_FOREACH_ROW_COL
+
+static_assert(std::is_standard_layout<Matrix4>::value, "Gs::Matrix4 must be standard layout");
+static_assert(std::is_standard_layout<Matrix4f>::value, "Gs::Matrix4f must be standard layout");
+static_assert(std::is_standard_layout<Matrix4d>::value, "Gs::Matrix4d must be standard layout");
+static_assert(std::is_standard_layout<Matrix4i>::value, "Gs::Matrix4i must be standard layout");
+static_assert(std::is_standard_layout<Matrix4ui>::value, "Gs::Matrix4ui must be standard layout");
+static_assert(std::is_standard_layout<Matrix4b>::value, "Gs::Matrix4b must be standard layout");
+static_assert(std::is_standard_layout<Matrix4ub>::value, "Gs::Matrix4ub must be standard layout");
 
 
 } // /namespace Gs

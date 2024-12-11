@@ -14,6 +14,7 @@
 #include <Gauss/Swizzle.h>
 
 #include <cmath>
+#include <type_traits>
 
 
 namespace Gs
@@ -37,7 +38,7 @@ class Vector<T, 2>
         //! Specifies the number of vector components.
         static constexpr std::size_t components = 2;
 
-        #ifndef GS_DISABLE_AUTO_INIT
+        #if !GS_DISABLE_AUTO_INIT
         Vector() :
             x { T(0) },
             y { T(0) }
@@ -218,7 +219,7 @@ class Vector<T, 2>
             return &x;
         }
 
-        #ifdef GS_ENABLE_SWIZZLE_OPERATOR
+        #if GS_ENABLE_SWIZZLE_OPERATOR
         #   include <Gauss/SwizzleVec2Op2.h>
         #   include <Gauss/SwizzleVec2Op3.h>
         #   include <Gauss/SwizzleVec2Op4.h>
@@ -241,6 +242,14 @@ using Vector2i  = Vector2T<std::int32_t>;
 using Vector2ui = Vector2T<std::uint32_t>;
 using Vector2b  = Vector2T<std::int8_t>;
 using Vector2ub = Vector2T<std::uint8_t>;
+
+static_assert(std::is_standard_layout<Vector2>::value, "Gs::Vector2 must be standard layout");
+static_assert(std::is_standard_layout<Vector2f>::value, "Gs::Vector2f must be standard layout");
+static_assert(std::is_standard_layout<Vector2d>::value, "Gs::Vector2d must be standard layout");
+static_assert(std::is_standard_layout<Vector2i>::value, "Gs::Vector2i must be standard layout");
+static_assert(std::is_standard_layout<Vector2ui>::value, "Gs::Vector2ui must be standard layout");
+static_assert(std::is_standard_layout<Vector2b>::value, "Gs::Vector2b must be standard layout");
+static_assert(std::is_standard_layout<Vector2ub>::value, "Gs::Vector2ub must be standard layout");
 
 
 } // /namespace Gs

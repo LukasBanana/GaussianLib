@@ -18,7 +18,7 @@ namespace Gs
 
 /* --- Constants --- */
 
-#ifdef GS_REAL_DOUBLE
+#if GS_REAL_DOUBLE
 
 using Real = double;
 

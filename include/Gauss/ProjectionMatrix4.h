@@ -16,6 +16,8 @@
 #include <Gauss/Matrix.h>
 #include <Gauss/Vector4.h>
 
+#include <type_traits>
+
 
 namespace Gs
 {
@@ -105,7 +107,7 @@ class ProjectionMatrix4T
         /* ----- Functions ----- */
 
         ProjectionMatrix4T()
-            #ifndef GS_DISABLE_AUTO_INIT
+            #if !GS_DISABLE_AUTO_INIT
             :
             m00 { T(0) },
             m11 { T(0) },
@@ -184,7 +186,7 @@ class ProjectionMatrix4T
 
         Vector4T<T> Project(const Vector4T<T>& v)
         {
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             auto p = v * (*this);
             #else
             auto p = (*this) * v;
@@ -195,7 +197,7 @@ class ProjectionMatrix4T
 
         Vector4T<T> Unproject(const Vector4T<T>& v)
         {
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             auto p = v * Inverse();
             #else
             auto p = Inverse() * v;
@@ -300,13 +302,13 @@ class ProjectionMatrix4T
 
             m.m22 = (unitCube ? (farPlane + nearPlane)/(farPlane - nearPlane) : farPlane/(farPlane - nearPlane));
 
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             m.m23 = T(1);
             #else
             m.m32 = T(1);
             #endif
 
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             m.m32 =
             #else
             m.m23 =
@@ -318,7 +320,7 @@ class ProjectionMatrix4T
             if (rightHanded)
             {
                 m.m22 = -m.m22;
-                #ifdef GS_ROW_VECTORS
+                #if GS_ROW_VECTORS
                 m.m23 = -m.m23;
                 #else
                 m.m32 = -m.m32;
@@ -355,13 +357,13 @@ class ProjectionMatrix4T
 
             m.m22 = (unitCube ? T(2)/(farPlane - nearPlane) : T(1)/(farPlane - nearPlane));
 
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             m.m23 = T(0);
             #else
             m.m32 = T(0);
             #endif
 
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             m.m32 =
             #else
             m.m23 =
@@ -451,7 +453,7 @@ class ProjectionMatrix4T
 
 /* --- Global Operators --- */
 
-#ifdef GS_ROW_VECTORS
+#if GS_ROW_VECTORS
 
 template <typename T>
 Vector4T<T> operator * (const Vector4T<T>& v, const ProjectionMatrix4T<T>& m)
@@ -484,7 +486,7 @@ ProjectionMatrix4T<T> operator * (const ProjectionMatrix4T<T>& lhs, const Projec
 {
     ProjectionMatrix4T<T> result{ UninitializeTag{} };
 
-    #ifdef GS_ROW_VECTORS
+    #if GS_ROW_VECTORS
 
     result.m00 = lhs.m00*rhs.m00;
     result.m11 = lhs.m11*rhs.m11;
@@ -528,7 +530,7 @@ void ExtractClippingPlanes4x4(const M& m, T& nearPlane, T& farPlane, int flags =
     auto farVec = Vector4T<T> { T(0), T(0), T(1), T(1) };
 
     /* Extract near/far clipping planes */
-    #ifdef GS_ROW_VECTORS
+    #if GS_ROW_VECTORS
     nearVec = nearVec * inv;
     farVec = farVec * inv;
     #else
@@ -566,7 +568,10 @@ void ExtractClippingPlanes(const ProjectionMatrix4T<T>& m, T& nearPlane, T& farP
 using ProjectionMatrix4     = ProjectionMatrix4T<Real>;
 using ProjectionMatrix4f    = ProjectionMatrix4T<float>;
 using ProjectionMatrix4d    = ProjectionMatrix4T<double>;
-using ProjectionMatrix4i    = ProjectionMatrix4T<int>;
+
+static_assert(std::is_standard_layout<ProjectionMatrix4>::value, "Gs::ProjectionMatrix4 must be standard layout");
+static_assert(std::is_standard_layout<ProjectionMatrix4f>::value, "Gs::ProjectionMatrix4f must be standard layout");
+static_assert(std::is_standard_layout<ProjectionMatrix4d>::value, "Gs::ProjectionMatrix4d must be standard layout");
 
 
 } // /namespace Gs

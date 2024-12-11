@@ -40,7 +40,7 @@ class Vector
         //! Specifies the number of vector components.
         static constexpr std::size_t components = N;
 
-        #ifndef GS_DISABLE_AUTO_INIT
+        #if !GS_DISABLE_AUTO_INIT
         Vector()
         {
             std::fill(std::begin(v_), std::end(v_), T(0));

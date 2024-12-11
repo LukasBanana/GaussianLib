@@ -28,7 +28,7 @@ M<T> MulAffineMatrices(const M<T>& lhs, const M<T>& rhs)
 {
     M<T> result{ UninitializeTag{} };
 
-    #ifdef GS_ROW_VECTORS
+    #if GS_ROW_VECTORS
 
     for (std::size_t c = 0; c < M<T>::columnsSparse; ++c)
     {

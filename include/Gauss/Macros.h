@@ -16,7 +16,7 @@
 #define GS_TOSTRING(x)          GS_TOSTRING_PRIMARY(x)
 #define GS_FILE_LINE            __FILE__ " (" GS_TOSTRING(__LINE__) "): "
 
-#ifdef GS_ROW_VECTORS
+#if GS_ROW_VECTORS
 
 #define GS_ASSERT_MxN_MATRIX(info, T, n, m)                 \
     static_assert(                                          \

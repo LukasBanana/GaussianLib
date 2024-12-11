@@ -28,7 +28,7 @@ void commonTest1()
 
     const Vector4 a(1, 2, 3, 4), b(-4, 0, 2, 1);
 
-    #ifdef GS_ENABLE_SWIZZLE_OPERATOR
+    #if GS_ENABLE_SWIZZLE_OPERATOR
     Vector4 c = a.zzzw()*Real(2) + a.xyxy() - b.yxzw();
     Vector2 d = c.xx(), e = c.xw() + b.yz();
     #endif
@@ -165,7 +165,7 @@ void affineMatrixTest1()
     //B.MakeInverse();
 
     std::cout << "A = " << std::endl << A << std::endl;
-    #ifdef GS_ENABLE_INVERSE_OPERATOR
+    #if GS_ENABLE_INVERSE_OPERATOR
     std::cout << "Inv(A) = " << std::endl << (A^-1) << std::endl;
     std::cout << "A*Inv(A) = " << std::endl << A*(A^-1) << std::endl;
     #endif
@@ -300,7 +300,7 @@ void projectionTest1()
     std::cout << "Planar      Projection R = " << std::endl << R << std::endl;
     std::cout << "P*P^-1 = " << std::endl << P*P.Inverse() << std::endl;
     std::cout << "a = " << a << std::endl;
-    #ifdef GS_ENABLE_SWIZZLE_OPERATOR
+    #if GS_ENABLE_SWIZZLE_OPERATOR
     std::cout << "Project(R, a) = ";
     std::cout << (R * a).xy() << std::endl;
     #endif
@@ -429,7 +429,7 @@ void flipTest1()
 
     AffineMatrix4 B
     {
-    #ifdef GS_ROW_VECTORS
+    #if GS_ROW_VECTORS
          1,  2,  3,
          4,  5,  6, 
          7,  8,  9,

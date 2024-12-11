@@ -191,7 +191,7 @@ bool Inverse(ProjectionMatrix4T<T>& inv, const ProjectionMatrix4T<T>& m)
 
     d = T(1) / d;
 
-    #ifdef GS_ROW_VECTORS
+    #if GS_ROW_VECTORS
 
     /* Compute inverse matrix */
     inv.m00 = d * ( m.m11 * ( m.m22 * m.m33 - m.m23 * m.m32 ) );
@@ -242,7 +242,7 @@ bool Inverse(ProjectionMatrix4T<T>& inv, const ProjectionMatrix4T<T>& m)
     return true;
 }
 
-#ifdef GS_ENABLE_INVERSE_OPERATOR
+#if GS_ENABLE_INVERSE_OPERATOR
 
 namespace Details
 {

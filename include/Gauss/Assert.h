@@ -15,8 +15,8 @@
 #include <cassert>
 
 
-#ifdef GS_ENABLE_ASSERT
-#   ifdef GS_ASSERT_EXCEPTION
+#if GS_ENABLE_ASSERT
+#   if GS_ASSERT_EXCEPTION
 #       include <stdexcept>
 #       define GS_ASSERT(expr)                                  \
             if (!(expr))                                        \

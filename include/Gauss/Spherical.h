@@ -14,6 +14,7 @@
 #include <Gauss/Tags.h>
 
 #include <cmath>
+#include <type_traits>
 
 
 namespace Gs
@@ -35,7 +36,7 @@ class SphericalT
 
     public:
 
-        #ifndef GS_DISABLE_AUTO_INIT
+        #if !GS_DISABLE_AUTO_INIT
         SphericalT() :
             radius { T(0) },
             theta  { T(0) },
@@ -165,6 +166,14 @@ using Sphericali    = SphericalT<std::int32_t>;
 using Sphericalui   = SphericalT<std::uint32_t>;
 using Sphericalb    = SphericalT<std::int8_t>;
 using Sphericalub   = SphericalT<std::uint8_t>;
+
+static_assert(std::is_standard_layout<Spherical>::value, "Gs::Spherical must be standard layout");
+static_assert(std::is_standard_layout<Sphericalf>::value, "Gs::Sphericalf must be standard layout");
+static_assert(std::is_standard_layout<Sphericald>::value, "Gs::Sphericald must be standard layout");
+static_assert(std::is_standard_layout<Sphericali>::value, "Gs::Sphericali must be standard layout");
+static_assert(std::is_standard_layout<Sphericalui>::value, "Gs::Sphericalui must be standard layout");
+static_assert(std::is_standard_layout<Sphericalb>::value, "Gs::Sphericalb must be standard layout");
+static_assert(std::is_standard_layout<Sphericalub>::value, "Gs::Sphericalub must be standard layout");
 
 
 } // /namespace Gs

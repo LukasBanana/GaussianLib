@@ -24,13 +24,14 @@
 #include <algorithm>
 #include <cstdint>
 #include <initializer_list>
+#include <type_traits>
 
 
 namespace Gs
 {
 
 
-#ifdef GS_ROW_MAJOR_STORAGE
+#if GS_ROW_MAJOR_STORAGE
 #   define GS_FOREACH_ROW_COL(r, c)                                         \
         for (std::size_t r = 0; r < AffineMatrix3T<T>::rowsSparse; ++r)     \
         for (std::size_t c = 0; c < AffineMatrix3T<T>::columnsSparse; ++c)
@@ -46,9 +47,9 @@ i.e. it can only contain translations, scaling, rotations and shearing.
 It only stores a 2x3 matrix where the 3rd row is always implicitly (0, 0, 1).
 \tparam T Specifies the data type of the matrix components.
 This should be a primitive data type such as float, double, int etc.
-\remarks The macro GS_ROW_MAJOR_STORAGE can be defined, to use row-major storage layout.
+\remarks The macro \c GS_ROW_MAJOR_STORAGE can be defined as non-zero, to use row-major storage layout.
 By default column-major storage layout is used.
-The macro GS_ROW_VECTORS can be defined, to use row vectors. By default column vectors are used.
+The macro \c GS_ROW_VECTORS can be defined as non-zero, to use row vectors. By default column vectors are used.
 Here is an example, how an affine 3x3 matrix is laid-out with column- and row vectors:
 \code
 // Affine 3x3 matrix with column vectors:
@@ -76,7 +77,7 @@ class AffineMatrix3T
         static constexpr std::size_t columns        = 3;
         static constexpr std::size_t elements       = AffineMatrix3T<T>::rows*AffineMatrix3T<T>::columns;
 
-        #ifdef GS_ROW_VECTORS
+        #if GS_ROW_VECTORS
         static constexpr std::size_t rowsSparse     = 3;
         static constexpr std::size_t columnsSparse  = 2;
         #else
@@ -111,7 +112,7 @@ class AffineMatrix3T
             *this = rhs;
         }
 
-        #ifdef GS_ROW_VECTORS
+        #if GS_ROW_VECTORS
 
         AffineMatrix3T(
             const T& m11, const T& m12,
@@ -152,14 +153,14 @@ class AffineMatrix3T
 
         /**
         \brief Returns a reference to the element at the specified entry.
-        \param[in] row Specifies the row index. This must be in the range [0, 1], or [0, 2] if GS_ROW_VECTORS is defined.
-        \param[in] col Specifies the column index. This must be in the range [0, 2], or [0, 1] if GS_ROW_VECTORS is defined.
+        \param[in] row Specifies the row index. This must be in the range [0, 1], or [0, 2] if \c GS_ROW_VECTORS is defined as non-zero.
+        \param[in] col Specifies the column index. This must be in the range [0, 2], or [0, 1] if \c GS_ROW_VECTORS is defined as non-zero.
         */
         T& operator () (std::size_t row, std::size_t col)
         {
             GS_ASSERT(row < AffineMatrix3T<T>::rowsSparse);
             GS_ASSERT(col < AffineMatrix3T<T>::columnsSparse);
-            #ifdef GS_ROW_MAJOR_STORAGE
+            #if GS_ROW_MAJOR_STORAGE
             return m_[row*AffineMatrix3T<T>::columnsSparse + col];
             #else
             return m_[col*AffineMatrix3T<T>::rowsSparse + row];
@@ -168,14 +169,14 @@ class AffineMatrix3T
 
         /**
         \brief Returns a constant reference to the element at the specified entry.
-        \param[in] row Specifies the row index. This must be in the range [0, 1], or [0, 2] if GS_ROW_VECTORS is defined.
-        \param[in] col Specifies the column index. This must be in the range [0, 2], or [0, 1] if GS_ROW_VECTORS is defined.
+        \param[in] row Specifies the row index. This must be in the range [0, 1], or [0, 2] if \c GS_ROW_VECTORS is defined as non-zero.
+        \param[in] col Specifies the column index. This must be in the range [0, 2], or [0, 1] if \c GS_ROW_VECTORS is defined as non-zero.
         */
         const T& operator () (std::size_t row, std::size_t col) const
         {
             GS_ASSERT(row < AffineMatrix3T<T>::rowsSparse);
             GS_ASSERT(col < AffineMatrix3T<T>::columnsSparse);
-            #ifdef GS_ROW_MAJOR_STORAGE
+            #if GS_ROW_MAJOR_STORAGE
             return m_[row*AffineMatrix3T<T>::columnsSparse + col];
             #else
             return m_[col*AffineMatrix3T<T>::rowsSparse + row];
@@ -228,7 +229,7 @@ class AffineMatrix3T
             return *this;
         }
 
-        #ifdef GS_ROW_VECTORS
+        #if GS_ROW_VECTORS
 
         T& At(std::size_t col, std::size_t row)
         {
@@ -284,7 +285,7 @@ class AffineMatrix3T
                 result(c, r) = (*this)(r, c);
             }
 
-            #ifdef GS_ROW_VECTORS
+            #if GS_ROW_VECTORS
             for (std::size_t i = 0; i < ThisType::columnsSparse; ++i)
                 result(i, TransposedType::columns - 1) = (*this)(ThisType::rowsSparse - 1, i);
             #else
@@ -578,6 +579,11 @@ using AffineMatrix3     = AffineMatrix3T<Real>;
 using AffineMatrix3f    = AffineMatrix3T<float>;
 using AffineMatrix3d    = AffineMatrix3T<double>;
 using AffineMatrix3i    = AffineMatrix3T<std::int32_t>;
+
+static_assert(std::is_standard_layout<AffineMatrix3>::value, "Gs::AffineMatrix3 must be standard layout");
+static_assert(std::is_standard_layout<AffineMatrix3f>::value, "Gs::AffineMatrix3f must be standard layout");
+static_assert(std::is_standard_layout<AffineMatrix3d>::value, "Gs::AffineMatrix3d must be standard layout");
+static_assert(std::is_standard_layout<AffineMatrix3i>::value, "Gs::AffineMatrix3i must be standard layout");
 
 
 } // /namespace Gs

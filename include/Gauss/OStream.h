@@ -13,7 +13,6 @@
 
 #include <ostream>
 #include <algorithm>
-#include <array>
 #include <string>
 #include <sstream>
 
@@ -42,16 +41,16 @@ template <class M, typename T>
 std::ostream& ShiftAffineMatrixOStream(std::ostream& stream, const M& mat)
 {
     /* Determine longest elements for each row */
-    std::array<std::size_t, M::columnsSparse> lengths;
+    std::size_t lengths[M::columnsSparse];
 
     for (std::size_t c = 0; c < M::columnsSparse; ++c)
     {
         lengths[c] = 0;
         for (std::size_t r = 0; r < M::rowsSparse; ++r)
-            lengths[c] = (std::max)(lengths[c], Details::Length(mat(r, c)));
+            lengths[c] = std::max<std::size_t>(lengths[c], Details::Length(mat(r, c)));
     }
 
-    #ifdef GS_ROW_VECTORS
+    #if GS_ROW_VECTORS
 
     /* Write each row */
     for (std::size_t r = 0; r < M::rowsSparse; ++r)
@@ -134,13 +133,13 @@ template <typename T, std::size_t Rows, std::size_t Cols>
 std::ostream& operator << (std::ostream& stream, const Matrix<T, Rows, Cols>& mat)
 {
     /* Determine longest elements for each row */
-    std::array<std::size_t, Matrix<T, Rows, Cols>::columns> lengths;
+    std::size_t lengths[Matrix<T, Rows, Cols>::columns];
 
     for (std::size_t c = 0; c < Matrix<T, Rows, Cols>::columns; ++c)
     {
         lengths[c] = 0;
         for (std::size_t r = 0; r < Matrix<T, Rows, Cols>::rows; ++r)
-            lengths[c] = (std::max)(lengths[c], Details::Length(mat(r, c)));
+            lengths[c] = std::max<std::size_t>(lengths[c], Details::Length(mat(r, c)));
     }
 
     /* Write each row */

@@ -45,7 +45,7 @@ class QuaternionT
         //! Specifies the number of quaternion components. This is just for the internal template interface.
         static constexpr std::size_t components = 4;
 
-        #ifndef GS_DISABLE_AUTO_INIT
+        #if !GS_DISABLE_AUTO_INIT
         QuaternionT() :
             x { T(0) },
             y { T(0) },
@@ -392,6 +392,10 @@ Vector<T, 3> operator * (const QuaternionT<T>& lhs, const Vector<T, 3>& rhs)
 using Quaternion = QuaternionT<Real>;
 using Quaternionf = QuaternionT<float>;
 using Quaterniond = QuaternionT<double>;
+
+static_assert(std::is_standard_layout<Quaternion>::value, "Gs::Quaternion must be standard layout");
+static_assert(std::is_standard_layout<Quaternionf>::value, "Gs::Quaternionf must be standard layout");
+static_assert(std::is_standard_layout<Quaterniond>::value, "Gs::Quaterniond must be standard layout");
 
 
 } // /namespace Gs
