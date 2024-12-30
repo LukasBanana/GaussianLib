@@ -128,7 +128,7 @@ template <typename TVector, typename TScalar = typename VectorType<TVector>::Sca
 GS_NODISCARD
 TScalar AngleNorm(const TVector& lhs, const TVector& rhs)
 {
-    return std::acos(Dot<VectorType, TScalar>(lhs, rhs));
+    return std::acos(Dot<TVector, TScalar>(lhs, rhs));
 }
 
 //! Returns the squared distance between the two vectors 'lhs' and 'rhs'.
@@ -138,7 +138,7 @@ TScalar DistanceSq(const TVector& lhs, const TVector& rhs)
 {
     TVector result = rhs;
     result -= lhs;
-    return LengthSq<VectorType, TScalar>(result);
+    return LengthSq<TVector, TScalar>(result);
 }
 
 //! Returns the distance between the two vectors 'lhs' and 'rhs'.
